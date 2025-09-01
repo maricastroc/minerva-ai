@@ -9,6 +9,7 @@ import { Sidebar } from '@/components/Sidebar';
 import { MessageItem } from '@/components/MessageItem';
 import { LoadingComponent } from '@/components/LoadingComponent';
 import { MOCK_CHAT_HISTORY } from '@/utils/constants';
+import { ChatProps } from '@/types/chat';
 
 interface Message {
   id: string;
@@ -19,14 +20,16 @@ interface Message {
 
 export default function Home() {
   const [messages, setMessages] = useState<Message[]>([]);
-
   const [input, setInput] = useState('');
-
   const [isLoading, setIsLoading] = useState(false);
-
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [isGeneratingTitle, setIsGeneratingTitle] = useState(false);
+  const [currentChatId, setCurrentChatId] = useState<string | null>(null);
+  const [currentChatTitle, setCurrentChatTitle] = useState<string | null>(null);
+  const [chatHistory, setChatHistory] = useState<ChatProps[] | []>(
+    MOCK_CHAT_HISTORY
+  );
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -36,8 +39,79 @@ export default function Home() {
     scrollToBottom();
   }, [messages]);
 
+  const generateSmartTitle = async (firstMessage: string): Promise<string> => {
+    try {
+      setIsGeneratingTitle(true);
+
+      const res = await fetch('/api/chatbot', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: `Generate a very short title: "${firstMessage}". Reply with title only.`,
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error('Falha ao gerar título');
+      }
+
+      const data = await res.json();
+
+      let title = data.reply.trim();
+
+      title = title.replace(/["'.]/g, '');
+
+      const words = title.split(' ').slice(0, 5).join(' ');
+      return words || firstMessage;
+    } catch (error) {
+      console.error('Erro ao gerar título:', error);
+
+      const meaningfulWords = firstMessage
+        .split(' ')
+        .filter(
+          (word) =>
+            word.length > 3 &&
+            !['como', 'qual', 'quando', 'onde', 'porque', 'sobre'].includes(
+              word.toLowerCase()
+            )
+        )
+        .slice(0, 4)
+        .join(' ');
+
+      return meaningfulWords || firstMessage.substring(0, 25) + '...';
+    } finally {
+      setIsGeneratingTitle(false);
+    }
+  };
+
+  useEffect(() => {
+    const generateTitle = async () => {
+      if (
+        messages.length === 2 &&
+        messages[0].role === 'user' &&
+        messages[1].role === 'assistant'
+      ) {
+        const newChatId = Date.now().toString();
+        setCurrentChatId(newChatId);
+
+        const generatedTitle = await generateSmartTitle(messages[0].content);
+        setCurrentChatTitle(generatedTitle);
+
+        const newChat: ChatProps = {
+          id: newChatId,
+          title: generatedTitle,
+          date: new Date(),
+        };
+        setChatHistory((prev) => [newChat, ...prev.slice(0, 9)]);
+      }
+    };
+
+    generateTitle();
+  }, [messages]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!input.trim() || isLoading) return;
 
     const userMessage: Message = {
@@ -84,18 +158,27 @@ export default function Home() {
       <Sidebar
         isOpen={isSidebarOpen}
         setIsOpen={(value) => setIsSidebarOpen(value)}
-        chatHistory={MOCK_CHAT_HISTORY}
+        chatHistory={chatHistory}
       />
 
       <div className="flex-1 flex flex-col">
+        {currentChatTitle && (
+          <div className="sticky top-0 z-10 bg-[#212020] border-b border-[#303133] px-4 py-4">
+            <h1 className="text-base font-medium text-center text-white break-words line-clamp-2">
+              {currentChatTitle}
+            </h1>
+          </div>
+        )}
+
         <div
           className={`flex-1 flex flex-col items-center ${messages?.length === 0 ? 'justify-center' : 'justify-between'} p-4`}
         >
-          {messages?.length === 0 && (
-            <h1 className="text-2xl font-medium text-center mb-8">
-              How can I help you today?
-            </h1>
-          )}
+          {messages?.length === 0 &&
+            (!currentChatTitle || isGeneratingTitle) && (
+              <h1 className="text-2xl font-medium text-center mb-8">
+                How can I help you today?
+              </h1>
+            )}
 
           <div className="flex flex-col chat-scroll-container overflow-y-auto w-full max-w-4xl bg-[#212020]">
             {messages.map((message) => (
