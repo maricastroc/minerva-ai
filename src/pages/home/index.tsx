@@ -154,7 +154,7 @@ export default function Home() {
   };
 
   return (
-    <div className="flex h-screen bg-[#212020] text-gray-100">
+    <div className="flex h-screen bg-[#212020] text-gray-100 overflow-y-hidden">
       <Sidebar
         isOpen={isSidebarOpen}
         setIsOpen={(value) => setIsSidebarOpen(value)}
@@ -180,7 +180,7 @@ export default function Home() {
               </h1>
             )}
 
-          <div className="flex flex-col chat-scroll-container overflow-y-auto w-full max-w-4xl bg-[#212020]">
+          <div className="flex flex-col pr-3 max-h-[70vh] chat-scroll-container overflow-y-auto w-full max-w-4xl bg-[#212020]">
             {messages.map((message) => (
               <MessageItem key={message.id} message={message} />
             ))}
