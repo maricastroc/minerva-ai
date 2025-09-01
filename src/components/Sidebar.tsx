@@ -35,11 +35,11 @@ export const Sidebar = ({ chatHistory, isOpen, setIsOpen }: Props) => {
             <h3 className="text-sm font-medium text-gray-400 mb-2">
               Chat History
             </h3>
-            <div className="space-y-2">
+            <div className="mt-4 space-y-4">
               {chatHistory.map((chat) => (
                 <div
                   key={chat.id}
-                  className="p-3 rounded-md hover:bg-gray-700 cursor-pointer transition-colors"
+                  className=" hover:bg-gray-700 cursor-pointer transition-colors"
                 >
                   <div className="text-sm font-medium truncate">
                     {chat.title}
