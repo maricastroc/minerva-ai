@@ -31,6 +31,8 @@ export default function Home() {
     handleSubmit,
   } = useChat();
 
+  const hasMessages = messages.length !== 0;
+
   const router = useRouter();
 
   const { status } = useSession();
@@ -103,6 +105,7 @@ export default function Home() {
                 setInput={setInput}
                 isLoading={isLoading}
                 onSubmit={handleSubmit}
+                hasMessages={hasMessages}
               />
             </div>
           </div>
