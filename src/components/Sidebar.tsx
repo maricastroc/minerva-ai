@@ -23,7 +23,7 @@ export const Sidebar = ({
   handleNewChat,
 }: Props) => {
   const isMobile = useScreenSize(480);
-
+  console.log(currentChatId);
   return (
     <div
       className={`

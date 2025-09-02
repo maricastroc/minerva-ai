@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
+ 
 import { NextApiRequest, NextApiResponse, NextPageContext } from 'next';
 import { Adapter, AdapterUser } from 'next-auth/adapters';
 import { prisma } from '@/lib/prisma';

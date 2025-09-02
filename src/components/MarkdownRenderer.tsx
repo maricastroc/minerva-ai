@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useCallback, useState } from 'react';
 import ReactMarkdown, { Components } from 'react-markdown';
 
-const CodeBlock = ({ node, inline, className, children, ...props }: any) => {
+const CodeBlock = ({ inline, className, children, ...props }: any) => {
   const match = /language-(\w+)/.exec(className || '');
   const [copied, setCopied] = useState(false);
 
@@ -14,19 +15,19 @@ const CodeBlock = ({ node, inline, className, children, ...props }: any) => {
   };
 
   return !inline ? (
-    <div className="relative my-2">
-      <div className="flex justify-between items-center bg-gray-700 px-4 py-1 rounded-t-md">
+    <span className="relative my-2">
+      <span className="flex justify-between items-center bg-gray-700 px-4 py-1 rounded-t-md">
         <span className="text-xs text-gray-300">
           {match ? match[1] : 'code'}
         </span>
         <button
           onClick={copyToClipboard}
           className="text-xs text-gray-300 hover:text-white transition-colors"
-          title="Copiar código"
+          title="Copy code"
         >
-          {copied ? '✓ Copiado' : '📋 Copiar'}
+          {copied ? '✓ Copied' : '📋 Copy'}
         </button>
-      </div>
+      </span>
       <code
         className={className}
         style={{
@@ -40,7 +41,7 @@ const CodeBlock = ({ node, inline, className, children, ...props }: any) => {
       >
         {children}
       </code>
-    </div>
+    </span>
   ) : (
     <code className="bg-gray-700 px-1 py-0.5 rounded text-sm" {...props}>
       {children}
@@ -48,7 +49,7 @@ const CodeBlock = ({ node, inline, className, children, ...props }: any) => {
   );
 };
 
-const CustomListItem = ({ node, children, ordered, index, ...props }: any) => {
+const CustomListItem = ({ children, ordered, index, ...props }: any) => {
   return (
     <li className="flex items-start mb-2" {...props}>
       {ordered ? (
@@ -68,16 +69,16 @@ export const MarkdownRenderer = ({ content }: { content: string }) => {
 
   const components: Components = {
     code: CodeBlock,
-    h1: ({ node, ...props }) => (
+    h1: ({ ...props }) => (
       <h1 className="text-2xl font-bold mb-4 mt-6" {...props} />
     ),
-    h2: ({ node, ...props }) => (
+    h2: ({ ...props }) => (
       <h2 className="text-xl font-bold mb-3 mt-5" {...props} />
     ),
-    h3: ({ node, ...props }) => (
+    h3: ({ ...props }) => (
       <h3 className="text-lg font-bold mb-2 mt-4" {...props} />
     ),
-    p: ({ node, ...props }) => {
+    p: ({ ...props }) => {
       if (
         !props.children ||
         (typeof props.children === 'string' && props.children.trim() === '')
@@ -86,20 +87,16 @@ export const MarkdownRenderer = ({ content }: { content: string }) => {
       }
       return <p className="mb-4 leading-relaxed" {...props} />;
     },
-    ul: ({ node, ...props }) => (
-      <ul className="mb-4 mt-2 space-y-1" {...props} />
-    ),
-    ol: ({ node, ...props }) => (
-      <ol className="mb-4 mt-2 space-y-1" {...props} />
-    ),
-    li: ({ node, ...props }) => <CustomListItem node={node} {...props} />,
-    blockquote: ({ node, ...props }) => (
+    ul: ({ ...props }) => <ul className="mb-4 mt-2 space-y-1" {...props} />,
+    ol: ({ ...props }) => <ol className="mb-4 mt-2 space-y-1" {...props} />,
+    li: ({ ...props }) => <CustomListItem {...props} />,
+    blockquote: ({ ...props }) => (
       <blockquote
         className="border-l-4 border-gray-400 pl-4 my-4 italic text-gray-300"
         {...props}
       />
     ),
-    a: ({ node, ...props }) => (
+    a: ({ ...props }) => (
       <a
         className="text-blue-400 hover:text-blue-300 underline"
         target="_blank"
@@ -107,23 +104,23 @@ export const MarkdownRenderer = ({ content }: { content: string }) => {
         {...props}
       />
     ),
-    strong: ({ node, ...props }) => <strong className="font-bold" {...props} />,
-    em: ({ node, ...props }) => <em className="italic" {...props} />,
-    table: ({ node, ...props }) => (
+    strong: ({ ...props }) => <strong className="font-bold" {...props} />,
+    em: ({ ...props }) => <em className="italic" {...props} />,
+    table: ({ ...props }) => (
       <div className="overflow-x-auto my-5">
         <table className="min-w-full border-collapse" {...props} />
       </div>
     ),
-    th: ({ node, ...props }) => (
+    th: ({ ...props }) => (
       <th
         className="border border-gray-600 px-3 py-2 bg-gray-700 font-bold"
         {...props}
       />
     ),
-    td: ({ node, ...props }) => (
+    td: ({ ...props }) => (
       <td className="border border-gray-600 px-3 py-2" {...props} />
     ),
-    br: ({ node, ...props }) => <br {...props} className="block h-3" />,
+    br: ({ ...props }) => <br {...props} className="block h-3" />,
   };
 
   return (

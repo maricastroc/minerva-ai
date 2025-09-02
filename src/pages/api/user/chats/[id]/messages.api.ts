@@ -64,8 +64,9 @@ export default async function handler(
 
     res.status(200).json({
       data: {
+        id,
         messages: formattedMessages,
-        chatTitle: conversation.title,
+        title: conversation.title,
       },
     });
   } catch (error) {

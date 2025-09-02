@@ -1,4 +1,5 @@
-export default async function handler(req: any, res: any) {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export default async function handler(res: any) {
   const apiKey = process.env.GEMINI_API_KEY;
 
   if (!apiKey) {
