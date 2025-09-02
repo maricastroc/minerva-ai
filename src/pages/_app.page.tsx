@@ -10,20 +10,21 @@ export default function App({
   return (
     <SessionProvider session={session}>
       <Toaster
+        position="top-right"
         toastOptions={{
           style: {
-            backgroundColor: '#161D2F',
+            backgroundColor: '#343538',
             color: '#fff',
           },
           success: {
             style: {
-              backgroundColor: '#161D2F',
+              backgroundColor: '#343538',
               color: '#fff',
             },
           },
           error: {
             style: {
-              backgroundColor: '#161D2F',
+              backgroundColor: '#343538',
               color: '#fff',
             },
           },

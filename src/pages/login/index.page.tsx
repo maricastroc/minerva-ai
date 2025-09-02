@@ -12,14 +12,7 @@ import { useRouter } from 'next/router';
 
 const loginSchema = yup.object({
   email: yup.string().required('Email is required').email('Invalid email'),
-  password: yup
-    .string()
-    .required('Password is required')
-    .min(6, 'Password must have at least 6 characters')
-    .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-      'Password must contain at least one uppercase letter, one lowercase letter, and one number'
-    ),
+  password: yup.string().required('Password is required'),
 });
 
 type LoginFormData = yup.InferType<typeof loginSchema>;
