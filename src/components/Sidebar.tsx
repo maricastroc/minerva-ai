@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { faPenToSquare, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useScreenSize } from '@/hooks/useScreenSize';
+import { useSession } from 'next-auth/react';
 
 interface Props {
   isOpen: boolean;
@@ -22,8 +23,12 @@ export const Sidebar = ({
   handleSelectChat,
   handleNewChat,
 }: Props) => {
+  const { data: session } = useSession();
+
   const isMobile = useScreenSize(480);
-  console.log(currentChatId);
+
+  const firstLetter = session?.user?.name?.split(' ')[0].charAt(0);
+
   return (
     <div
       className={`
@@ -33,7 +38,7 @@ export const Sidebar = ({
     >
       {isOpen ? (
         <>
-          <div className="p-6 flex items-center justify-between w-full pb-2">
+          <div className="p-6 pt-5 flex items-center justify-between w-full pb-2">
             {isMobile ? (
               <>
                 <Image
@@ -103,11 +108,11 @@ export const Sidebar = ({
           </div>
 
           <div className="p-4 border-t border-gray-700 w-full">
-            <div className="flex items-center space-x-3 cursor-pointer p-2 rounded-md hover:bg-gray-700">
-              <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center">
-                <span className="text-sm font-medium">U</span>
+            <div className="flex items-center space-x-3 cursor-pointer p-2 rounded-2xl hover:bg-primary-gray600">
+              <div className="w-7 h-7 rounded-full bg-primary-purple500 flex items-center justify-center">
+                <span className="text-sm font-medium">{firstLetter}</span>
               </div>
-              <div className="text-sm">User</div>
+              <div className="text-sm">{session?.user?.name}</div>
             </div>
           </div>
         </>

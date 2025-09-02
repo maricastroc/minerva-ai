@@ -15,7 +15,7 @@ export const ChatInput = ({
   onSubmit,
 }: ChatInputProps) => {
   return (
-    <form onSubmit={onSubmit} className="w-full max-w-4xl mb-6 mt-4">
+    <form onSubmit={onSubmit} className="w-full max-w-4xl mb-3 mt-4">
       <div className="flex items-center bg-primary-gray600 rounded-[3rem] p-3">
         <input
           type="text"
