@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { NextApiRequest, NextApiResponse, NextPageContext } from 'next';
-import { Adapter, AdapterUser } from 'next-auth/adapters';
+import { Adapter, AdapterUser, AdapterAccount } from 'next-auth/adapters';
 import { prisma } from '@/lib/prisma';
 
 interface CustomUser extends AdapterUser {
@@ -120,7 +120,7 @@ export function PrismaAdapter(
       };
     },
 
-    async linkAccount(account) {
+    async linkAccount(account: AdapterAccount) {
       await prisma.account.create({
         data: {
           userId: account.userId,
