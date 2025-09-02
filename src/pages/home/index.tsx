@@ -7,6 +7,7 @@ import { MobileHeader } from '@/components/MobileHeader';
 import { useScreenSize } from '@/hooks/useScreenSize';
 import { useChat } from '@/hooks/useChat';
 import { useState } from 'react';
+import { NextSeo } from 'next-seo';
 
 export default function Home() {
   const isMobile = useScreenSize(768);
@@ -27,21 +28,22 @@ export default function Home() {
   } = useChat();
 
   return (
-    <div className="flex h-screen bg-[#212020] text-gray-100 overflow-y-hidden">
-      {!isMobile && (
-        <Sidebar
-          isOpen={isSidebarOpen}
-          setIsOpen={setIsSidebarOpen}
-          chatHistory={chatHistory}
-          handleSelectChat={handleSelectChat}
-          currentChatId={currentChatId}
-          handleNewChat={handleNewChat}
-        />
-      )}
-
-      <div className="flex-1 flex flex-col">
-        {isMobile && (
-          <MobileHeader
+    <>
+      <NextSeo
+        title="Home | Simple Chat AI"
+        additionalMetaTags={[
+          {
+            name: 'viewport',
+            content:
+              'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no',
+          },
+        ]}
+      />
+      <div className="flex h-screen bg-[#212020] text-gray-100 overflow-y-hidden">
+        {!isMobile && (
+          <Sidebar
+            isOpen={isSidebarOpen}
+            setIsOpen={setIsSidebarOpen}
             chatHistory={chatHistory}
             handleSelectChat={handleSelectChat}
             currentChatId={currentChatId}
@@ -49,32 +51,43 @@ export default function Home() {
           />
         )}
 
-        <div
-          className={`flex-1 flex flex-col items-center ${messages.length === 0 ? 'justify-center' : 'justify-between'} p-4`}
-        >
-          {messages.length === 0 && !currentChatTitle && (
-            <h1 className="sm:mt-0 mt-20 text-2xl font-medium text-center mb-8">
-              How can I help you today?
-            </h1>
-          )}
-
-          {messages.length > 0 && (
-            <MessageList
-              messages={messages}
-              isLoading={isLoading}
-              currentChatTitle={currentChatTitle}
-              isMobile={isMobile}
+        <div className="flex-1 flex flex-col">
+          {isMobile && (
+            <MobileHeader
+              chatHistory={chatHistory}
+              handleSelectChat={handleSelectChat}
+              currentChatId={currentChatId}
+              handleNewChat={handleNewChat}
             />
           )}
 
-          <ChatInput
-            input={input}
-            setInput={setInput}
-            isLoading={isLoading}
-            onSubmit={handleSubmit}
-          />
+          <div
+            className={`flex-1 flex flex-col items-center ${messages.length === 0 ? 'justify-center' : 'justify-between'} p-4`}
+          >
+            {messages.length === 0 && !currentChatTitle && (
+              <h1 className="sm:mt-0 mt-20 text-2xl font-medium text-center mb-8">
+                How can I help you today?
+              </h1>
+            )}
+
+            {messages.length > 0 && (
+              <MessageList
+                messages={messages}
+                isLoading={isLoading}
+                currentChatTitle={currentChatTitle}
+                isMobile={isMobile}
+              />
+            )}
+
+            <ChatInput
+              input={input}
+              setInput={setInput}
+              isLoading={isLoading}
+              onSubmit={handleSubmit}
+            />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

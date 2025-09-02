@@ -1,3 +1,4 @@
+import { NextSeo } from 'next-seo';
 import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
@@ -53,42 +54,54 @@ export default function Login() {
   }
 
   return (
-    <AuthLayout
-      title="Sign in to your account"
-      footer={
-        <p className="text-white/80 text-sm">
-          Don&apos;t have an account?{' '}
-          <a
-            href="/register"
-            className="text-primary-purple500 hover:text-primary-purple300 font-semibold transition-colors"
-          >
-            Sign up
-          </a>
-        </p>
-      }
-    >
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <Input
-          id="email"
-          label="Email"
-          type="email"
-          autoComplete="email"
-          placeholder="your.email@exemplo.com"
-          error={errors.email}
-          {...register('email')}
-        />
-        <PasswordInput
-          id="password"
-          label="Password"
-          placeholder="Your password"
-          autoComplete="new-password"
-          error={errors.password}
-          {...register('password')}
-        />
-        <Button type="submit" isLoading={isLoading} className="mt-6">
-          Sign in
-        </Button>
-      </form>
-    </AuthLayout>
+    <>
+      <NextSeo
+        title="Login | Simple Chat AI"
+        additionalMetaTags={[
+          {
+            name: 'viewport',
+            content:
+              'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no',
+          },
+        ]}
+      />
+      <AuthLayout
+        title="Sign in to your account"
+        footer={
+          <p className="text-white/80 text-sm">
+            Don&apos;t have an account?{' '}
+            <a
+              href="/register"
+              className="text-primary-purple500 hover:text-primary-purple300 font-semibold transition-colors"
+            >
+              Sign up
+            </a>
+          </p>
+        }
+      >
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <Input
+            id="email"
+            label="Email"
+            type="email"
+            autoComplete="email"
+            placeholder="your.email@exemplo.com"
+            error={errors.email}
+            {...register('email')}
+          />
+          <PasswordInput
+            id="password"
+            label="Password"
+            placeholder="Your password"
+            autoComplete="new-password"
+            error={errors.password}
+            {...register('password')}
+          />
+          <Button type="submit" isLoading={isLoading} className="mt-6">
+            Sign in
+          </Button>
+        </form>
+      </AuthLayout>
+    </>
   );
 }

@@ -1,3 +1,4 @@
+import { NextSeo } from 'next-seo';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -63,63 +64,75 @@ export default function Register() {
   }
 
   return (
-    <AuthLayout
-      title="Create your account"
-      footer={
-        <p className="text-white/80 text-sm">
-          Already registered?{' '}
-          <a
-            href="/login"
-            className="text-primary-purple500 hover:text-primary-purple300 font-semibold transition-colors"
-          >
-            Sign in
-          </a>
-        </p>
-      }
-    >
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <Input
-          id="name"
-          label="Full name"
-          type="text"
-          autoComplete="name"
-          placeholder="Your full name"
-          error={errors.name}
-          {...register('name')}
-        />
+    <>
+      <NextSeo
+        title="Register | Simple Chat AI"
+        additionalMetaTags={[
+          {
+            name: 'viewport',
+            content:
+              'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no',
+          },
+        ]}
+      />
+      <AuthLayout
+        title="Create your account"
+        footer={
+          <p className="text-white/80 text-sm">
+            Already registered?{' '}
+            <a
+              href="/login"
+              className="text-primary-purple500 hover:text-primary-purple300 font-semibold transition-colors"
+            >
+              Sign in
+            </a>
+          </p>
+        }
+      >
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <Input
+            id="name"
+            label="Full name"
+            type="text"
+            autoComplete="name"
+            placeholder="Your full name"
+            error={errors.name}
+            {...register('name')}
+          />
 
-        <Input
-          id="email"
-          label="Email"
-          type="email"
-          autoComplete="email"
-          placeholder="your.email@exemplo.com"
-          error={errors.email}
-          {...register('email')}
-        />
+          <Input
+            id="email"
+            label="Email"
+            type="email"
+            autoComplete="email"
+            placeholder="your.email@exemplo.com"
+            error={errors.email}
+            {...register('email')}
+          />
 
-        <PasswordInput
-          id="password"
-          label="Password"
-          placeholder="Your password"
-          autoComplete="new-password"
-          error={errors.password}
-          {...register('password')}
-        />
+          <PasswordInput
+            id="password"
+            label="Password"
+            placeholder="Your password"
+            autoComplete="new-password"
+            error={errors.password}
+            {...register('password')}
+          />
 
-        <PasswordInput
-          id="confirmPassword"
-          label="Confirm your password"
-          placeholder="Confirm your password"
-          autoComplete="new-password"
-          error={errors.confirmPassword}
-          {...register('confirmPassword')}
-        />
+          <PasswordInput
+            id="confirmPassword"
+            label="Confirm your password"
+            placeholder="Confirm your password"
+            autoComplete="new-password"
+            error={errors.confirmPassword}
+            {...register('confirmPassword')}
+          />
 
-        <Button type="submit" isLoading={isLoading} className="mt-6">
-          Create account
-        </Button>
-      </form>
-    </AuthLayout>
+          <Button type="submit" isLoading={isLoading} className="mt-6">
+            Create account
+          </Button>
+        </form>
+      </AuthLayout>
+    </>
   );
 }
