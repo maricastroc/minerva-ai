@@ -1,6 +1,6 @@
 import { NextSeo } from 'next-seo';
-import { useState } from 'react';
-import { signIn } from 'next-auth/react';
+import { useEffect, useState } from 'react';
+import { signIn, useSession } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -22,7 +22,11 @@ type LoginFormData = yup.InferType<typeof loginSchema>;
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
 
+  const [isClient, setIsClient] = useState(false);
+
   const router = useRouter();
+
+  const { status } = useSession();
 
   const {
     register,
@@ -53,6 +57,16 @@ export default function Login() {
     }
   }
 
+  useEffect(() => {
+    if (status === 'authenticated') {
+      router.push('/');
+    }
+  }, [status, router]);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   return (
     <>
       <NextSeo
@@ -65,43 +79,45 @@ export default function Login() {
           },
         ]}
       />
-      <AuthLayout
-        title="Sign in to your account"
-        footer={
-          <p className="text-white/80 text-sm">
-            Don&apos;t have an account?{' '}
-            <a
-              href="/register"
-              className="text-primary-purple500 hover:text-primary-purple300 font-semibold transition-colors"
-            >
-              Sign up
-            </a>
-          </p>
-        }
-      >
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <Input
-            id="email"
-            label="Email"
-            type="email"
-            autoComplete="email"
-            placeholder="your.email@exemplo.com"
-            error={errors.email}
-            {...register('email')}
-          />
-          <PasswordInput
-            id="password"
-            label="Password"
-            placeholder="Your password"
-            autoComplete="new-password"
-            error={errors.password}
-            {...register('password')}
-          />
-          <Button type="submit" isLoading={isLoading} className="mt-6">
-            Sign in
-          </Button>
-        </form>
-      </AuthLayout>
+      {isClient && (
+        <AuthLayout
+          title="Sign in to your account"
+          footer={
+            <p className="text-white/80 text-sm">
+              Don&apos;t have an account?{' '}
+              <a
+                href="/register"
+                className="text-primary-purple500 hover:text-primary-purple300 font-semibold transition-colors"
+              >
+                Sign up
+              </a>
+            </p>
+          }
+        >
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <Input
+              id="email"
+              label="Email"
+              type="email"
+              autoComplete="email"
+              placeholder="your.email@exemplo.com"
+              error={errors.email}
+              {...register('email')}
+            />
+            <PasswordInput
+              id="password"
+              label="Password"
+              placeholder="Your password"
+              autoComplete="new-password"
+              error={errors.password}
+              {...register('password')}
+            />
+            <Button type="submit" isLoading={isLoading} className="mt-6">
+              Sign in
+            </Button>
+          </form>
+        </AuthLayout>
+      )}
     </>
   );
 }
