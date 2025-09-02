@@ -9,6 +9,7 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: "Bai Jamjuree", sans-serif;
+  --color-primary-gray900: #181818;
   --color-primary-gray800: #212327;
   --color-primary-gray700: #292a2d;
   --color-primary-gray650: #242424;

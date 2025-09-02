@@ -22,11 +22,11 @@ export const MobileHeader = ({
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 bg-[#181818] p-4 border-b border-[#303133]">
+    <div className="sticky top-0 z-50 bg-primary-gray900 p-4">
       <div className="flex items-center justify-between">
         <button
           onClick={() => setIsSidebarOpen(true)}
-          className="p-2 rounded-md hover:bg-gray-700 transition-colors"
+          className="p-2 cursor-pointer rounded-md hover:bg-primary-gray700 transition-colors"
         >
           <FontAwesomeIcon icon={faBars} className="w-5 h-5" />
         </button>

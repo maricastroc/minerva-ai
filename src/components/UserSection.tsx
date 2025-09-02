@@ -53,14 +53,18 @@ export const UserSection = ({ isMobile = false }: Props) => {
         <div className="w-7 h-7 rounded-full bg-primary-purple500 flex items-center justify-center">
           <span className="text-sm font-medium">{firstLetter}</span>
         </div>
-        <div className="text-sm truncate flex-1">{session?.user?.name}</div>
+        <div
+          className={`truncate flex-1 ${isMobile ? 'text-base' : 'text-sm'}`}
+        >
+          {session?.user?.name}
+        </div>
 
         {isDropdownOpen && (
           <div className="absolute bottom-full left-0 mb-2 p-2 w-48 bg-primary-gray600 rounded-lg shadow-lg z-50">
             <div className="py-1">
               <button
                 onClick={handleSettingsClick}
-                className="cursor-pointer flex items-center rounded-lg w-full p-2 text-sm text-gray-200 hover:bg-primary-gray400 transition-colors"
+                className={`cursor-pointer flex items-center rounded-lg w-full p-2 text-gray-200 hover:bg-primary-gray400 transition-colors ${isMobile ? 'text-base' : 'text-sm'}`}
               >
                 <FontAwesomeIcon icon={faCog} className="w-4 h-4 mr-3" />
                 Settings
@@ -68,7 +72,7 @@ export const UserSection = ({ isMobile = false }: Props) => {
               <div className="my-1"></div>
               <button
                 onClick={handleLogout}
-                className="cursor-pointer flex items-center rounded-lg w-full p-2 text-sm text-gray-200 hover:bg-primary-gray400 transition-colors"
+                className={`cursor-pointer flex items-center rounded-lg w-full p-2 text-gray-200 hover:bg-primary-gray400 transition-colors ${isMobile ? 'text-base' : 'text-sm'}`}
               >
                 <FontAwesomeIcon icon={faSignOutAlt} className="w-4 h-4 mr-3" />
                 Logout

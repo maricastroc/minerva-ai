@@ -28,7 +28,7 @@ export const MessageList = ({
 
   return (
     <div
-      className={`flex max-h-screen flex-col pr-3 sm:max-h-[80vh] chat-scroll-container overflow-y-auto w-full max-w-4xl bg-[#212020] ${isMobile && 'mt-26'}`}
+      className={`flex max-h-screen flex-col pr-3 sm:max-h-[80vh] chat-scroll-container overflow-y-auto w-full max-w-4xl bg-[#212020]`}
     >
       {!isMobile && currentChatTitle && (
         <div className="sticky top-0 z-10 bg-[#212020] w-full border-b border-[#303133] p-3 pt-1">

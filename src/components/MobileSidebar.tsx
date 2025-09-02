@@ -53,7 +53,7 @@ export const MobileSidebar = ({
         <NewChatButton isMobile handleNewChat={handleNewChat} />
 
         <div className="flex-1 overflow-y-auto p-4 px-0">
-          <p className="ml-2 mt-2 text-sm font-medium text-gray-400 mb-2">
+          <p className="ml-2 mt-2 text-base font-medium text-gray-400 mb-2">
             Chats
           </p>
           {chatHistory?.map((chat) => (
@@ -65,10 +65,10 @@ export const MobileSidebar = ({
                 setIsOpen(false);
               }}
             >
-              <div className="text-sm font-medium truncate text-white">
+              <div className="text-base font-medium truncate text-white">
                 {chat.title}
               </div>
-              <div className="text-xs text-gray-400">
+              <div className="text-sm text-gray-400">
                 {formatDate(chat.createdAt || chat.updatedAt)}
               </div>
             </div>
