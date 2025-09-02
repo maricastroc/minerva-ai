@@ -1,21 +1,24 @@
 import { useState } from 'react';
 import Image from 'next/image';
+import { signIn } from 'next-auth/react'
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Input } from '@/components/Input';
 import { PasswordInput } from '@/components/PasswordInput';
 import { Button } from '@/components/Button';
+import toast from 'react-hot-toast'
+import { useRouter } from 'next/router';
 
 const loginSchema = yup.object({
-  email: yup.string().required('Email é obrigatório').email('Email inválido'),
+  email: yup.string().required('Email is required').email('Invalid email'),
   password: yup
     .string()
-    .required('Senha é obrigatória')
-    .min(6, 'Senha deve ter pelo menos 6 caracteres')
+    .required('Password is required')
+    .min(6, 'Password must have at least 6 characters')
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-      'Senha deve conter pelo menos uma letra maiúscula, uma minúscula e um número'
+      'Password must contain at least one uppercase letter, one lowercase letter, and one number'
     ),
 });
 
@@ -23,6 +26,8 @@ type LoginFormData = yup.InferType<typeof loginSchema>;
 
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
+
+  const router = useRouter()
 
   const {
     register,
@@ -34,18 +39,25 @@ export default function Login() {
     mode: 'onSubmit',
   });
 
-  const onSubmit = async (data: LoginFormData) => {
-    setIsLoading(true);
+  async function onSubmit(data: LoginFormData) {
+    try {
+      const result = await signIn('credentials', {
+        email: data.email,
+        password: data.password,
+        redirect: false,
+      })
 
-    console.log('Login attempt:', {
-      email: data.email,
-      password: data.password,
-    });
-
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1500);
-  };
+      if (result?.error) {
+        toast.error(result?.error)
+      } else {
+        toast.success('Welcome to the Book Nest!')
+        router.push('/home')
+      }
+    } catch (error) {
+      toast.error('An unexpected error occurred. Please try again later.')
+      console.error(error)
+    }
+  }
 
   return (
     <div className="min-h-screen bg-primary-gray800 flex flex-col justify-center items-center p-8">
@@ -93,7 +105,7 @@ export default function Login() {
           <p className="text-white/80 text-sm">
             Don't have an account?{' '}
             <a
-              href="/login"
+              href="/register"
               className="text-primary-purple500 hover:text-primary-purple300 font-semibold transition-colors"
             >
               Sign up

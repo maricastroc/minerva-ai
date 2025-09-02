@@ -6,31 +6,37 @@ import * as yup from 'yup';
 import { Input } from '@/components/Input';
 import { PasswordInput } from '@/components/PasswordInput';
 import { Button } from '@/components/Button';
+import { api } from '@/lib/axios';
+import { handleApiError } from '@/utils/handleApiError';
+import toast from 'react-hot-toast'
+import { useRouter } from 'next/router';
 
 const registerSchema = yup.object({
   name: yup
     .string()
-    .required('Nome completo é obrigatório')
-    .min(3, 'Nome deve ter pelo menos 3 caracteres'),
-  email: yup.string().required('Email é obrigatório').email('Email inválido'),
+    .required('Name is required')
+    .min(3, 'Name must have at least 3 characters'),
+  email: yup.string().required('Email is required').email('Invalid email'),
   password: yup
     .string()
-    .required('Senha é obrigatória')
-    .min(6, 'Senha deve ter pelo menos 6 caracteres')
+    .required('Password is required')
+    .min(6, 'Password must have at least 3 characters')
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-      'Senha deve conter pelo menos uma letra maiúscula, uma minúscula e um número'
+      'Password must contain at least one uppercase letter, one lowercase letter, and one number'
     ),
   confirmPassword: yup
     .string()
-    .required('Confirmação de senha é obrigatória')
-    .oneOf([yup.ref('password')], 'Senhas não coincidem'),
+    .required('Password confirmation is required')
+    .oneOf([yup.ref('password')], "Passwords don't match"),
 });
 
 type RegisterFormData = yup.InferType<typeof registerSchema>;
 
 export default function Register() {
   const [isLoading, setIsLoading] = useState(false);
+
+  const router = useRouter()
 
   const {
     register,
@@ -42,19 +48,30 @@ export default function Register() {
     mode: 'onSubmit',
   });
 
-  const onSubmit = async (data: RegisterFormData) => {
-    setIsLoading(true);
+  async function onSubmit(data: RegisterFormData) {
+    const formData = new FormData()
 
-    console.log('Registration attempt:', {
-      name: data.name,
-      email: data.email,
-      password: data.password,
-    });
+    formData.append('email', data.email)
+    formData.append('password', data.password)
+    formData.append('name', data.name)
 
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1500);
-  };
+    try {
+      setIsLoading(true)
+
+      await api.post(`/user/create`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+
+      toast.success('User successfully registered!')
+      router.push('/')
+    } catch (error) {
+      handleApiError(error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   return (
     <div className="min-h-screen bg-primary-gray800 flex flex-col justify-center items-center p-8">
