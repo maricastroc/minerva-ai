@@ -42,8 +42,10 @@ export default function Home() {
       <div className="flex-1 flex flex-col">
         {isMobile && (
           <MobileHeader
-            currentChatTitle={currentChatTitle}
-            onMenuToggle={() => setIsSidebarOpen(!isSidebarOpen)}
+            chatHistory={chatHistory}
+            handleSelectChat={handleSelectChat}
+            currentChatId={currentChatId}
+            handleNewChat={handleNewChat}
           />
         )}
 
@@ -51,17 +53,19 @@ export default function Home() {
           className={`flex-1 flex flex-col items-center ${messages.length === 0 ? 'justify-center' : 'justify-between'} p-4`}
         >
           {messages.length === 0 && !currentChatTitle && (
-            <h1 className="text-2xl font-medium text-center mb-8">
+            <h1 className="sm:mt-0 mt-20 text-2xl font-medium text-center mb-8">
               How can I help you today?
             </h1>
           )}
 
-          <MessageList
-            messages={messages}
-            isLoading={isLoading}
-            currentChatTitle={currentChatTitle}
-            isMobile={isMobile}
-          />
+          {messages.length > 0 && (
+            <MessageList
+              messages={messages}
+              isLoading={isLoading}
+              currentChatTitle={currentChatTitle}
+              isMobile={isMobile}
+            />
+          )}
 
           <ChatInput
             input={input}
