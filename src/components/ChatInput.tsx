@@ -22,7 +22,7 @@ export const ChatInput = ({
   console.log(hasMessages);
   return (
     <div
-      className={`flex fixed w-full max-w-4xl  pb-4 pointer-events-none transition-transform duration-300 ${
+      className={`flex fixed w-full md:max-w-[65%] xl:max-w-4xl pb-4 pointer-events-none transition-transform duration-300 ${
         isKeyboardOpen ? 'translate-y-[-50%]' : ''
       } ${hasMessages ? 'bottom-1 sm:bottom-4 pt-16 bg-gradient-to-t from-[#212020] via-[#212020]/95 to-transparent' : 'pt-32'}`}
     >

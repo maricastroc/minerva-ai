@@ -60,7 +60,7 @@ export default function Home() {
         ]}
       />
       {isClient && (
-        <div className="flex h-[100vh] bg-[#212020] text-gray-100 overflow-y-hidden">
+        <div className="flex h-[100dvh] bg-[#212020] text-gray-100 overflow-hidden safe-area">
           {!isMobile && (
             <Sidebar
               isOpen={isSidebarOpen}
@@ -86,7 +86,7 @@ export default function Home() {
               className={`flex-1 flex flex-col items-center ${messages.length === 0 ? 'justify-center' : 'justify-between'} p-4`}
             >
               {messages.length === 0 && !currentChatTitle && (
-                <h1 className="text-2xl font-medium text-center mb-8">
+                <h1 className="text-2xl mb-4 lg:text-3xl font-medium text-center lg:mb-12">
                   How can I help you today?
                 </h1>
               )}
