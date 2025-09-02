@@ -15,8 +15,8 @@ export const ChatInput = ({
   onSubmit,
 }: ChatInputProps) => {
   return (
-    <form onSubmit={onSubmit} className="w-full max-w-4xl mb-3 mt-4">
-      <div className="flex items-center bg-primary-gray600 rounded-[3rem] p-3">
+    <form onSubmit={onSubmit} className="w-full max-w-4xl mb-1 sm:mb-3 mt-4">
+      <div className="flex items-center bg-primary-gray600 rounded-[1.5rem] sm:rounded-[3rem] p-1 sm:p-3">
         <input
           type="text"
           value={input}
@@ -28,7 +28,7 @@ export const ChatInput = ({
         <button
           type="submit"
           disabled={isLoading || !input.trim()}
-          className="bg-white/30 text-white rounded-full w-10 h-10 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/40 transition-colors"
+          className="bg-white/30 text-white rounded-full mr-1 sm:mr-0 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/40 transition-colors"
         >
           <FontAwesomeIcon icon={faArrowUp} className="w-4 h-4" />
         </button>
