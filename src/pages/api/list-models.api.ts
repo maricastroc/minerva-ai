@@ -2,7 +2,7 @@ export default async function handler(req: any, res: any) {
   const apiKey = process.env.GEMINI_API_KEY;
 
   if (!apiKey) {
-    return res.status(400).json({ error: 'GEMINI_API_KEY não configurada' });
+    return res.status(400).json({ error: 'unfound GEMINI_API_KEY' });
   }
 
   try {
@@ -18,7 +18,7 @@ export default async function handler(req: any, res: any) {
 
     if (!response.ok) {
       const errorData = await response.json();
-      console.error('Erro ao listar modelos:', errorData);
+      console.error('Error listing models:', errorData);
       return res.status(response.status).json({ error: errorData });
     }
 

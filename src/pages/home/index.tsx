@@ -1,15 +1,17 @@
 'use client';
 
-import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
+import { faArrowUp, faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
+import Image from 'next/image';
 
 import { Sidebar } from '@/components/Sidebar';
 import { MessageItem } from '@/components/MessageItem';
 import { LoadingComponent } from '@/components/LoadingComponent';
 import { MOCK_CHAT_HISTORY } from '@/utils/constants';
 import { ChatProps } from '@/types/chat';
+import { useScreenSize } from '@/hooks/useScreenSize';
 
 interface Message {
   id: string;
@@ -30,6 +32,8 @@ export default function Home() {
   const [chatHistory, setChatHistory] = useState<ChatProps[] | []>(
     MOCK_CHAT_HISTORY
   );
+
+  const isMobile = useScreenSize(768);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -56,7 +60,7 @@ export default function Home() {
       }
 
       const data = await res.json();
-
+      console.log(data);
       let title = data.reply.trim();
 
       title = title.replace(/["'.]/g, '');
@@ -152,21 +156,40 @@ export default function Home() {
       setIsLoading(false);
     }
   };
-
+  console.log(currentChatTitle);
   return (
     <div className="flex h-screen bg-[#212020] text-gray-100 overflow-y-hidden">
-      <Sidebar
-        isOpen={isSidebarOpen}
-        setIsOpen={(value) => setIsSidebarOpen(value)}
-        chatHistory={chatHistory}
-      />
+      {!isMobile && (
+        <Sidebar
+          isOpen={isSidebarOpen}
+          setIsOpen={setIsSidebarOpen}
+          chatHistory={chatHistory}
+        />
+      )}
 
       <div className="flex-1 flex flex-col">
-        {currentChatTitle && (
-          <div className="sticky top-0 z-10 bg-[#212020] border-b border-[#303133] px-4 py-4">
-            <h1 className="text-base font-medium text-center text-white break-words line-clamp-2">
-              {currentChatTitle}
-            </h1>
+        {isMobile && (
+          <div className="fixed top-0 left-0 right-0 z-50 bg-[#181818] p-4 border-b border-[#303133]">
+            <div className="flex items-center justify-between">
+              <button className="p-2 rounded-md hover:bg-gray-700 transition-colors">
+                <FontAwesomeIcon icon={faBars} className="w-5 h-5" />
+              </button>
+              {currentChatTitle ? (
+                <h1 className="text-base font-medium text-white break-words line-clamp-1 flex-1 mx-4 text-center">
+                  {currentChatTitle}
+                </h1>
+              ) : (
+                <div className="flex-1 mx-4 flex justify-center">
+                  <Image
+                    width={140}
+                    height={140}
+                    alt="Logo"
+                    src="/logo-full.svg"
+                  />
+                </div>
+              )}
+              <div className="w-10"></div> {/* Espaço para balancear */}
+            </div>
           </div>
         )}
 
@@ -180,10 +203,22 @@ export default function Home() {
               </h1>
             )}
 
-          <div className="flex flex-col pr-3 max-h-[70vh] chat-scroll-container overflow-y-auto w-full max-w-4xl bg-[#212020]">
-            {messages.map((message) => (
-              <MessageItem key={message.id} message={message} />
-            ))}
+          <div
+            className={`flex flex-col pr-3 max-h-[78vh] chat-scroll-container overflow-y-auto w-full max-w-4xl bg-[#212020] ${isMobile && 'mt-20'}`}
+          >
+            {!isMobile && currentChatTitle && (
+              <div className="sticky top-0 z-10 bg-[#212020] w-full border-b border-[#303133] p-3">
+                <h1 className="text-base font-medium text-center text-white break-words line-clamp-2">
+                  {currentChatTitle}
+                </h1>
+              </div>
+            )}
+
+            <div className="mt-4">
+              {messages.map((message) => (
+                <MessageItem key={message.id} message={message} />
+              ))}
+            </div>
 
             {isLoading && <LoadingComponent />}
             <div ref={messagesEndRef} />

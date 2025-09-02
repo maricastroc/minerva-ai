@@ -1,4 +1,4 @@
-import { FormattedMessage } from './FormattedMessage';
+import { MarkdownRenderer } from './MarkdownRenderer';
 import { MessageProps } from '@/types/message';
 
 export const MessageItem = ({ message }: { message: MessageProps }) => (
@@ -12,8 +12,12 @@ export const MessageItem = ({ message }: { message: MessageProps }) => (
           : 'bg-transparent text-gray-100 p-4 py-2'
       }`}
     >
-      <div className="text-base whitespace-pre-wrap leading-[29px]">
-        <FormattedMessage content={message.content} />
+      <div className="text-base leading-[29px]">
+        {message.role === 'assistant' ? (
+          <MarkdownRenderer content={message.content} />
+        ) : (
+          message.content
+        )}
       </div>
     </div>
   </div>
