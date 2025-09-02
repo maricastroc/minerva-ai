@@ -56,7 +56,7 @@ export default function Home() {
       });
 
       if (!res.ok) {
-        throw new Error('Falha ao gerar título');
+        throw new Error('Error generating title');
       }
 
       const data = await res.json();
@@ -68,14 +68,14 @@ export default function Home() {
       const words = title.split(' ').slice(0, 5).join(' ');
       return words || firstMessage;
     } catch (error) {
-      console.error('Erro ao gerar título:', error);
+      console.error('Error generating title:', error);
 
       const meaningfulWords = firstMessage
         .split(' ')
         .filter(
           (word) =>
             word.length > 3 &&
-            !['como', 'qual', 'quando', 'onde', 'porque', 'sobre'].includes(
+            !['how', 'which', 'when', 'where', 'why', 'about'].includes(
               word.toLowerCase()
             )
         )
@@ -188,7 +188,7 @@ export default function Home() {
                   />
                 </div>
               )}
-              <div className="w-10"></div> {/* Espaço para balancear */}
+              <div className="w-10"></div>
             </div>
           </div>
         )}
@@ -225,7 +225,7 @@ export default function Home() {
           </div>
 
           <form onSubmit={handleSubmit} className="w-full max-w-4xl mb-6 mt-4">
-            <div className="flex items-center bg-[#303030] rounded-[3rem] p-3">
+            <div className="flex items-center bg-primary-gray700 rounded-[3rem] p-3">
               <input
                 type="text"
                 value={input}

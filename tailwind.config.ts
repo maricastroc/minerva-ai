@@ -2,10 +2,9 @@ import type { Config } from "tailwindcss";
 import scrollbar from "tailwind-scrollbar";
 
 export default {
-  content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+content: [
+    "./src/**/*.{js,ts,jsx,tsx,mdx}", // Mais abrangente
+    "./components/**/*.{js,ts,jsx,tsx,mdx}", // Se estiver em pasta components
   ],
   darkMode: 'class',
   theme: {
@@ -15,7 +14,7 @@ export default {
       },
       colors: {
         primary: {
-          gray900: '#0810ea',
+          purple500: '#6466e9',
         }
       }
     },

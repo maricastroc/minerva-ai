@@ -8,8 +8,16 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: "Bai Jamjuree", sans-serif;
+  --color-primary-gray800: #212327;
+  --color-primary-gray700: #292a2d;
+  --color-primary-gray600: #343538;
+  --color-primary-gray500: #404045;
+  --color-primary-purple500: #6466e9;
+  --color-primary-purple400: #8c8cf1;
+  --color-primary-purple300: #a8a9f7;
+  --color-primary-purple100: #e3e3fc;
+  --color-primary-error: #F44336;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -25,6 +33,7 @@ body {
   font-family: "Bai Jamjuree", sans-serif;
 }
 
+/* Suas customizações de scrollbar permanecem iguais */
 .chat-scroll-container::-webkit-scrollbar {
   width: 2px;
 }
@@ -50,7 +59,7 @@ input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 textarea:-webkit-autofill,
 select:-webkit-autofill {
-  -webkit-box-shadow: 0 0 0px 1000px #1e194b inset !important;
+  -webkit-box-shadow: 0 0 0px 1000px #404045 inset !important;
   -webkit-text-fill-color: white !important;
   transition: background-color 5000s ease-in-out 0s !important;
 }
