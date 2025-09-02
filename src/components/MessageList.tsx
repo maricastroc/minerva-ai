@@ -1,4 +1,3 @@
-import { useRef, useEffect } from 'react';
 import { MessageProps } from '@/types/message';
 import { MessageItem } from './MessageItem';
 import { LoadingComponent } from './LoadingComponent';
@@ -16,19 +15,9 @@ export const MessageList = ({
   currentChatTitle,
   isMobile,
 }: MessageListProps) => {
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
   return (
     <div
-      className={`flex  flex-col pr-3 max-h-[65vh] sm:max-h-[80vh] chat-scroll-container overflow-y-auto w-full max-w-4xl bg-[#212020]`}
+      className={`flex flex-col pr-3 h-[100vh] w-full max-w-4xl bg-[#212020]`}
     >
       {!isMobile && currentChatTitle && (
         <div className="sticky top-0 z-10 bg-[#212020] w-full border-b border-[#303133] p-3 pt-1">
@@ -38,14 +27,14 @@ export const MessageList = ({
         </div>
       )}
 
-      <div className="mt-4">
+      <div className="mt-4 pr-2 max-h-[80vh] chat-scroll-container overflow-y-auto">
         {messages.map((message) => (
           <MessageItem key={message.id} message={message} />
         ))}
       </div>
 
       {isLoading && <LoadingComponent />}
-      <div ref={messagesEndRef} />
+      <div />
     </div>
   );
 };
