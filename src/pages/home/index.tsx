@@ -3,15 +3,16 @@
 import { faArrowUp, faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState, useRef, useEffect } from 'react';
-import axios from 'axios';
 import Image from 'next/image';
 
 import { Sidebar } from '@/components/Sidebar';
 import { MessageItem } from '@/components/MessageItem';
 import { LoadingComponent } from '@/components/LoadingComponent';
-import { MOCK_CHAT_HISTORY } from '@/utils/constants';
 import { ChatProps } from '@/types/chat';
 import { useScreenSize } from '@/hooks/useScreenSize';
+import { api } from '@/lib/axios';
+import useRequest from '@/hooks/useRequest';
+import { MessageProps } from '@/types/message';
 
 interface Message {
   id: string;
@@ -22,18 +23,25 @@ interface Message {
 
 export default function Home() {
   const [messages, setMessages] = useState<Message[]>([]);
+
   const [input, setInput] = useState('');
+
   const [isLoading, setIsLoading] = useState(false);
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const [isGeneratingTitle, setIsGeneratingTitle] = useState(false);
+
   const [currentChatId, setCurrentChatId] = useState<string | null>(null);
+
   const [currentChatTitle, setCurrentChatTitle] = useState<string | null>(null);
-  const [chatHistory, setChatHistory] = useState<ChatProps[] | []>(
-    MOCK_CHAT_HISTORY
-  );
 
   const isMobile = useScreenSize(768);
+
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const { data: chatHistory, mutate } = useRequest<ChatProps[]>({
+    url: '/user/chats',
+    method: 'GET',
+  });
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -43,75 +51,41 @@ export default function Home() {
     scrollToBottom();
   }, [messages]);
 
-  const generateSmartTitle = async (firstMessage: string): Promise<string> => {
+  const loadChatMessages = async (chatId: string) => {
     try {
-      setIsGeneratingTitle(true);
+      const response = await api.get(`/user/chats/${chatId}/messages`);
 
-      const res = await fetch('/api/chatbot', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: `Generate a very short title: "${firstMessage}". Reply with title only.`,
-        }),
-      });
+      const messages: Message[] = response.data.data.messages.map(
+        (msg: MessageProps) => ({
+          id: msg.id,
+          content: msg.content,
+          role: msg.role as 'user' | 'assistant',
+          timestamp: new Date(msg.timestamp),
+        })
+      );
 
-      if (!res.ok) {
-        throw new Error('Error generating title');
-      }
-
-      const data = await res.json();
-      console.log(data);
-      let title = data.reply.trim();
-
-      title = title.replace(/["'.]/g, '');
-
-      const words = title.split(' ').slice(0, 5).join(' ');
-      return words || firstMessage;
+      setMessages(messages);
+      setCurrentChatTitle(response.data.data.chatTitle);
+      setCurrentChatId(chatId);
     } catch (error) {
-      console.error('Error generating title:', error);
-
-      const meaningfulWords = firstMessage
-        .split(' ')
-        .filter(
-          (word) =>
-            word.length > 3 &&
-            !['how', 'which', 'when', 'where', 'why', 'about'].includes(
-              word.toLowerCase()
-            )
-        )
-        .slice(0, 4)
-        .join(' ');
-
-      return meaningfulWords || firstMessage.substring(0, 25) + '...';
-    } finally {
-      setIsGeneratingTitle(false);
+      console.error('Error loading chat messages:', error);
     }
   };
 
-  useEffect(() => {
-    const generateTitle = async () => {
-      if (
-        messages.length === 2 &&
-        messages[0].role === 'user' &&
-        messages[1].role === 'assistant'
-      ) {
-        const newChatId = Date.now().toString();
-        setCurrentChatId(newChatId);
+  const handleSelectChat = async (chatId: string) => {
+    if (chatId === currentChatId) return;
 
-        const generatedTitle = await generateSmartTitle(messages[0].content);
-        setCurrentChatTitle(generatedTitle);
+    setMessages([]);
 
-        const newChat: ChatProps = {
-          id: newChatId,
-          title: generatedTitle,
-          date: new Date(),
-        };
-        setChatHistory((prev) => [newChat, ...prev.slice(0, 9)]);
-      }
-    };
+    await loadChatMessages(String(chatId));
+  };
 
-    generateTitle();
-  }, [messages]);
+  const handleNewChat = () => {
+    setMessages([]);
+    setCurrentChatId(null);
+    setCurrentChatTitle(null);
+    setInput('');
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -130,21 +104,38 @@ export default function Home() {
     setIsLoading(true);
 
     try {
-      const { data } = await axios.post('/api/chatbot', {
+      const { data } = await api.post('/chatbot', {
         message: userMessage.content,
+        chatID: currentChatId,
+        conversationHistory: messages.slice(-10).map((msg) => ({
+          role: msg.role,
+          content: msg.content,
+        })),
       });
 
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: data.reply || 'Sorry, I could not generate a response.',
+        content: data.reply,
         role: 'assistant',
         timestamp: new Date(),
       };
 
       setMessages((prev) => [...prev, assistantMessage]);
+
+      if (data.isNewConversation) {
+        setCurrentChatId(data.chatID);
+
+        await api.get('/user/chats');
+
+        const chatResponse = await api.get<ChatProps>(
+          `user/chats/${data.chatID}`
+        );
+
+        setCurrentChatTitle(chatResponse.data.title);
+        mutate();
+      }
     } catch (error) {
       console.error(error);
-
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         content: 'Error connecting to the chatbot. Please try again.',
@@ -156,7 +147,7 @@ export default function Home() {
       setIsLoading(false);
     }
   };
-  console.log(currentChatTitle);
+
   return (
     <div className="flex h-screen bg-[#212020] text-gray-100 overflow-y-hidden">
       {!isMobile && (
@@ -164,6 +155,9 @@ export default function Home() {
           isOpen={isSidebarOpen}
           setIsOpen={setIsSidebarOpen}
           chatHistory={chatHistory}
+          handleSelectChat={handleSelectChat}
+          currentChatId={currentChatId}
+          handleNewChat={handleNewChat}
         />
       )}
 
@@ -196,12 +190,11 @@ export default function Home() {
         <div
           className={`flex-1 flex flex-col items-center ${messages?.length === 0 ? 'justify-center' : 'justify-between'} p-4`}
         >
-          {messages?.length === 0 &&
-            (!currentChatTitle || isGeneratingTitle) && (
-              <h1 className="text-2xl font-medium text-center mb-8">
-                How can I help you today?
-              </h1>
-            )}
+          {messages?.length === 0 && !currentChatTitle && (
+            <h1 className="text-2xl font-medium text-center mb-8">
+              How can I help you today?
+            </h1>
+          )}
 
           <div
             className={`flex flex-col pr-3 max-h-[78vh] chat-scroll-container overflow-y-auto w-full max-w-4xl bg-[#212020] ${isMobile && 'mt-20'}`}
@@ -225,7 +218,7 @@ export default function Home() {
           </div>
 
           <form onSubmit={handleSubmit} className="w-full max-w-4xl mb-6 mt-4">
-            <div className="flex items-center bg-primary-gray700 rounded-[3rem] p-3">
+            <div className="flex items-center bg-primary-gray600 rounded-[3rem] p-3">
               <input
                 type="text"
                 value={input}

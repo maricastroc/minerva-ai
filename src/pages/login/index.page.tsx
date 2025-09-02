@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import Image from 'next/image';
-import { signIn } from 'next-auth/react'
+import { signIn } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Input } from '@/components/Input';
 import { PasswordInput } from '@/components/PasswordInput';
 import { Button } from '@/components/Button';
-import toast from 'react-hot-toast'
+import toast from 'react-hot-toast';
 import { useRouter } from 'next/router';
 
 const loginSchema = yup.object({
@@ -27,13 +27,12 @@ type LoginFormData = yup.InferType<typeof loginSchema>;
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
 
-  const router = useRouter()
+  const router = useRouter();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
   } = useForm<LoginFormData>({
     resolver: yupResolver(loginSchema),
     mode: 'onSubmit',
@@ -41,21 +40,25 @@ export default function Login() {
 
   async function onSubmit(data: LoginFormData) {
     try {
+      setIsLoading(true);
+
       const result = await signIn('credentials', {
         email: data.email,
         password: data.password,
         redirect: false,
-      })
+      });
 
       if (result?.error) {
-        toast.error(result?.error)
+        toast.error(result?.error);
       } else {
-        toast.success('Welcome to the Book Nest!')
-        router.push('/home')
+        toast.success('Welcome to the Simple Chat!');
+        router.push('/');
       }
     } catch (error) {
-      toast.error('An unexpected error occurred. Please try again later.')
-      console.error(error)
+      toast.error('An unexpected error occurred. Please try again later.');
+      console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   }
 

@@ -1,29 +1,39 @@
 import { ChatProps } from '@/types/chat';
 import { formatDate } from '@/utils/formatDate';
 import Image from 'next/image';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faPenToSquare, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useScreenSize } from '@/hooks/useScreenSize';
 
 interface Props {
   isOpen: boolean;
   setIsOpen: (value: boolean) => void;
-  chatHistory: ChatProps[];
+  chatHistory: ChatProps[] | undefined;
+  handleSelectChat: (value: string) => void;
+  currentChatId: string | null;
+  handleNewChat: () => void;
 }
 
-export const Sidebar = ({ chatHistory, isOpen, setIsOpen }: Props) => {
+export const Sidebar = ({
+  chatHistory,
+  isOpen,
+  currentChatId,
+  setIsOpen,
+  handleSelectChat,
+  handleNewChat,
+}: Props) => {
   const isMobile = useScreenSize(480);
 
   return (
     <div
       className={`
         ${isMobile ? 'w-64 h-full' : isOpen ? 'w-64' : 'w-16 items-center'} 
-        bg-[#181818] p-2 transition-all duration-300 overflow-hidden flex flex-col
+        bg-[#181818] transition-all duration-300 overflow-hidden flex flex-col
       `}
     >
       {isOpen ? (
         <>
-          <div className="p-4 flex items-center justify-between w-full">
+          <div className="p-6 flex items-center justify-between w-full pb-2">
             {isMobile ? (
               <>
                 <Image
@@ -42,18 +52,18 @@ export const Sidebar = ({ chatHistory, isOpen, setIsOpen }: Props) => {
             ) : (
               <>
                 <Image
-                  width={130}
-                  height={130}
+                  width={150}
+                  height={150}
                   alt="Logo"
                   src="/logo-full.svg"
                 />
                 <button
                   onClick={() => setIsOpen(!isOpen)}
-                  className="bg-transparent p-2 hover:bg-gray-700 rounded-md transition-colors"
+                  className="cursor-pointer bg-transparent p-2 hover:bg-primary-gray600 rounded-md transition-colors"
                 >
                   <Image
-                    width={20}
-                    height={20}
+                    width={25}
+                    height={25}
                     alt="Fechar sidebar"
                     src="/off.svg"
                   />
@@ -62,22 +72,30 @@ export const Sidebar = ({ chatHistory, isOpen, setIsOpen }: Props) => {
             )}
           </div>
 
-          <div className="flex-1 overflow-y-auto p-4 w-full">
-            <h3 className="text-sm font-medium text-gray-400 mb-2">
-              Chat History
+          <button
+            onClick={handleNewChat}
+            className="flex text-sm cursor-pointer rounded-xl m-2 text-gray-200 items-center gap-2 px-[1.1rem] py-2 font-semibold hover:bg-primary-gray600"
+          >
+            <FontAwesomeIcon icon={faPenToSquare} />
+            New Chat
+          </button>
+
+          <div className="flex-1 overflow-y-auto chat-scroll-container w-full">
+            <h3 className="ml-6 mt-4 text-sm font-medium text-gray-400">
+              Chats
             </h3>
-            <div className="mt-4 space-y-4">
-              {chatHistory.map((chat) => (
+            <div className="p-3 pt-2">
+              {chatHistory?.map((chat) => (
                 <div
                   key={chat.id}
-                  className="hover:bg-gray-700 cursor-pointer p-2 rounded-md transition-colors"
-                  onClick={() => isMobile && setIsOpen(false)}
+                  className={`hover:bg-primary-gray600 cursor-pointer px-[0.8rem] py-2 rounded-2xl transition-colors ${currentChatId === chat?.id && 'bg-primary-gray650'}`}
+                  onClick={() => handleSelectChat(String(chat.id))}
                 >
                   <div className="text-sm font-medium truncate">
                     {chat.title}
                   </div>
                   <div className="text-xs text-gray-400">
-                    {formatDate(chat.date)}
+                    {formatDate(chat?.updatedAt || chat?.createdAt)}
                   </div>
                 </div>
               ))}

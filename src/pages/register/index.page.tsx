@@ -8,7 +8,7 @@ import { PasswordInput } from '@/components/PasswordInput';
 import { Button } from '@/components/Button';
 import { api } from '@/lib/axios';
 import { handleApiError } from '@/utils/handleApiError';
-import toast from 'react-hot-toast'
+import toast from 'react-hot-toast';
 import { useRouter } from 'next/router';
 
 const registerSchema = yup.object({
@@ -36,7 +36,7 @@ type RegisterFormData = yup.InferType<typeof registerSchema>;
 export default function Register() {
   const [isLoading, setIsLoading] = useState(false);
 
-  const router = useRouter()
+  const router = useRouter();
 
   const {
     register,
@@ -49,27 +49,27 @@ export default function Register() {
   });
 
   async function onSubmit(data: RegisterFormData) {
-    const formData = new FormData()
+    const formData = new FormData();
 
-    formData.append('email', data.email)
-    formData.append('password', data.password)
-    formData.append('name', data.name)
+    formData.append('email', data.email);
+    formData.append('password', data.password);
+    formData.append('name', data.name);
 
     try {
-      setIsLoading(true)
+      setIsLoading(true);
 
       await api.post(`/user/create`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
-      })
+      });
 
-      toast.success('User successfully registered!')
-      router.push('/')
+      toast.success('User successfully registered!');
+      router.push('/');
     } catch (error) {
-      handleApiError(error)
+      handleApiError(error);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 

@@ -1,5 +1,6 @@
 export interface ChatProps {
   id: string | number;
-  date: string | Date;
+  createdAt: string | Date;
+  updatedAt: string | Date;
   title: string;
 }
