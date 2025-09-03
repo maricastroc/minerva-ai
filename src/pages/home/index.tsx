@@ -29,6 +29,8 @@ export default function Home() {
     handleSelectChat,
     handleNewChat,
     handleSubmit,
+    mutate,
+    setCurrentChatTitle,
   } = useChat();
 
   const hasMessages = messages.length !== 0;
@@ -69,6 +71,8 @@ export default function Home() {
               handleSelectChat={handleSelectChat}
               currentChatId={currentChatId}
               handleNewChat={handleNewChat}
+              mutate={mutate}
+              setCurrentChatTitle={setCurrentChatTitle}
             />
           )}
 

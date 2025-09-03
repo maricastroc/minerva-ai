@@ -1,8 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ChatProps } from '@/types/chat';
-import { formatDate } from '@/utils/formatDate';
 import Image from 'next/image';
 import { UserSection } from './UserSection';
 import { NewChatButton } from './NewChatButton';
+import { ChatCard } from './ChatCard';
+import { useState } from 'react';
+import { AxiosResponse } from 'axios';
+import { KeyedMutator } from 'swr';
 
 interface Props {
   isOpen: boolean;
@@ -11,6 +15,8 @@ interface Props {
   handleSelectChat: (value: string) => void;
   currentChatId: string | null;
   handleNewChat: () => void;
+  mutate: KeyedMutator<AxiosResponse<ChatProps[], any>>;
+  setCurrentChatTitle: (value: string) => void;
 }
 
 export const Sidebar = ({
@@ -20,7 +26,11 @@ export const Sidebar = ({
   setIsOpen,
   handleSelectChat,
   handleNewChat,
+  mutate,
+  setCurrentChatTitle,
 }: Props) => {
+  const [editingChatId, setEditingChatId] = useState<string | null>(null);
+
   return (
     <div
       className={`
@@ -53,18 +63,16 @@ export const Sidebar = ({
             </h3>
             <div className="p-3 pt-2">
               {chatHistory?.map((chat) => (
-                <div
+                <ChatCard
                   key={chat.id}
-                  className={`hover:bg-primary-gray600 cursor-pointer px-[0.8rem] py-2 rounded-2xl transition-colors ${currentChatId === chat?.id && 'bg-primary-gray650'}`}
-                  onClick={() => handleSelectChat(String(chat.id))}
-                >
-                  <div className="text-sm font-medium truncate">
-                    {chat.title}
-                  </div>
-                  <div className="text-xs text-gray-400">
-                    {formatDate(chat?.updatedAt || chat?.createdAt)}
-                  </div>
-                </div>
+                  chat={chat}
+                  handleSelectChat={handleSelectChat}
+                  currentChatId={currentChatId}
+                  editingChatId={editingChatId}
+                  setEditingChatId={setEditingChatId}
+                  mutate={mutate}
+                  setCurrentChatTitle={setCurrentChatTitle}
+                />
               ))}
             </div>
           </div>

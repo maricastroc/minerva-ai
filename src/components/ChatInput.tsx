@@ -40,7 +40,7 @@ export const ChatInput = ({
           <button
             type="submit"
             disabled={isLoading || !input.trim()}
-            className="bg-white/30 text-white rounded-full mr-1 sm:mr-0 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/40 transition-colors min-w-[2rem]"
+            className={` text-white rounded-full mr-1 sm:mr-0 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/40 transition-colors min-w-[2rem] ${input.trim() ? 'bg-primary-purple500' : 'bg-white/30'}`}
           >
             <FontAwesomeIcon icon={faArrowUp} className="w-4 h-4" />
           </button>

@@ -25,7 +25,6 @@ export default async function handler(
 
     const { id } = req.query;
 
-    // Verificar se o chat pertence ao usuário
     const conversation = await prisma.conversation.findFirst({
       where: {
         id: id as string,
@@ -37,7 +36,6 @@ export default async function handler(
       return res.status(404).json({ error: 'Conversation not found' });
     }
 
-    // Buscar mensagens do chat
     const messages = await prisma.message.findMany({
       where: {
         conversationId: id as string,
