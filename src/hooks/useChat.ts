@@ -138,5 +138,7 @@ export function useChat() {
     handleNewChat,
     handleSubmit,
     messagesEndRef,
+    mutate,
+    setCurrentChatTitle,
   };
 }

@@ -3,7 +3,6 @@ import { MarkdownRenderer } from './MarkdownRenderer';
 import { MessageProps } from '@/types/message';
 
 export const MessageItem = ({ message }: { message: MessageProps }) => {
-  console.log(message);
   return (
     <div
       className={`flex ${message.role === USER_ROLE || message.role === 'user' ? 'justify-end' : 'justify-start'} my-6`}
