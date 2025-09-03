@@ -3,11 +3,12 @@ import { api } from '@/lib/axios';
 import { MessageProps } from '@/types/message';
 import { ChatProps } from '@/types/chat';
 import useRequest from '@/hooks/useRequest';
+import { ASSISTANT_ROLE, USER_ROLE } from '@/utils/constants';
 
 export interface Message {
   id: string;
   content: string;
-  role: 'user' | 'assistant';
+  role: 'USER' | 'ASSISTANT';
   timestamp: Date;
 }
 
@@ -41,7 +42,7 @@ export function useChat() {
       (msg: MessageProps) => ({
         id: msg.id,
         content: msg.content,
-        role: msg.role as 'user' | 'assistant',
+        role: msg.role as 'USER' | 'ASSISTANT',
         timestamp: new Date(msg.timestamp),
       })
     );
@@ -75,7 +76,7 @@ export function useChat() {
     const userMessage: Message = {
       id: Date.now().toString(),
       content: input,
-      role: 'user',
+      role: USER_ROLE,
       timestamp: new Date(),
     };
 
@@ -88,7 +89,7 @@ export function useChat() {
         message: userMessage.content,
         chatID: currentChatId,
         conversationHistory: messages.slice(-10).map((msg) => ({
-          role: msg.role,
+          role: msg.role.toUpperCase(),
           content: msg.content,
         })),
       });
@@ -96,7 +97,7 @@ export function useChat() {
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         content: data.reply,
-        role: 'assistant',
+        role: ASSISTANT_ROLE,
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, assistantMessage]);
@@ -116,7 +117,7 @@ export function useChat() {
         {
           id: (Date.now() + 1).toString(),
           content: 'Error connecting to the chatbot. Please try again.',
-          role: 'assistant',
+          role: ASSISTANT_ROLE,
           timestamp: new Date(),
         },
       ]);

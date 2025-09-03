@@ -58,7 +58,7 @@ export default async function handler(
     const formattedMessages = messages.map((message) => ({
       id: message.id,
       content: message.content,
-      role: message.role.toLowerCase() as 'user' | 'assistant',
+      role: message.role.toLowerCase() as 'USER' | 'ASSISTANT',
       timestamp: message.timestamp,
     }));
 
