@@ -23,6 +23,7 @@ interface Props {
   setEditingChatId: (id: string | null) => void;
   mutate: KeyedMutator<AxiosResponse<ChatProps[], any>>;
   setCurrentChatTitle: (value: string) => void;
+  isMobile?: boolean;
 }
 
 export const ChatCard = ({
@@ -36,6 +37,7 @@ export const ChatCard = ({
   setEditingChatId,
   mutate,
   setCurrentChatTitle,
+  isMobile = false,
 }: Props) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -46,6 +48,8 @@ export const ChatCard = ({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const isEditing = editingChatId === chat.id;
+
+  const isSelected = currentChatId === chat.id;
 
   const debouncedTitle = useDebounce(localTitle, 500);
 
@@ -67,7 +71,7 @@ export const ChatCard = ({
 
       mutate();
 
-      if (currentChatId === chat.id) {
+      if (isSelected) {
         setCurrentChatTitle(debouncedTitle);
       }
 
@@ -166,7 +170,7 @@ export const ChatCard = ({
   return (
     <div
       key={chat.id}
-      className={`mt-1 w-full flex items-center justify-between hover:bg-primary-gray600 cursor-pointer pr-0 px-[0.8rem] py-2 rounded-2xl transition-colors group ${currentChatId === chat?.id && 'bg-primary-gray650'} ${isEditing && 'bg-primary-gray700'}`}
+      className={`mt-1 w-full flex items-center justify-between hover:bg-primary-gray600 cursor-pointer pr-0 px-[0.8rem] py-2 rounded-2xl transition-colors group ${(currentChatId === chat?.id || isDropdownOpen) && 'bg-primary-gray650'} ${isEditing && 'bg-primary-gray700'}`}
       onClick={handleCardClick}
     >
       <div className="flex flex-col align-start flex-1 min-w-0">
@@ -178,13 +182,19 @@ export const ChatCard = ({
             spellCheck={false}
             onChange={(e) => setLocalTitle(e.target.value)}
             onKeyDown={handleKeyPress}
-            className="flex-1 bg-transparent text-sm text-white focus:outline-none"
+            className={`flex-1 bg-transparent text-white focus:outline-none ${isMobile ? 'text-base' : 'text-sm'}`}
             onClick={(e) => e.stopPropagation()}
           />
         ) : (
           <>
-            <div className="text-sm font-medium truncate">{chat.title}</div>
-            <div className="text-xs text-gray-400">
+            <div
+              className={`font-medium truncate ${isMobile ? 'text-base' : 'text-sm'}`}
+            >
+              {chat.title}
+            </div>
+            <div
+              className={`${isMobile ? 'text-sm' : 'text-xs'} text-gray-400`}
+            >
               {formatDate(chat?.updatedAt || chat?.createdAt)}
             </div>
           </>
@@ -194,7 +204,7 @@ export const ChatCard = ({
       {!isEditing && (
         <div className="relative">
           <button
-            className="cursor-pointer bg-transparent rounded-md py-2 mr-3 px-[0.1rem] flex items-center justify-center opacity-0 group-hover:opacity-100 hover:bg-primary-gray800 transition-opacity"
+            className={`cursor-pointer bg-transparent rounded-md py-2 mr-3 px-[0.1rem] flex items-center justify-center group-hover:opacity-100 hover:bg-primary-gray800 transition-opacity ${isMobile || isDropdownOpen ? 'opacity-100' : 'opacity-0'}`}
             onClick={handleEllipsisClick}
           >
             <FontAwesomeIcon icon={faEllipsisVertical} className="w-3 h-3" />
@@ -203,11 +213,11 @@ export const ChatCard = ({
           {isDropdownOpen && (
             <div
               ref={dropdownRef}
-              className="absolute p-2 w-full flex items-start right-0 top-12 bg-primary-gray700 border border-primary-gray600 rounded-lg shadow-lg z-10 min-w-[120px]"
+              className={`absolute top-12 p-2 w-full flex items-start right-0 bg-primary-gray600 rounded-lg shadow-lg z-10 min-w-[120px]`}
             >
               <div className="py-1 w-full">
                 <button
-                  className="cursor-pointer w-full rounded-md text-left p-2 text-sm text-gray-200 hover:bg-primary-gray500 flex items-center gap-2"
+                  className={`cursor-pointer w-full rounded-md text-left p-2 font-medium text-gray-200 hover:bg-primary-gray500 flex items-center gap-2 ${isMobile ? 'text-base' : 'text-sm'}`}
                   onClick={handleEditClick}
                 >
                   <FontAwesomeIcon icon={faEdit} className="w-3 h-3" />
@@ -215,7 +225,7 @@ export const ChatCard = ({
                 </button>
 
                 <button
-                  className="cursor-pointer rounded-md w-full text-left p-2 text-sm text-primary-red300 hover:bg-primary-gray500 flex items-center gap-2"
+                  className={`cursor-pointer rounded-md w-full text-left p-2 font-medium  text-primary-red300 hover:bg-primary-gray500 flex items-center gap-2 ${isMobile ? 'text-base' : 'text-sm'}`}
                   onClick={(e) => handleDropdownAction(e, 'delete')}
                 >
                   <FontAwesomeIcon icon={faTrash} className="w-3 h-3" />

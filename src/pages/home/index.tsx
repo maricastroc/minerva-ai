@@ -83,6 +83,8 @@ export default function Home() {
                 handleSelectChat={handleSelectChat}
                 currentChatId={currentChatId}
                 handleNewChat={handleNewChat}
+                mutate={mutate}
+                setCurrentChatTitle={setCurrentChatTitle}
               />
             )}
 

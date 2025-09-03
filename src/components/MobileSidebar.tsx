@@ -1,12 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // SidebarMenu.tsx
 import { ChatProps } from '@/types/chat';
-import { formatDate } from '@/utils/formatDate';
 import { motion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Image from 'next/image';
 import { UserSection } from './UserSection';
 import { NewChatButton } from './NewChatButton';
+import { useState } from 'react';
+import { KeyedMutator } from 'swr';
+import { AxiosResponse } from 'axios';
+import { ChatCard } from './ChatCard';
 
 interface Props {
   isOpen: boolean;
@@ -15,6 +19,8 @@ interface Props {
   handleSelectChat: (value: string) => void;
   currentChatId: string | null;
   handleNewChat: () => void;
+  mutate: KeyedMutator<AxiosResponse<ChatProps[], any>>;
+  setCurrentChatTitle: (value: string) => void;
 }
 
 export const MobileSidebar = ({
@@ -24,7 +30,11 @@ export const MobileSidebar = ({
   handleNewChat,
   currentChatId,
   handleSelectChat,
+  mutate,
+  setCurrentChatTitle,
 }: Props) => {
+  const [editingChatId, setEditingChatId] = useState<string | null>(null);
+
   return (
     <>
       {isOpen && (
@@ -57,21 +67,17 @@ export const MobileSidebar = ({
             Chats
           </p>
           {chatHistory?.map((chat) => (
-            <div
+            <ChatCard
+              isMobile
               key={chat.id}
-              className={`hover:bg-primary-gray600 cursor-pointer px-[0.6rem] py-2 rounded-xl transition-colors ${currentChatId === chat?.id && 'bg-primary-gray650'}`}
-              onClick={() => {
-                handleSelectChat(String(chat?.id));
-                setIsOpen(false);
-              }}
-            >
-              <div className="text-base font-medium truncate text-white">
-                {chat.title}
-              </div>
-              <div className="text-sm text-gray-400">
-                {formatDate(chat.createdAt || chat.updatedAt)}
-              </div>
-            </div>
+              chat={chat}
+              handleSelectChat={handleSelectChat}
+              currentChatId={currentChatId}
+              editingChatId={editingChatId}
+              setEditingChatId={setEditingChatId}
+              mutate={mutate}
+              setCurrentChatTitle={setCurrentChatTitle}
+            />
           ))}
         </div>
 
