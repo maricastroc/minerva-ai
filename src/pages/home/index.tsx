@@ -52,7 +52,7 @@ export default function Home() {
   return (
     <>
       <NextSeo
-        title="Home | Simple Chat AI"
+        title="Home | Minerva AI"
         additionalMetaTags={[
           {
             name: 'viewport',

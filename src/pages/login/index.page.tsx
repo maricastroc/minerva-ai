@@ -47,7 +47,7 @@ export default function Login() {
       if (result?.error) {
         toast.error(result.error);
       } else {
-        toast.success('Welcome to the Simple Chat!');
+        toast.success('Welcome to Minerva AI!');
         router.push('/');
       }
     } catch (error) {
@@ -70,7 +70,7 @@ export default function Login() {
   return (
     <>
       <NextSeo
-        title="Login | Simple Chat AI"
+        title="Login | Minerva AI"
         additionalMetaTags={[
           {
             name: 'viewport',
@@ -88,7 +88,7 @@ export default function Login() {
               Don&apos;t have an account?{' '}
               <a
                 href="/register"
-                className="text-primary-purple500 hover:text-primary-purple300 font-semibold transition-colors"
+                className="text-primary-blue500 hover:text-primary-blue300 font-semibold transition-colors"
               >
                 Sign up
               </a>

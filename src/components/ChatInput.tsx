@@ -32,15 +32,15 @@ export const ChatInput = ({
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask simplechat.ai anything"
+            placeholder="Ask minerva.ai anything"
             className="flex-1 px-4 py-2 focus:outline-none bg-transparent text-white placeholder-gray-400 text-base sm:text-lg"
             disabled={isLoading}
-            style={{ fontSize: '16px' }} // Previne zoom no iOS
+            style={{ fontSize: '16px' }}
           />
           <button
             type="submit"
             disabled={isLoading || !input.trim()}
-            className={` text-white rounded-full mr-1 sm:mr-0 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/40 transition-colors min-w-[2rem] ${input.trim() ? 'bg-primary-purple500' : 'bg-white/30'}`}
+            className={` text-white rounded-full mr-1 sm:mr-0 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/40 transition-colors min-w-[2rem] ${input.trim() ? 'bg-primary-blue500' : 'bg-white/30'}`}
           >
             <FontAwesomeIcon icon={faArrowUp} className="w-4 h-4" />
           </button>

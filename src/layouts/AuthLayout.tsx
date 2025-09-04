@@ -72,7 +72,7 @@ export function AuthLayout({
   return (
     <div className="min-h-screen bg-primary-gray800 flex flex-col justify-center items-center sm:p-6 p-4 pt-8">
       <div className="mb-8">
-        <Image width={180} height={180} alt="Logo" src="/logo-full_2.svg" />
+        <Image width={180} height={180} alt="Logo" src="/logo-full.svg" />
       </div>
 
       <div className="w-full overflow-y-auto chat-scroll-container max-w-xl bg-primary-gray700 backdrop-blur-sm rounded-2xl p-6 sm:p-8">

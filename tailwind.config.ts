@@ -14,7 +14,7 @@ content: [
       },
       colors: {
         primary: {
-          purple500: '#6466e9',
+          blue500: '#6185f6',
         }
       }
     },

@@ -66,7 +66,7 @@ export default function Register() {
   return (
     <>
       <NextSeo
-        title="Register | Simple Chat AI"
+        title="Register | Minerva AI"
         additionalMetaTags={[
           {
             name: 'viewport',
@@ -83,7 +83,7 @@ export default function Register() {
             Already registered?{' '}
             <a
               href="/login"
-              className="text-primary-purple500 hover:text-primary-purple300 font-semibold transition-colors"
+              className="text-primary-blue500 hover:text-primary-blue300 font-semibold transition-colors"
             >
               Sign in
             </a>

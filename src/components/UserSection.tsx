@@ -46,7 +46,7 @@ export const UserSection = ({ isMobile = false }: Props) => {
         alt={session.user.name ?? 'User avatar'}
       />
     ) : (
-      <div className="w-7 h-7 rounded-full bg-primary-purple500 flex items-center justify-center">
+      <div className="w-7 h-7 rounded-full bg-primary-blue500 flex items-center justify-center">
         <span className="text-sm font-medium">{firstLetter}</span>
       </div>
     );

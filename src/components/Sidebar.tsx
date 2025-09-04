@@ -42,7 +42,7 @@ export const Sidebar = ({
       {isOpen ? (
         <>
           <div className="p-6 pt-5 flex items-center justify-between w-full pb-2">
-            <Image width={150} height={150} alt="Logo" src="/logo-full_2.svg" />
+            <Image width={150} height={150} alt="Logo" src="/logo-full.svg" />
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="cursor-pointer bg-transparent p-2 hover:bg-primary-gray600 rounded-md transition-colors"
