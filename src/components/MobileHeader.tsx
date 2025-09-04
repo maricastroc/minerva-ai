@@ -38,7 +38,7 @@ export const MobileHeader = ({
           <FontAwesomeIcon icon={faBars} size="lg" />
         </button>
         <div className="flex-1 mx-4 flex justify-center">
-          <Image width={150} height={150} alt="Logo" src="/logo-full.svg" />
+          <Image width={150} height={150} alt="Logo" src="/logo-full_2.svg" />
         </div>
         <div className="w-10"></div>
       </div>

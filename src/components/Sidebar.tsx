@@ -3,10 +3,11 @@ import { ChatProps } from '@/types/chat';
 import Image from 'next/image';
 import { UserSection } from './UserSection';
 import { NewChatButton } from './NewChatButton';
-import { ChatCard } from './ChatCard';
+
 import { useState } from 'react';
 import { AxiosResponse } from 'axios';
 import { KeyedMutator } from 'swr';
+import { ChatCard } from './ChatCard';
 
 interface Props {
   isOpen: boolean;
@@ -41,7 +42,7 @@ export const Sidebar = ({
       {isOpen ? (
         <>
           <div className="p-6 pt-5 flex items-center justify-between w-full pb-2">
-            <Image width={150} height={150} alt="Logo" src="/logo-full.svg" />
+            <Image width={150} height={150} alt="Logo" src="/logo-full_2.svg" />
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="cursor-pointer bg-transparent p-2 hover:bg-primary-gray600 rounded-md transition-colors"

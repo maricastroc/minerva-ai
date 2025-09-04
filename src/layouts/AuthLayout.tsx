@@ -1,17 +1,62 @@
 import Image from 'next/image';
 import React from 'react';
+import { Icon } from '@iconify/react';
 
 interface AuthLayoutProps {
   title: string;
   children: React.ReactNode;
   footer?: React.ReactNode;
+  handleSignIn: (value: string) => void;
 }
 
-export function AuthLayout({ title, children, footer }: AuthLayoutProps) {
+interface SocialProvider {
+  name: string;
+  icon: string;
+  color?: string;
+  provider: string;
+}
+
+const socialProviders: SocialProvider[] = [
+  { name: 'Google', icon: 'flat-color-icons:google', provider: 'google' },
+  {
+    name: 'Github',
+    icon: 'ant-design:github-outlined',
+    color: 'white',
+    provider: 'github',
+  },
+];
+
+function SocialLoginButtons({
+  handleSignIn,
+}: {
+  handleSignIn: (value: string) => void;
+}) {
   return (
-    <div className="min-h-screen bg-primary-gray800 flex flex-col justify-center items-center sm:p-8 p-4 pt-8">
-      <div className="mb-10">
-        <Image width={180} height={180} alt="Logo" src="/logo-full.svg" />
+    <div className="flex gap-3 flex-col w-full">
+      {socialProviders.map((provider) => (
+        <button
+          key={provider.name}
+          className="cursor-pointer border border-primary-gray400 rounded-lg py-[0.65rem] flex items-center justify-center gap-3 w-full hover:bg-primary-gray500 hover:border-primary-gray500 transition-colors"
+          onClick={() => handleSignIn(provider.provider)}
+        >
+          <Icon icon={provider.icon} fontSize={24} color={provider.color} />
+          <span>Login with {provider.name}</span>
+        </button>
+      ))}
+    </div>
+  );
+}
+
+export function AuthLayout({
+  title,
+  children,
+  footer,
+  handleSignIn,
+}: AuthLayoutProps) {
+  return (
+    <div className="min-h-screen bg-primary-gray800 flex flex-col justify-center items-center sm:p-6 p-4 pt-8">
+      <div className="mb-8">
+        <Image width={180} height={180} alt="Logo" src="/logo-full_2.svg" />
       </div>
 
       <div className="w-full overflow-y-auto chat-scroll-container max-w-xl bg-primary-gray700 backdrop-blur-sm rounded-2xl p-6 sm:p-8">
@@ -20,14 +65,17 @@ export function AuthLayout({ title, children, footer }: AuthLayoutProps) {
         {children}
 
         {footer && (
-          <div className="mt-6">
-            <div className="relative flex items-center my-6">
+          <>
+            <div className="mt-3 text-center">{footer}</div>
+
+            <div className="relative flex items-center my-4">
               <div className="flex-grow border-t border-white/20"></div>
               <span className="flex-shrink mx-4 text-white/50 text-sm">or</span>
               <div className="flex-grow border-t border-white/20"></div>
             </div>
-            <div className="text-center">{footer}</div>
-          </div>
+
+            <SocialLoginButtons handleSignIn={handleSignIn} />
+          </>
         )}
       </div>
     </div>

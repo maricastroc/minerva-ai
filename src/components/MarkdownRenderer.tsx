@@ -85,7 +85,7 @@ export const MarkdownRenderer = ({ content }: { content: string }) => {
       ) {
         return null;
       }
-      return <p className="leading-relaxed" {...props} />;
+      return <p className="mb-4 leading-relaxed" {...props} />;
     },
     ul: ({ ...props }) => <ul className="mb-2 mt-2 space-y-1" {...props} />,
     ol: ({ ...props }) => <ol className="mb-2 mt-2 space-y-1" {...props} />,

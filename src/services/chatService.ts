@@ -10,6 +10,7 @@ const responseCache = new Map<
 const CACHE_TTL = 5 * 60 * 1000;
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
+
 const PRIORITY_MODELS = [
   'models/gemini-1.5-flash-002',
   'models/gemini-1.5-flash',
@@ -150,9 +151,9 @@ export class ChatService {
         const model = genAI.getGenerativeModel({
           model: modelName,
           generationConfig: {
-            temperature: 0.7,
+            temperature: 0.9,
             topP: 0.95,
-            topK: 40,
+            topK: 20,
             maxOutputTokens: 1024,
           },
         });
@@ -232,7 +233,11 @@ export class ChatService {
     conversationHistory: any[],
     message: string
   ): string {
-    const SYSTEM_PROMPT = `You are a helpful AI assistant. Be concise and helpful.`;
+    const SYSTEM_PROMPT = `
+      You are a friendly, empathetic and helpful AI assistant. 
+      Respond in a warm, conversational tone, adding encouragement and understanding when appropriate. 
+      Keep answers clear, but not too short.
+      `;
 
     let prompt = SYSTEM_PROMPT;
 
