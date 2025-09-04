@@ -81,7 +81,7 @@ export default function Login() {
       />
       {isClient && (
         <AuthLayout
-          title="Sign in to your account"
+          title="Login to your account"
           setIsLoading={setIsLoading}
           footer={
             <p className="text-white/80 text-sm">
