@@ -5,7 +5,7 @@ import { MessageProps } from '@/types/message';
 export const MessageItem = ({ message }: { message: MessageProps }) => {
   return (
     <div
-      className={`flex ${message.role === USER_ROLE || message.role === 'user' ? 'justify-end' : 'justify-start'} my-6`}
+      className={`flex flex-1 w-full ${message.role === USER_ROLE || message.role === 'user' ? 'justify-end' : 'justify-start'} my-6`}
     >
       <div
         className={`rounded-2xl ${
