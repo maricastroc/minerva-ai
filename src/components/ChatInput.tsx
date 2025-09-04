@@ -10,6 +10,7 @@ interface ChatInputProps {
   onSubmit: (e: React.FormEvent) => void;
   hasMessages: boolean;
   isMobile?: boolean;
+  isSidebarOpen: boolean;
 }
 
 export const ChatInput = ({
@@ -18,15 +19,19 @@ export const ChatInput = ({
   isLoading,
   onSubmit,
   hasMessages,
+  isSidebarOpen,
   isMobile = false,
 }: ChatInputProps) => {
   const isKeyboardOpen = useKeyboardOpen();
   console.log(hasMessages);
   return (
     <div
-      className={`flex fixed w-full md:max-w-[65%] xl:max-w-4xl pb-4 pointer-events-none transition-transform duration-300 ${
+      className={`flex fixed w-full md:max-w-[75%] xl:max-w-4xl pb-4 pointer-events-none transition-transform duration-300 ${
         isKeyboardOpen ? 'translate-y-[-50%]' : ''
       } ${hasMessages || isMobile ? 'bottom-1 sm:bottom-4 pt-16 ' : 'pt-32'}`}
+      style={{
+        width: `${!isMobile ? `calc(100vw - ${isSidebarOpen ? '16rem' : '4rem'})` : '100vw'}`,
+      }}
     >
       <form onSubmit={onSubmit} className=" w-full px-4 pointer-events-auto">
         <div className="flex items-center bg-primary-gray600 rounded-[1.5rem] sm:rounded-[3rem] p-1 sm:p-3 shadow-lg">

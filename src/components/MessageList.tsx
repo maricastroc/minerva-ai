@@ -26,7 +26,7 @@ export const MessageList = ({
       )}
 
       <div className="relative mt-4 pb-4 flex flex-col items-center w-full justify-start mb-36 chat-scroll-container overflow-y-auto">
-        <div className="min-w-4xl max-w-4xl">
+        <div className="min-w-full xl:min-w-4xl xl:max-w-4xl">
           {messages.map((message) => (
             <MessageItem key={message.id} message={message} />
           ))}

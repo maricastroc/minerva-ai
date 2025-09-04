@@ -114,6 +114,7 @@ export default function Home() {
                 onSubmit={handleSubmit}
                 hasMessages={hasMessages}
                 isMobile={isMobile}
+                isSidebarOpen={isSidebarOpen}
               />
             </div>
           </div>
