@@ -77,6 +77,7 @@ export default function Register() {
       />
       <AuthLayout
         title="Create your account"
+        setIsLoading={setIsLoading}
         footer={
           <p className="text-white/80 text-sm">
             Already registered?{' '}

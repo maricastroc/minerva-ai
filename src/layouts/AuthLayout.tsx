@@ -1,12 +1,14 @@
 import Image from 'next/image';
 import React from 'react';
 import { Icon } from '@iconify/react';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/router';
 
 interface AuthLayoutProps {
   title: string;
   children: React.ReactNode;
   footer?: React.ReactNode;
-  handleSignIn: (value: string) => void;
+  setIsLoading: (value: boolean) => void;
 }
 
 interface SocialProvider {
@@ -51,8 +53,22 @@ export function AuthLayout({
   title,
   children,
   footer,
-  handleSignIn,
+  setIsLoading,
 }: AuthLayoutProps) {
+  const router = useRouter();
+
+  async function handleSignIn(provider: string) {
+    setIsLoading(true);
+
+    if (provider === 'google') {
+      await signIn('google', { callbackUrl: '/' });
+    } else if (provider === 'github') {
+      await signIn('github', { callbackUrl: '/' });
+    } else router.push('/');
+
+    setIsLoading(false);
+  }
+
   return (
     <div className="min-h-screen bg-primary-gray800 flex flex-col justify-center items-center sm:p-6 p-4 pt-8">
       <div className="mb-8">

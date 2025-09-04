@@ -36,18 +36,6 @@ export default function Login() {
     resolver: yupResolver(loginSchema),
   });
 
-  async function handleSignIn(provider: string) {
-    setIsLoading(true);
-
-    if (provider === 'google') {
-      await signIn('google', { callbackUrl: '/' });
-    } else if (provider === 'github') {
-      await signIn('github', { callbackUrl: '/' });
-    } else router.push('/');
-
-    setIsLoading(false);
-  }
-
   async function onSubmit(data: LoginFormData) {
     try {
       setIsLoading(true);
@@ -94,7 +82,7 @@ export default function Login() {
       {isClient && (
         <AuthLayout
           title="Sign in to your account"
-          handleSignIn={handleSignIn}
+          setIsLoading={setIsLoading}
           footer={
             <p className="text-white/80 text-sm">
               Don&apos;t have an account?{' '}
