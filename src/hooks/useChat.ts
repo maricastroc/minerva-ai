@@ -4,6 +4,7 @@ import { MessageProps } from '@/types/message';
 import { ChatProps } from '@/types/chat';
 import useRequest from '@/hooks/useRequest';
 import { ASSISTANT_ROLE, USER_ROLE } from '@/utils/constants';
+import { useAppContext } from '@/contexts/AppContext';
 
 export interface Message {
   id: string;
@@ -13,13 +14,13 @@ export interface Message {
 }
 
 export function useChat() {
+  const { currentChatId, handleCurrentChatId } = useAppContext();
+
   const [messages, setMessages] = useState<Message[]>([]);
 
   const [input, setInput] = useState('');
 
   const [isLoading, setIsLoading] = useState(false);
-
-  const [currentChatId, setCurrentChatId] = useState<string | null>(null);
 
   const [currentChatTitle, setCurrentChatTitle] = useState<string | null>(null);
 
@@ -51,7 +52,7 @@ export function useChat() {
 
     setCurrentChatTitle(response.data.data.title);
 
-    setCurrentChatId(chatId);
+    handleCurrentChatId(chatId);
   };
 
   const handleSelectChat = async (chatId: string) => {
@@ -64,7 +65,7 @@ export function useChat() {
 
   const handleNewChat = () => {
     setMessages([]);
-    setCurrentChatId(null);
+    handleCurrentChatId(null);
     setCurrentChatTitle(null);
     setInput('');
   };
@@ -103,7 +104,7 @@ export function useChat() {
       setMessages((prev) => [...prev, assistantMessage]);
 
       if (data.isNewConversation) {
-        setCurrentChatId(data.chatID);
+        handleCurrentChatId(data.chatID);
         const chatResponse = await api.get<ChatProps>(
           `/user/chats/${data.chatID}`
         );

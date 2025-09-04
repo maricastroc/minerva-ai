@@ -15,7 +15,6 @@ interface Props {
   setIsOpen: (value: boolean) => void;
   chatHistory: ChatProps[] | undefined;
   handleSelectChat: (value: string) => void;
-  currentChatId: string | null;
   handleNewChat: () => void;
   mutate: KeyedMutator<AxiosResponse<ChatProps[], any>>;
   setCurrentChatTitle: (value: string) => void;
@@ -26,7 +25,6 @@ export const MobileSidebar = ({
   setIsOpen,
   chatHistory,
   handleNewChat,
-  currentChatId,
   handleSelectChat,
   mutate,
   setCurrentChatTitle,
@@ -55,7 +53,6 @@ export const MobileSidebar = ({
         <ChatList
           chatHistory={chatHistory}
           handleSelectChat={handleSelectChat}
-          currentChatId={currentChatId}
           editingChatId={editingChatId}
           setEditingChatId={setEditingChatId}
           mutate={mutate}

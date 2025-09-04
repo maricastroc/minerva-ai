@@ -10,10 +10,10 @@ import { ChatCardDropdown } from './ChatCardDropdown';
 import { DropdownButton } from './DropdownButton';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import clsx from 'clsx';
+import { useAppContext } from '@/contexts/AppContext';
 
 interface Props {
   chat: ChatProps;
-  currentChatId: string | null;
   handleSelectChat: (value: string) => void;
   editingChatId: string | null;
   setEditingChatId: (id: string | null) => void;
@@ -23,7 +23,6 @@ interface Props {
 }
 
 export const ChatCard = ({
-  currentChatId,
   chat,
   handleSelectChat,
   editingChatId,
@@ -32,6 +31,8 @@ export const ChatCard = ({
   setCurrentChatTitle,
   isMobile = false,
 }: Props) => {
+  const { currentChatId } = useAppContext();
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const [localTitle, setLocalTitle] = useState(chat.title);
@@ -44,6 +45,7 @@ export const ChatCard = ({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const debouncedTitle = useDebounce(localTitle, 500);
+
   const { updateChatTitle } = useUpdateChatTitle(
     mutate,
     setCurrentChatTitle,

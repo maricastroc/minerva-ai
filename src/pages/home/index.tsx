@@ -24,7 +24,6 @@ export default function Home() {
     input,
     setInput,
     isLoading,
-    currentChatId,
     currentChatTitle,
     chatHistory,
     handleSelectChat,
@@ -70,7 +69,6 @@ export default function Home() {
               setIsOpen={setIsSidebarOpen}
               chatHistory={chatHistory}
               handleSelectChat={handleSelectChat}
-              currentChatId={currentChatId}
               handleNewChat={handleNewChat}
               mutate={mutate}
               setCurrentChatTitle={setCurrentChatTitle}
@@ -82,7 +80,6 @@ export default function Home() {
               <MobileHeader
                 chatHistory={chatHistory}
                 handleSelectChat={handleSelectChat}
-                currentChatId={currentChatId}
                 handleNewChat={handleNewChat}
                 mutate={mutate}
                 currentChatTitle={currentChatTitle}

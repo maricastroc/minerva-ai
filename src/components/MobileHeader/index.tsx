@@ -12,7 +12,6 @@ import { MobileSidebar } from './partials/MobileSidebar';
 interface MobileHeaderProps {
   chatHistory: ChatProps[] | undefined;
   handleSelectChat: (value: string) => void;
-  currentChatId: string | null;
   handleNewChat: () => void;
   mutate: KeyedMutator<AxiosResponse<ChatProps[], any>>;
   currentChatTitle: string | null;
@@ -23,7 +22,6 @@ export const MobileHeader = ({
   chatHistory,
   handleNewChat,
   handleSelectChat,
-  currentChatId,
   mutate,
   currentChatTitle,
   setCurrentChatTitle,
@@ -55,7 +53,6 @@ export const MobileHeader = ({
         isOpen={isSidebarOpen}
         setIsOpen={setIsSidebarOpen}
         chatHistory={chatHistory}
-        currentChatId={currentChatId}
         handleNewChat={handleNewChat}
         handleSelectChat={handleSelectChat}
         mutate={mutate}

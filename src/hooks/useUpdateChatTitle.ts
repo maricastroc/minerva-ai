@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { KeyedMutator } from 'swr';
 import { AxiosResponse } from 'axios';
 import { ChatProps } from '@/types/chat';
+import { api } from '@/lib/axios';
+import { handleApiError } from '@/utils/handleApiError';
 
 export const useUpdateChatTitle = (
   mutate: KeyedMutator<AxiosResponse<ChatProps[], any>>,
@@ -11,25 +13,31 @@ export const useUpdateChatTitle = (
 ) => {
   const [loading, setLoading] = useState(false);
 
-  const updateChatTitle = async (chatId: string, newTitle: string) => {
+  const updateChatTitle = async (
+    chatId: string,
+    newTitle: string
+  ): Promise<ChatProps | null> => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/user/chats/${chatId}/title`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title: newTitle }),
-      });
 
-      if (!response.ok) throw new Error('Failed to update title');
+      const response = await api.patch<{ data: ChatProps }>(
+        `/user/chats/${chatId}/title`,
+        { title: newTitle }
+      );
 
-      const data = await response.json();
-      mutate();
+      if (response?.data) {
+        await mutate();
 
-      if (currentChatId === chatId) setCurrentChatTitle(newTitle);
+        if (currentChatId === chatId) {
+          setCurrentChatTitle(newTitle);
+        }
 
-      return data;
+        return response.data.data;
+      }
+
+      return null;
     } catch (error) {
-      console.error('Error updating title:', error);
+      handleApiError(error);
       throw error;
     } finally {
       setLoading(false);

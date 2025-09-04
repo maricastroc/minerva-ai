@@ -6,7 +6,6 @@ import { useScreenSize } from '@/hooks/useScreenSize';
 
 interface ChatListProps {
   chatHistory: ChatProps[] | undefined;
-  currentChatId: string | null;
   handleSelectChat: (id: string) => void;
   editingChatId: string | null;
   setEditingChatId: (id: string | null) => void;
@@ -16,7 +15,6 @@ interface ChatListProps {
 
 export const ChatList = ({
   chatHistory,
-  currentChatId,
   handleSelectChat,
   editingChatId,
   setEditingChatId,
@@ -40,7 +38,6 @@ export const ChatList = ({
               key={chat.id}
               chat={chat}
               handleSelectChat={handleSelectChat}
-              currentChatId={currentChatId}
               editingChatId={editingChatId}
               setEditingChatId={setEditingChatId}
               mutate={mutate}
