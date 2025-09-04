@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// MobileHeader.tsx
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 import { useState } from 'react';
-import { MobileSidebar } from './MobileSidebar';
+
 import { ChatProps } from '@/types/chat';
 import { AxiosResponse } from 'axios';
 import { KeyedMutator } from 'swr';
+import { MobileSidebar } from './partials/MobileSidebar';
 
 interface MobileHeaderProps {
   chatHistory: ChatProps[] | undefined;

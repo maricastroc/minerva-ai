@@ -23,7 +23,7 @@ export const ChatInput = ({
   isMobile = false,
 }: ChatInputProps) => {
   const isKeyboardOpen = useKeyboardOpen();
-  console.log(hasMessages);
+
   return (
     <div
       className={`flex fixed w-full md:max-w-[75%] xl:max-w-4xl pb-4 pointer-events-none transition-transform duration-300 ${

@@ -3,13 +3,14 @@
 import { Sidebar } from '@/components/Sidebar';
 import { ChatInput } from '@/components/ChatInput';
 import { MessageList } from '@/components/MessageList';
-import { MobileHeader } from '@/components/MobileHeader';
+
 import { useScreenSize } from '@/hooks/useScreenSize';
 import { useChat } from '@/hooks/useChat';
 import { useEffect, useState } from 'react';
 import { NextSeo } from 'next-seo';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
+import { MobileHeader } from '@/components/MobileHeader';
 
 export default function Home() {
   const isMobile = useScreenSize(768);

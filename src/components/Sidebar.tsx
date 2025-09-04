@@ -7,8 +7,8 @@ import { NewChatButton } from './NewChatButton';
 import { useState } from 'react';
 import { AxiosResponse } from 'axios';
 import { KeyedMutator } from 'swr';
-import { ChatCard } from './ChatCard';
 import { SidebarSimpleIcon } from '@phosphor-icons/react';
+import { ChatList } from './ChatList';
 
 interface Props {
   isOpen: boolean;
@@ -54,30 +54,15 @@ export const Sidebar = ({
 
           <NewChatButton handleNewChat={handleNewChat} />
 
-          <div className="flex-1 overflow-y-auto chat-scroll-container w-full">
-            {chatHistory && chatHistory?.length > 0 && (
-              <>
-                <h3 className="ml-6 mt-4 text-sm font-medium text-gray-400">
-                  Chats
-                </h3>
-                <div className="p-3 pt-2">
-                  {chatHistory?.map((chat) => (
-                    <ChatCard
-                      key={chat.id}
-                      chat={chat}
-                      handleSelectChat={handleSelectChat}
-                      currentChatId={currentChatId}
-                      editingChatId={editingChatId}
-                      setEditingChatId={setEditingChatId}
-                      mutate={mutate}
-                      setCurrentChatTitle={setCurrentChatTitle}
-                    />
-                  ))}
-                </div>
-              </>
-            )}
-          </div>
-
+          <ChatList
+            chatHistory={chatHistory}
+            handleSelectChat={handleSelectChat}
+            currentChatId={currentChatId}
+            editingChatId={editingChatId}
+            setEditingChatId={setEditingChatId}
+            mutate={mutate}
+            setCurrentChatTitle={setCurrentChatTitle}
+          />
           <UserSection />
         </>
       ) : (

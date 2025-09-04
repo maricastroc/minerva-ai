@@ -21,6 +21,7 @@
     "@iconify/react": "^6.0.1",
     "@phosphor-icons/react": "^2.1.10",
     "@prisma/client": "^6.15.0",
+    "@radix-ui/react-dialog": "^1.1.15",
     "@upstash/redis": "^1.35.3",
     "axios": "^1.11.0",
     "bcrypt": "^6.0.0",
