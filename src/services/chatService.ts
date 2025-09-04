@@ -125,7 +125,7 @@ export class ChatService {
       },
     });
 
-    const prompt = `Título muito curto (2-3 palavras) para: "${message}"`;
+    const prompt = `Generate a short title for this message: "${message}"`;
     const result = await model.generateContent(prompt);
     const response = await result.response;
 

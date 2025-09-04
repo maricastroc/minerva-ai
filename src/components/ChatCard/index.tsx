@@ -121,7 +121,7 @@ export const ChatCard = ({
       {!isEditing && (
         <div className="relative">
           <button
-            className={`cursor-pointer bg-transparent rounded-md py-2 mr-3 px-[0.1rem] flex items-center justify-center group-hover:opacity-100 hover:bg-primary-gray800 transition-opacity ${isMobile || isDropdownOpen ? 'opacity-100' : 'opacity-0'}`}
+            className={`cursor-pointer bg-transparent rounded-md py-2 mr-3 px-[0.1rem] flex items-center justify-center group-hover:opacity-100 hover:bg-primary-gray500 transition-opacity ${isMobile || isDropdownOpen ? 'opacity-100' : 'opacity-0'}`}
             onClick={(e) => {
               e.stopPropagation();
               setIsDropdownOpen(!isDropdownOpen);

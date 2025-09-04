@@ -15,6 +15,7 @@ interface MobileHeaderProps {
   currentChatId: string | null;
   handleNewChat: () => void;
   mutate: KeyedMutator<AxiosResponse<ChatProps[], any>>;
+  currentChatTitle: string | null;
   setCurrentChatTitle: (value: string) => void;
 }
 
@@ -24,23 +25,30 @@ export const MobileHeader = ({
   handleSelectChat,
   currentChatId,
   mutate,
+  currentChatTitle,
   setCurrentChatTitle,
 }: MobileHeaderProps) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
-    <div className="sticky top-0 z-50 bg-primary-gray900 p-3">
-      <div className="flex items-center justify-between">
+    <div className="w-full sticky top-0 z-50 bg-primary-gray900 p-3">
+      <div className="p-2 w-full flex items-center justify-between">
         <button
           onClick={() => setIsSidebarOpen(true)}
-          className="p-2 cursor-pointer rounded-md hover:bg-primary-gray700 transition-colors"
+          className="cursor-pointer rounded-md hover:bg-primary-gray700 transition-colors"
         >
           <FontAwesomeIcon icon={faBars} size="lg" />
         </button>
-        <div className="flex-1 mx-4 flex justify-center">
-          <Image width={150} height={150} alt="Logo" src="/logo-full.svg" />
+
+        <div className="flex w-full">
+          <p className="w-full font-semibold text-base text-gray-200 text-center">
+            {currentChatTitle || 'New Chat'}
+          </p>
         </div>
-        <div className="w-10"></div>
+
+        <div className="flex justify-end">
+          <Image width={25} height={25} alt="Logo" src="/logo.svg" />
+        </div>
       </div>
 
       <MobileSidebar

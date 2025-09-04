@@ -62,7 +62,7 @@ export class AIService {
           },
         });
 
-        const prompt = `Generate a very short title (max 5 words) for this message: "${message}". Reply with title only, no quotes or explanations.`;
+        const prompt = `Generate a short title for this message: "${message}". Reply with title only, no quotes or explanations.`;
         const result = await model.generateContent(prompt);
         const response = await result.response;
         let title = response.text().trim();

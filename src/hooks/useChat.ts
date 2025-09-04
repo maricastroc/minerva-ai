@@ -87,7 +87,7 @@ export function useChat() {
     try {
       const { data } = await api.post('/chatbot', {
         message: userMessage.content,
-        chatID: currentChatId,
+        chatID: currentChatId || undefined,
         conversationHistory: messages.slice(-10).map((msg) => ({
           role: msg.role.toUpperCase(),
           content: msg.content,

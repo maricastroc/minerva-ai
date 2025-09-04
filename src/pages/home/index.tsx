@@ -62,7 +62,7 @@ export default function Home() {
         ]}
       />
       {isClient && (
-        <div className="flex h-[100dvh] bg-[#212020] text-gray-100 overflow-hidden safe-area">
+        <div className="flex h-[100dvh] bg-primary-gray900 text-gray-100 overflow-hidden safe-area">
           {!isMobile && (
             <Sidebar
               isOpen={isSidebarOpen}
@@ -84,6 +84,7 @@ export default function Home() {
                 currentChatId={currentChatId}
                 handleNewChat={handleNewChat}
                 mutate={mutate}
+                currentChatTitle={currentChatTitle}
                 setCurrentChatTitle={setCurrentChatTitle}
               />
             )}
@@ -112,6 +113,7 @@ export default function Home() {
                 isLoading={isLoading}
                 onSubmit={handleSubmit}
                 hasMessages={hasMessages}
+                isMobile={isMobile}
               />
             </div>
           </div>

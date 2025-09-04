@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { AxiosResponse } from 'axios';
 import { KeyedMutator } from 'swr';
 import { ChatCard } from './ChatCard';
+import { SidebarSimpleIcon } from '@phosphor-icons/react';
 
 interface Props {
   isOpen: boolean;
@@ -36,46 +37,45 @@ export const Sidebar = ({
     <div
       className={`
         ${isOpen ? 'w-64' : 'w-16 items-center'} 
-        bg-[#181818] transition-all duration-300 overflow-hidden flex flex-col relative
+        bg-primary-gray800 transition-all duration-300 overflow-hidden flex flex-col relative
       `}
     >
       {isOpen ? (
         <>
-          <div className="p-6 pt-5 flex items-center justify-between w-full pb-2">
-            <Image width={150} height={150} alt="Logo" src="/logo-full.svg" />
+          <div className="p-4 pt-3 flex items-center justify-between w-full pb-2">
+            <Image width={140} height={140} alt="Logo" src="/logo-full.svg" />
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="cursor-pointer bg-transparent p-2 hover:bg-primary-gray600 rounded-md transition-colors"
+              className="cursor-pointer mt-[0.2rem] bg-transparent p-2 hover:bg-primary-gray600 rounded-md transition-colors"
             >
-              <Image
-                width={25}
-                height={25}
-                alt="Close sidebar"
-                src="/off.svg"
-              />
+              <SidebarSimpleIcon className="text-gray-400" size={22} />
             </button>
           </div>
 
           <NewChatButton handleNewChat={handleNewChat} />
 
           <div className="flex-1 overflow-y-auto chat-scroll-container w-full">
-            <h3 className="ml-6 mt-4 text-sm font-medium text-gray-400">
-              Chats
-            </h3>
-            <div className="p-3 pt-2">
-              {chatHistory?.map((chat) => (
-                <ChatCard
-                  key={chat.id}
-                  chat={chat}
-                  handleSelectChat={handleSelectChat}
-                  currentChatId={currentChatId}
-                  editingChatId={editingChatId}
-                  setEditingChatId={setEditingChatId}
-                  mutate={mutate}
-                  setCurrentChatTitle={setCurrentChatTitle}
-                />
-              ))}
-            </div>
+            {chatHistory && chatHistory?.length > 0 && (
+              <>
+                <h3 className="ml-6 mt-4 text-sm font-medium text-gray-400">
+                  Chats
+                </h3>
+                <div className="p-3 pt-2">
+                  {chatHistory?.map((chat) => (
+                    <ChatCard
+                      key={chat.id}
+                      chat={chat}
+                      handleSelectChat={handleSelectChat}
+                      currentChatId={currentChatId}
+                      editingChatId={editingChatId}
+                      setEditingChatId={setEditingChatId}
+                      mutate={mutate}
+                      setCurrentChatTitle={setCurrentChatTitle}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
           </div>
 
           <UserSection />

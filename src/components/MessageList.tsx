@@ -16,9 +16,9 @@ export const MessageList = ({
   isMobile,
 }: MessageListProps) => {
   return (
-    <div className={`flex flex-col h-[100dvh] w-full bg-[#212020]`}>
+    <div className={`flex flex-col h-[100dvh] w-full bg-primary-gray900`}>
       {!isMobile && currentChatTitle && (
-        <div className="sticky top-0 z-10 bg-[#212020] w-full border-b border-[#303133] p-3 pt-1">
+        <div className="sticky top-0 z-10 bg-primary-gray900 w-full p-3 py-2">
           <h1 className="text-base font-medium text-center text-white break-words line-clamp-2">
             {currentChatTitle}
           </h1>

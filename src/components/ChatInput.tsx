@@ -9,6 +9,7 @@ interface ChatInputProps {
   isLoading: boolean;
   onSubmit: (e: React.FormEvent) => void;
   hasMessages: boolean;
+  isMobile?: boolean;
 }
 
 export const ChatInput = ({
@@ -17,6 +18,7 @@ export const ChatInput = ({
   isLoading,
   onSubmit,
   hasMessages,
+  isMobile = false,
 }: ChatInputProps) => {
   const isKeyboardOpen = useKeyboardOpen();
   console.log(hasMessages);
@@ -24,7 +26,7 @@ export const ChatInput = ({
     <div
       className={`flex fixed w-full md:max-w-[65%] xl:max-w-4xl pb-4 pointer-events-none transition-transform duration-300 ${
         isKeyboardOpen ? 'translate-y-[-50%]' : ''
-      } ${hasMessages ? 'bottom-1 sm:bottom-4 pt-16 bg-gradient-to-t from-[#212020] via-[#212020]/95 to-transparent' : 'pt-32'}`}
+      } ${hasMessages || isMobile ? 'bottom-1 sm:bottom-4 pt-16 ' : 'pt-32'}`}
     >
       <form onSubmit={onSubmit} className=" w-full px-4 pointer-events-auto">
         <div className="flex items-center bg-primary-gray600 rounded-[1.5rem] sm:rounded-[3rem] p-1 sm:p-3 shadow-lg">

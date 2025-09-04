@@ -51,7 +51,7 @@ export const MobileSidebar = ({
         className="fixed px-2 top-0 left-0 bottom-0 w-72 bg-[#181818] z-50 shadow-lg flex flex-col"
       >
         <div className="p-2 px-2 flex items-center justify-between">
-          <Image width={22} height={22} alt="Logo" src="/logo.svg" />
+          <Image width={130} height={130} alt="Logo" src="/logo-full.svg" />
           <button
             onClick={() => setIsOpen(false)}
             className="p-2 rounded-md hover:bg-gray-700 transition-colors"
@@ -63,22 +63,26 @@ export const MobileSidebar = ({
         <NewChatButton isMobile handleNewChat={handleNewChat} />
 
         <div className="flex-1 overflow-y-auto p-4 px-0">
-          <p className="ml-2 mt-2 text-base font-medium text-gray-400 mb-2">
-            Chats
-          </p>
-          {chatHistory?.map((chat) => (
-            <ChatCard
-              isMobile
-              key={chat.id}
-              chat={chat}
-              handleSelectChat={handleSelectChat}
-              currentChatId={currentChatId}
-              editingChatId={editingChatId}
-              setEditingChatId={setEditingChatId}
-              mutate={mutate}
-              setCurrentChatTitle={setCurrentChatTitle}
-            />
-          ))}
+          {chatHistory && chatHistory?.length > 0 && (
+            <>
+              <p className="ml-[0.8rem] mt-2 text-base font-medium text-gray-400 mb-2">
+                Chats
+              </p>
+              {chatHistory?.map((chat) => (
+                <ChatCard
+                  isMobile
+                  key={chat.id}
+                  chat={chat}
+                  handleSelectChat={handleSelectChat}
+                  currentChatId={currentChatId}
+                  editingChatId={editingChatId}
+                  setEditingChatId={setEditingChatId}
+                  mutate={mutate}
+                  setCurrentChatTitle={setCurrentChatTitle}
+                />
+              ))}
+            </>
+          )}
         </div>
 
         <UserSection isMobile />
