@@ -1,8 +1,27 @@
 import { ASSISTANT_ROLE, USER_ROLE } from '@/utils/constants';
 import { MarkdownRenderer } from './MarkdownRenderer';
 import { MessageProps } from '@/types/message';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCopy } from '@fortawesome/free-regular-svg-icons';
+import { ArrowClockwiseIcon } from '@phosphor-icons/react';
+import { useChat } from '@/hooks/useChat';
+import { useState } from 'react';
 
 export const MessageItem = ({ message }: { message: MessageProps }) => {
+  const { handleRegenerate, isLoading } = useChat();
+  const [isRegenerating, setIsRegenerating] = useState(false);
+
+  const handleRegenerateClick = async () => {
+    if (isLoading || isRegenerating) return;
+
+    setIsRegenerating(true);
+    try {
+      await handleRegenerate(String(message.id));
+    } finally {
+      setIsRegenerating(false);
+    }
+  };
+
   return (
     <div
       className={`flex flex-1 w-full ${message.role === USER_ROLE || message.role === 'user' ? 'justify-end' : 'justify-start'} my-6`}
@@ -16,7 +35,23 @@ export const MessageItem = ({ message }: { message: MessageProps }) => {
       >
         <div className="text-base leading-[29px]">
           {message.role === ASSISTANT_ROLE || message.role === 'assistant' ? (
-            <MarkdownRenderer content={message.content} />
+            <div className="flex flex-col justify-end items-start">
+              <MarkdownRenderer content={message.content} />
+              <div className="mt-[-0.5rem] flex gap-1">
+                <button className="cursor-pointer rounded-md text-gray-200 p-[0.15rem] hover:bg-white/10">
+                  <FontAwesomeIcon
+                    className="text-primary-gray300"
+                    icon={faCopy}
+                  />
+                </button>
+                <button onClick={handleRegenerateClick}>
+                  <ArrowClockwiseIcon
+                    className="cursor-pointer rounded-md text-gray-200 p-[0.15rem] hover:bg-white/10"
+                    size={24}
+                  />
+                </button>
+              </div>
+            </div>
           ) : (
             message.content
           )}

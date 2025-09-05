@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { prisma } from '@/lib/prisma';
+import { ProcessMessageResponse } from '@/types/process-message-response';
+import { ProcessMessageRequest } from '@/types/process-message-request';
+import { PRIORITY_MODELS } from '@/utils/constants';
 
 const responseCache = new Map<
   string,
@@ -10,14 +13,6 @@ const responseCache = new Map<
 const CACHE_TTL = 5 * 60 * 1000;
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
-
-const PRIORITY_MODELS = [
-  'models/gemini-1.5-flash-002',
-  'models/gemini-1.5-flash',
-  'models/gemini-1.5-flash-8b',
-  'models/gemini-1.5-pro-002',
-  'models/gemini-1.5-pro',
-];
 
 export class ChatService {
   static async processMessage(
@@ -234,10 +229,13 @@ export class ChatService {
     message: string
   ): string {
     const SYSTEM_PROMPT = `
-      You are a friendly, empathetic and helpful AI assistant. 
-      Respond in a warm, conversational tone, adding encouragement and understanding when appropriate. 
-      Keep answers clear, but not too short.
-      `;
+      You are an AI assistant that communicates in a natural, professional, and concise way. 
+      Respond in a clear and direct manner, while keeping a polite and approachable tone. 
+      Do not exaggerate friendliness or empathy — avoid overuse of phrases like "I'm so happy to help!"
+      or "That's amazing!". 
+      Focus on being helpful, factual, and natural, as if you were a knowledgeable colleague. 
+      Keep answers easy to read and to the point, without unnecessary embellishments.
+    `;
 
     let prompt = SYSTEM_PROMPT;
 
@@ -278,7 +276,6 @@ export class ChatService {
     return fallbacks[Math.floor(Math.random() * fallbacks.length)];
   }
 }
-
 setInterval(() => {
   const now = Date.now();
   for (const [key, value] of responseCache.entries()) {
@@ -287,23 +284,3 @@ setInterval(() => {
     }
   }
 }, 60 * 1000);
-
-export interface ProcessMessageRequest {
-  userId: string;
-  message: string;
-  chatID?: string;
-  conversationHistory?: Array<{
-    role: 'USER' | 'ASSISTANT';
-    content: string;
-  }>;
-}
-
-export interface ProcessMessageResponse {
-  reply: string;
-  chatID: string;
-  isNewConversation: boolean;
-  messageIds: {
-    userMessageId: string;
-    assistantMessageId: string;
-  };
-}

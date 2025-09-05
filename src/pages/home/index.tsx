@@ -20,10 +20,9 @@ export default function Home() {
 
   const [isClient, setIsClient] = useState(false);
 
-  const { currentChatTitle } = useAppContext();
+  const { currentChatTitle, messages } = useAppContext();
 
   const {
-    messages,
     input,
     setInput,
     isLoading,
@@ -33,7 +32,7 @@ export default function Home() {
     handleSubmit,
     mutate,
   } = useChat();
-
+  console.log(messages);
   const hasMessages = messages.length !== 0;
 
   const router = useRouter();
@@ -86,15 +85,15 @@ export default function Home() {
             )}
 
             <div
-              className={`flex-1 flex flex-col items-center ${messages.length === 0 ? 'justify-center' : 'justify-between'} p-4`}
+              className={`flex-1 flex flex-col items-center ${messages?.length === 0 ? 'justify-center' : 'justify-between'} p-4`}
             >
-              {messages.length === 0 && !currentChatTitle && (
+              {messages?.length === 0 && !currentChatTitle && (
                 <h1 className="text-2xl mb-4 lg:text-3xl font-medium text-center lg:mb-12">
                   How can I help you today?
                 </h1>
               )}
 
-              {messages.length > 0 && (
+              {messages?.length > 0 && (
                 <MessageList
                   messages={messages}
                   isLoading={isLoading}

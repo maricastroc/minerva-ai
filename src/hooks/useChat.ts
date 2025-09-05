@@ -4,12 +4,15 @@ import { ChatProps } from '@/types/chat';
 import useRequest from '@/hooks/useRequest';
 import { ASSISTANT_ROLE, USER_ROLE } from '@/utils/constants';
 import { useAppContext } from '@/contexts/AppContext';
+import { RegenerateMessageResponse } from '@/types/regenerate-message-response';
 
 export interface Message {
   id: string;
   content: string;
   role: 'USER' | 'ASSISTANT';
   timestamp: Date;
+  regenerated?: boolean;
+  originalMessageId?: string;
 }
 
 export function useChat() {
@@ -115,8 +118,63 @@ export function useChat() {
     }
   };
 
+  const handleRegenerate = async (messageId: string) => {
+    if (!currentChatId || isLoading) return;
+
+    setIsLoading(true);
+
+    try {
+      const { data } = await api.post<RegenerateMessageResponse>(
+        '/chatbot/regenerate',
+        {
+          conversationId: currentChatId,
+          messageId: messageId,
+        }
+      );
+
+      // Encontra a mensagem original
+      const originalMessage = messages.find((msg) => msg.id === messageId);
+
+      if (originalMessage) {
+        // Cria a nova mensagem regenerada
+        const regeneratedMessage: Message = {
+          id: data.newMessageId,
+          content: data.regeneratedReply,
+          role: ASSISTANT_ROLE,
+          timestamp: new Date(),
+          regenerated: true,
+          originalMessageId: messageId,
+        };
+
+        // Marca a mensagem original como regenerada
+        const updatedOriginalMessage = {
+          ...originalMessage,
+          regenerated: true,
+        };
+
+        // Substitui a mensagem original pela versão atualizada
+        // e adiciona a nova mensagem regenerada no FINAL
+        handleMessages((prev) => {
+          const newMessages = prev.map((msg) =>
+            msg.id === messageId ? updatedOriginalMessage : msg
+          );
+
+          // Adiciona a mensagem regenerada no final
+          return [...newMessages, regeneratedMessage];
+        });
+      }
+    } catch (err) {
+      console.error('Regenerate error:', err);
+
+      const errorMessage = 'Error regenerating response. Please try again.';
+
+      alert(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return {
-    messages,
     input,
     setInput,
     isLoading,
@@ -125,6 +183,7 @@ export function useChat() {
     handleSelectChat,
     handleNewChat,
     handleSubmit,
+    handleRegenerate,
     messagesEndRef,
     mutate,
   };

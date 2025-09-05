@@ -92,8 +92,14 @@ model Message {
   timestamp      DateTime    @default(now())
   tokens         Int? 
   model          String?
+  regenerated    Boolean     @default(false)
+  regeneratedAt  DateTime?
 
   conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  originalMessageId String? @map("original_message_id")
+  originalMessage  Message?  @relation("MessageRegeneration", fields: [originalMessageId], references: [id])
+  regeneratedMessages Message[] @relation("MessageRegeneration")
 
   @@index([conversationId])
   @@index([conversationId, timestamp])

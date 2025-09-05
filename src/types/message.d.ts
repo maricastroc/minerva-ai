@@ -3,4 +3,6 @@ export interface MessageProps {
   role: string;
   content: string;
   timestamp: Date;
+  regenerated?: boolean;
+  originalMessageId?: string;
 }
