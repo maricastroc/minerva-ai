@@ -1,12 +1,11 @@
 import { ASSISTANT_ROLE, USER_ROLE } from '@/utils/constants';
 import { MarkdownRenderer } from './MarkdownRenderer';
 import { MessageProps } from '@/types/message';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCopy } from '@fortawesome/free-regular-svg-icons';
 import { ArrowClockwiseIcon } from '@phosphor-icons/react';
 import { useChat } from '@/hooks/useChat';
 import { useState } from 'react';
 import { useAppContext } from '@/contexts/AppContext';
+import { CopyButton } from './CopyButton';
 
 export const MessageItem = ({ message }: { message: MessageProps }) => {
   const { handleRegenerate } = useChat();
@@ -42,12 +41,7 @@ export const MessageItem = ({ message }: { message: MessageProps }) => {
             <div className="flex flex-col justify-end items-start">
               <MarkdownRenderer content={message.content} />
               <div className="mt-[-0.5rem] flex gap-1">
-                <button className="cursor-pointer rounded-md text-gray-200 p-[0.15rem] hover:bg-white/10">
-                  <FontAwesomeIcon
-                    className="text-primary-gray300"
-                    icon={faCopy}
-                  />
-                </button>
+                <CopyButton text={message.content} />
                 <button onClick={handleRegenerateClick}>
                   <ArrowClockwiseIcon
                     className="cursor-pointer rounded-md text-gray-200 p-[0.15rem] hover:bg-white/10"
