@@ -12,6 +12,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { MobileHeader } from '@/components/MobileHeader';
 import { useAppContext } from '@/contexts/AppContext';
+import Image from 'next/image';
 
 export default function Home() {
   const isMobile = useScreenSize(768);
@@ -87,9 +88,20 @@ export default function Home() {
               className={`flex-1 flex flex-col items-center ${messages?.length === 0 ? 'justify-center' : 'justify-between'} p-4`}
             >
               {messages?.length === 0 && !currentChatTitle && (
-                <h1 className="text-2xl mb-4 lg:text-3xl font-medium text-center lg:mb-12">
-                  How can I help you today?
-                </h1>
+                <div className="mb-4 flex w-full justify-center items-center gap-4 lg:mb-12">
+                  {!isMobile && (
+                    <Image
+                      className="md:opacity-100 opacity-0"
+                      width={30}
+                      height={30}
+                      alt="Logo"
+                      src="/logo.svg"
+                    />
+                  )}
+                  <h1 className="text-2xl lg:text-3xl font-medium text-center">
+                    How can I help you today?
+                  </h1>
+                </div>
               )}
 
               {messages?.length > 0 && (
