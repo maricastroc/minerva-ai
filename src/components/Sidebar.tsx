@@ -37,13 +37,13 @@ export const Sidebar = ({
     >
       {isOpen ? (
         <>
-          <div className="p-4 pt-3 flex items-center justify-between w-full pb-2">
+          <div className="p-6 pt-3 flex items-center justify-between w-full pb-2">
             <Image width={140} height={140} alt="Logo" src="/logo-full.svg" />
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="cursor-pointer mt-[0.2rem] bg-transparent p-2 hover:bg-primary-gray600 rounded-md transition-colors"
+              className="cursor-pointer mt-[0.2rem] bg-transparent p-2 mr-[-0.7rem] hover:bg-primary-gray600 rounded-md transition-colors"
             >
-              <SidebarSimpleIcon className="text-gray-400" size={22} />
+              <SidebarSimpleIcon className="text-primary-gray100" size={22} />
             </button>
           </div>
 

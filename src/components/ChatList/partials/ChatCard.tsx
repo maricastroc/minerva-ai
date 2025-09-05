@@ -68,12 +68,10 @@ export const ChatCard = ({
   return (
     <div
       className={clsx(
-        'mt-1 flex items-center justify-between cursor-pointer py-2 rounded-2xl transition-colors group hover:bg-primary-gray600',
+        'mt-1 pl-[0.8rem] flex items-center justify-between cursor-pointer py-2 rounded-[1.25rem] transition-colors group hover:bg-primary-gray600',
         {
           'bg-primary-gray650': isSelected || isDropdownOpen,
           'bg-primary-gray700': isEditing,
-          'px-[0.8rem] mx-2': !isMobile,
-          'pl-[0.8rem]': isMobile,
         }
       )}
       onClick={handleCardClick}
@@ -103,7 +101,7 @@ export const ChatCard = ({
             </div>
             <div
               className={clsx(
-                'text-gray-400',
+                'text-primary-gray100',
                 isMobile ? 'text-sm' : 'text-xs'
               )}
             >

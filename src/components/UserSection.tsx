@@ -30,12 +30,12 @@ export const UserSection = ({ isMobile = false }: Props) => {
   const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
 
   const textClass = clsx(
-    'truncate flex-1 text-gray-300',
+    'truncate flex-1 text-primary-gray50',
     isMobile ? 'text-base' : 'text-sm'
   );
 
   const buttonClass = clsx(
-    'cursor-pointer flex items-center rounded-lg w-full p-2 text-gray-200 hover:bg-primary-gray400 transition-colors',
+    'cursor-pointer flex items-center rounded-lg w-full p-2 text-primary-gray25 hover:bg-primary-gray400 transition-colors',
     isMobile ? 'text-base' : 'text-sm'
   );
 
@@ -55,7 +55,7 @@ export const UserSection = ({ isMobile = false }: Props) => {
     );
 
   return (
-    <div className={clsx(isMobile ? 'p-4 px-0 pb-2' : 'p-4', 'w-full')}>
+    <div className={clsx(isMobile ? 'p-4 pb-2' : 'p-4', 'w-full')}>
       <div
         className="flex items-center space-x-3 cursor-pointer p-2 rounded-2xl hover:bg-primary-gray600 relative"
         onClick={toggleDropdown}

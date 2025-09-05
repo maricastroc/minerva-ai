@@ -71,8 +71,8 @@ export const MessageItem = ({ message }: { message: MessageProps }) => {
         className={clsx(
           'rounded-2xl p-4 py-2',
           isUserMessage
-            ? 'bg-[#303030] text-white max-w-xs md:max-w-md lg:max-w-lg'
-            : 'bg-transparent text-gray-100'
+            ? 'bg-[#303030] text-primary-gray25 max-w-xs md:max-w-md lg:max-w-lg'
+            : 'bg-transparent text-primary-gray50'
         )}
       >
         <div className="text-base leading-[29px]">

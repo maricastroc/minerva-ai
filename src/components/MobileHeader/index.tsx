@@ -37,7 +37,7 @@ export const MobileHeader = ({
         </button>
 
         <div className="flex w-full">
-          <p className="w-full font-semibold text-base text-gray-200 text-center">
+          <p className="w-full font-semibold text-base text-primary-gray25 text-center">
             {currentChatTitle || 'New Chat'}
           </p>
         </div>

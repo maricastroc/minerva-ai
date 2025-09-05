@@ -22,11 +22,11 @@ export const ChatList = ({
   const isMobile = useScreenSize(768);
 
   return (
-    <div className="flex-1 chat-scroll-container overflow-y-auto px-2 w-full p-4">
+    <div className="flex-1 chat-scroll-container overflow-y-auto px-3 w-full p-4">
       {chatHistory && chatHistory?.length > 0 && (
         <>
           <p
-            className={`mt-2 font-medium text-gray-400 mb-2 ml-3 ${isMobile ? 'text-base' : 'text-sm'}`}
+            className={`mt-2 font-medium text-primary-gray100 mb-2 ${isMobile ? 'text-base ml-3' : 'text-sm ml-3'}`}
           >
             Chats
           </p>

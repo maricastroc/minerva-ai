@@ -61,7 +61,7 @@ export default function Home() {
         ]}
       />
       {isClient && (
-        <div className="flex h-[100dvh] bg-primary-gray900 text-gray-100 overflow-hidden safe-area">
+        <div className="flex h-[100dvh] bg-primary-gray900 text-primary-gray50 overflow-hidden safe-area">
           {!isMobile && (
             <Sidebar
               isOpen={isSidebarOpen}

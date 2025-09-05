@@ -11,8 +11,8 @@ export const NewChatButton = ({ handleNewChat, isMobile = false }: Props) => {
     <button
       onClick={handleNewChat}
       className={`flex bg-primary-gray500 cursor-pointer justify-center
-        rounded-3xl m-2 text-gray-200 items-center gap-2 font-semibold hover:bg-primary-gray400
-        py-[0.7rem] ${isMobile ? 'text-base' : 'text-sm mx-4'}`}
+        rounded-3xl m-2 text-primary-gray50 items-center gap-2 font-semibold hover:bg-primary-gray400
+        py-[0.7rem] ${isMobile ? 'text-base' : 'text-sm mx-3'}`}
     >
       <FontAwesomeIcon icon={faPenToSquare} />
       New Chat
