@@ -1,16 +1,17 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react';
 import { KeyedMutator } from 'swr';
 import { AxiosResponse } from 'axios';
 import { ChatProps } from '@/types/chat';
 import { api } from '@/lib/axios';
 import { handleApiError } from '@/utils/handleApiError';
+import { useAppContext } from '@/contexts/AppContext';
 
 export const useUpdateChatTitle = (
-  mutate: KeyedMutator<AxiosResponse<ChatProps[], any>>,
-  setCurrentChatTitle: (value: string) => void,
+  mutate: KeyedMutator<AxiosResponse<ChatProps[]>>,
   currentChatId: string | null
 ) => {
+  const { handleCurrentChatTitle } = useAppContext();
+
   const [loading, setLoading] = useState(false);
 
   const updateChatTitle = async (
@@ -29,7 +30,7 @@ export const useUpdateChatTitle = (
         await mutate();
 
         if (currentChatId === chatId) {
-          setCurrentChatTitle(newTitle);
+          handleCurrentChatTitle(newTitle);
         }
 
         return response.data.data;

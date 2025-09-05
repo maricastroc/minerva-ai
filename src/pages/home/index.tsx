@@ -11,6 +11,7 @@ import { NextSeo } from 'next-seo';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { MobileHeader } from '@/components/MobileHeader';
+import { useAppContext } from '@/contexts/AppContext';
 
 export default function Home() {
   const isMobile = useScreenSize(768);
@@ -19,18 +20,18 @@ export default function Home() {
 
   const [isClient, setIsClient] = useState(false);
 
+  const { currentChatTitle } = useAppContext();
+
   const {
     messages,
     input,
     setInput,
     isLoading,
-    currentChatTitle,
     chatHistory,
     handleSelectChat,
     handleNewChat,
     handleSubmit,
     mutate,
-    setCurrentChatTitle,
   } = useChat();
 
   const hasMessages = messages.length !== 0;
@@ -71,7 +72,6 @@ export default function Home() {
               handleSelectChat={handleSelectChat}
               handleNewChat={handleNewChat}
               mutate={mutate}
-              setCurrentChatTitle={setCurrentChatTitle}
             />
           )}
 
@@ -82,8 +82,6 @@ export default function Home() {
                 handleSelectChat={handleSelectChat}
                 handleNewChat={handleNewChat}
                 mutate={mutate}
-                currentChatTitle={currentChatTitle}
-                setCurrentChatTitle={setCurrentChatTitle}
               />
             )}
 
@@ -100,7 +98,6 @@ export default function Home() {
                 <MessageList
                   messages={messages}
                   isLoading={isLoading}
-                  currentChatTitle={currentChatTitle}
                   isMobile={isMobile}
                 />
               )}

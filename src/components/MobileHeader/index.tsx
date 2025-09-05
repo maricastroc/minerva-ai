@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
@@ -8,14 +7,13 @@ import { ChatProps } from '@/types/chat';
 import { AxiosResponse } from 'axios';
 import { KeyedMutator } from 'swr';
 import { MobileSidebar } from './partials/MobileSidebar';
+import { useAppContext } from '@/contexts/AppContext';
 
 interface MobileHeaderProps {
   chatHistory: ChatProps[] | undefined;
   handleSelectChat: (value: string) => void;
   handleNewChat: () => void;
-  mutate: KeyedMutator<AxiosResponse<ChatProps[], any>>;
-  currentChatTitle: string | null;
-  setCurrentChatTitle: (value: string) => void;
+  mutate: KeyedMutator<AxiosResponse<ChatProps[]>>;
 }
 
 export const MobileHeader = ({
@@ -23,9 +21,9 @@ export const MobileHeader = ({
   handleNewChat,
   handleSelectChat,
   mutate,
-  currentChatTitle,
-  setCurrentChatTitle,
 }: MobileHeaderProps) => {
+  const { currentChatTitle } = useAppContext();
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
@@ -56,7 +54,6 @@ export const MobileHeader = ({
         handleNewChat={handleNewChat}
         handleSelectChat={handleSelectChat}
         mutate={mutate}
-        setCurrentChatTitle={setCurrentChatTitle}
       />
     </div>
   );

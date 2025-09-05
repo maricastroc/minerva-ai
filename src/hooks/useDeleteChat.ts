@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react';
 import { KeyedMutator } from 'swr';
 import { AxiosResponse } from 'axios';
@@ -8,30 +7,38 @@ import { handleApiError } from '@/utils/handleApiError';
 import { useAppContext } from '@/contexts/AppContext';
 
 export const useDeleteChat = (
-  mutate: KeyedMutator<AxiosResponse<ChatProps[], any>>
+  chatId: string,
+  mutate: KeyedMutator<AxiosResponse<ChatProps[]>>
 ) => {
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const { currentChatId, handleCurrentChatId } = useAppContext();
+  const {
+    currentChatId,
+    handleCurrentChatTitle,
+    handleCurrentChatId,
+    handleMessages,
+  } = useAppContext();
 
-  const deleteChat = async (chatId: string): Promise<void> => {
+  const deleteChat = async (): Promise<void> => {
     try {
-      setLoading(true);
+      setIsLoading(true);
 
-      await api.delete(`/conversations/${chatId}`);
+      await api.delete(`/user/chats/${chatId}/delete`);
 
       await mutate();
 
       if (currentChatId === chatId) {
         handleCurrentChatId(null);
+        handleCurrentChatTitle(null);
+        handleMessages([]);
       }
     } catch (error) {
       handleApiError(error);
       throw error;
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
-  return { deleteChat, loading };
+  return { deleteChat, isLoading };
 };

@@ -18,7 +18,6 @@ interface Props {
   editingChatId: string | null;
   setEditingChatId: (id: string | null) => void;
   mutate: KeyedMutator<AxiosResponse<ChatProps[]>>;
-  setCurrentChatTitle: (value: string) => void;
   isMobile?: boolean;
 }
 
@@ -28,7 +27,6 @@ export const ChatCard = ({
   editingChatId,
   setEditingChatId,
   mutate,
-  setCurrentChatTitle,
   isMobile = false,
 }: Props) => {
   const { currentChatId } = useAppContext();
@@ -46,19 +44,13 @@ export const ChatCard = ({
 
   const debouncedTitle = useDebounce(localTitle, 500);
 
-  const { updateChatTitle } = useUpdateChatTitle(
-    mutate,
-    setCurrentChatTitle,
-    currentChatId
-  );
+  const { updateChatTitle } = useUpdateChatTitle(mutate, currentChatId);
 
   useEffect(() => {
     if (isEditing && debouncedTitle !== chat.title && debouncedTitle.trim()) {
       updateChatTitle(chatId, debouncedTitle.trim());
     }
   }, [debouncedTitle, isEditing]);
-
-  useClickOutside([dropdownRef], () => setIsDropdownOpen(false));
 
   useClickOutside([inputRef], () => {
     if (isEditing) {
@@ -80,7 +72,7 @@ export const ChatCard = ({
         {
           'bg-primary-gray650': isSelected || isDropdownOpen,
           'bg-primary-gray700': isEditing,
-          'px-[0.8rem]': !isMobile, // ✅ jeito certo
+          'px-[0.8rem]': !isMobile,
         }
       )}
       onClick={handleCardClick}
@@ -136,6 +128,8 @@ export const ChatCard = ({
                 setIsDropdownOpen(false);
               }}
               onDelete={() => setIsDropdownOpen(false)}
+              chatId={chatId}
+              mutate={mutate}
               isMobile={isMobile}
             />
           )}

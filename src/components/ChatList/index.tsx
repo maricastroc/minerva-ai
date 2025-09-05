@@ -10,7 +10,6 @@ interface ChatListProps {
   editingChatId: string | null;
   setEditingChatId: (id: string | null) => void;
   mutate: KeyedMutator<AxiosResponse<ChatProps[]>>;
-  setCurrentChatTitle: (value: string) => void;
 }
 
 export const ChatList = ({
@@ -19,7 +18,6 @@ export const ChatList = ({
   editingChatId,
   setEditingChatId,
   mutate,
-  setCurrentChatTitle,
 }: ChatListProps) => {
   const isMobile = useScreenSize(768);
 
@@ -41,7 +39,6 @@ export const ChatList = ({
               editingChatId={editingChatId}
               setEditingChatId={setEditingChatId}
               mutate={mutate}
-              setCurrentChatTitle={setCurrentChatTitle}
             />
           ))}
         </>

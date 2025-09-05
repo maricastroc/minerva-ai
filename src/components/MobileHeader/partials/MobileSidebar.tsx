@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ChatProps } from '@/types/chat';
 import { motion } from 'framer-motion';
 
@@ -16,8 +15,7 @@ interface Props {
   chatHistory: ChatProps[] | undefined;
   handleSelectChat: (value: string) => void;
   handleNewChat: () => void;
-  mutate: KeyedMutator<AxiosResponse<ChatProps[], any>>;
-  setCurrentChatTitle: (value: string) => void;
+  mutate: KeyedMutator<AxiosResponse<ChatProps[]>>;
 }
 
 export const MobileSidebar = ({
@@ -27,7 +25,6 @@ export const MobileSidebar = ({
   handleNewChat,
   handleSelectChat,
   mutate,
-  setCurrentChatTitle,
 }: Props) => {
   const [editingChatId, setEditingChatId] = useState<string | null>(null);
 
@@ -56,7 +53,6 @@ export const MobileSidebar = ({
           editingChatId={editingChatId}
           setEditingChatId={setEditingChatId}
           mutate={mutate}
-          setCurrentChatTitle={setCurrentChatTitle}
         />
 
         <UserSection isMobile />

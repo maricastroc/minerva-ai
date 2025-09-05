@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
 import { api } from '@/lib/axios';
-import { MessageProps } from '@/types/message';
 import { ChatProps } from '@/types/chat';
 import useRequest from '@/hooks/useRequest';
 import { ASSISTANT_ROLE, USER_ROLE } from '@/utils/constants';
@@ -14,15 +13,18 @@ export interface Message {
 }
 
 export function useChat() {
-  const { currentChatId, handleCurrentChatId } = useAppContext();
-
-  const [messages, setMessages] = useState<Message[]>([]);
+  const {
+    messages,
+    currentChatId,
+    handleCurrentChatId,
+    loadChatMessages,
+    handleMessages,
+    handleCurrentChatTitle,
+  } = useAppContext();
 
   const [input, setInput] = useState('');
 
   const [isLoading, setIsLoading] = useState(false);
-
-  const [currentChatTitle, setCurrentChatTitle] = useState<string | null>(null);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -36,42 +38,24 @@ export function useChat() {
 
   useEffect(() => scrollToBottom(), [messages]);
 
-  const loadChatMessages = async (chatId: string) => {
-    const response = await api.get(`/user/chats/${chatId}/messages`);
-
-    const msgs: Message[] = response.data.data.messages.map(
-      (msg: MessageProps) => ({
-        id: msg.id,
-        content: msg.content,
-        role: msg.role as 'USER' | 'ASSISTANT',
-        timestamp: new Date(msg.timestamp),
-      })
-    );
-
-    setMessages(msgs);
-
-    setCurrentChatTitle(response.data.data.title);
-
-    handleCurrentChatId(chatId);
-  };
-
   const handleSelectChat = async (chatId: string) => {
     if (chatId === currentChatId) return;
 
-    setMessages([]);
+    handleMessages([]);
 
     await loadChatMessages(chatId);
   };
 
   const handleNewChat = () => {
-    setMessages([]);
+    handleMessages([]);
     handleCurrentChatId(null);
-    setCurrentChatTitle(null);
+    handleCurrentChatTitle(null);
     setInput('');
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!input.trim() || isLoading) return;
 
     const userMessage: Message = {
@@ -81,7 +65,7 @@ export function useChat() {
       timestamp: new Date(),
     };
 
-    setMessages((prev) => [...prev, userMessage]);
+    handleMessages((prev) => [...prev, userMessage]);
     setInput('');
     setIsLoading(true);
 
@@ -101,19 +85,23 @@ export function useChat() {
         role: ASSISTANT_ROLE,
         timestamp: new Date(),
       };
-      setMessages((prev) => [...prev, assistantMessage]);
+
+      handleMessages((prev) => [...prev, assistantMessage]);
 
       if (data.isNewConversation) {
         handleCurrentChatId(data.chatID);
+
         const chatResponse = await api.get<ChatProps>(
           `/user/chats/${data.chatID}`
         );
-        setCurrentChatTitle(chatResponse.data.title);
+
+        handleCurrentChatTitle(chatResponse.data.title);
         mutate();
       }
     } catch (err) {
       console.error(err);
-      setMessages((prev) => [
+
+      handleMessages((prev) => [
         ...prev,
         {
           id: (Date.now() + 1).toString(),
@@ -133,13 +121,11 @@ export function useChat() {
     setInput,
     isLoading,
     currentChatId,
-    currentChatTitle,
     chatHistory,
     handleSelectChat,
     handleNewChat,
     handleSubmit,
     messagesEndRef,
     mutate,
-    setCurrentChatTitle,
   };
 }

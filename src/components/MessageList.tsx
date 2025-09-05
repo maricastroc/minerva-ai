@@ -1,20 +1,21 @@
 import { MessageProps } from '@/types/message';
 import { MessageItem } from './MessageItem';
 import { LoadingComponent } from './LoadingComponent';
+import { useAppContext } from '@/contexts/AppContext';
 
 interface MessageListProps {
   messages: MessageProps[];
   isLoading: boolean;
-  currentChatTitle: string | null;
   isMobile: boolean;
 }
 
 export const MessageList = ({
   messages,
   isLoading,
-  currentChatTitle,
   isMobile,
 }: MessageListProps) => {
+  const { currentChatTitle } = useAppContext();
+
   return (
     <div className={`flex flex-col h-[100dvh] w-full bg-primary-gray900`}>
       {!isMobile && currentChatTitle && (

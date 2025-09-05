@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ChatProps } from '@/types/chat';
 import Image from 'next/image';
 import { UserSection } from './UserSection';
@@ -16,8 +15,7 @@ interface Props {
   chatHistory: ChatProps[] | undefined;
   handleSelectChat: (value: string) => void;
   handleNewChat: () => void;
-  mutate: KeyedMutator<AxiosResponse<ChatProps[], any>>;
-  setCurrentChatTitle: (value: string) => void;
+  mutate: KeyedMutator<AxiosResponse<ChatProps[]>>;
 }
 
 export const Sidebar = ({
@@ -27,7 +25,6 @@ export const Sidebar = ({
   handleSelectChat,
   handleNewChat,
   mutate,
-  setCurrentChatTitle,
 }: Props) => {
   const [editingChatId, setEditingChatId] = useState<string | null>(null);
 
@@ -58,7 +55,6 @@ export const Sidebar = ({
             editingChatId={editingChatId}
             setEditingChatId={setEditingChatId}
             mutate={mutate}
-            setCurrentChatTitle={setCurrentChatTitle}
           />
           <UserSection />
         </>
