@@ -1,13 +1,6 @@
 import { ASSISTANT_ROLE, USER_ROLE } from '@/utils/constants';
 import { MarkdownRenderer } from './MarkdownRenderer';
 import { MessageProps } from '@/types/message';
-import {
-  ArrowClockwiseIcon,
-  CheckIcon,
-  CopyIcon,
-  MicrophoneIcon,
-  StopCircleIcon,
-} from '@phosphor-icons/react';
 import { useChat } from '@/hooks/useChat';
 import { useState } from 'react';
 import { useAppContext } from '@/contexts/AppContext';
@@ -15,6 +8,14 @@ import { useAudio } from '@/contexts/AudioContext';
 import clsx from 'clsx';
 import { IconButton } from './IconButton';
 import { handleApiError } from '@/utils/handleApiError';
+import {
+  IconCancel,
+  IconCheck,
+  IconCopy,
+  IconMicrophone,
+  IconRotate,
+} from '@tabler/icons-react';
+import { Tooltip } from 'react-tooltip';
 
 export const MessageItem = ({ message }: { message: MessageProps }) => {
   const { handleRegenerate } = useChat();
@@ -78,22 +79,66 @@ export const MessageItem = ({ message }: { message: MessageProps }) => {
           {isAssistantMessage ? (
             <div className="flex flex-col justify-end items-start">
               <MarkdownRenderer content={message.content} />
-              <div className="mt-[-0.5rem] flex gap-1">
+              <div className="mt-[-0.2rem] flex gap-2">
                 <IconButton onClick={handleCopy}>
-                  {copied ? <CheckIcon size={18} /> : <CopyIcon size={18} />}
+                  {copied ? (
+                    <IconCheck size={20} />
+                  ) : (
+                    <IconCopy
+                      data-tooltip-id={'copy'}
+                      data-tooltip-content={'Copy'}
+                      size={20}
+                    />
+                  )}
                 </IconButton>
 
                 <IconButton onClick={handleRegenerateClick}>
-                  <ArrowClockwiseIcon size={18} />
+                  <IconRotate
+                    data-tooltip-id={'regenerate'}
+                    data-tooltip-content={'Regenerate'}
+                    size={20}
+                  />
                 </IconButton>
 
                 <IconButton onClick={handleAudioClick}>
                   {isThisMessageSpeaking ? (
-                    <StopCircleIcon size={18} />
+                    <IconCancel
+                      data-tooltip-id={'stop'}
+                      data-tooltip-content={'Stop'}
+                      size={20}
+                    />
                   ) : (
-                    <MicrophoneIcon size={18} />
+                    <IconMicrophone
+                      data-tooltip-id={'audio'}
+                      data-tooltip-content={'Read aloud'}
+                      size={20}
+                    />
                   )}
                 </IconButton>
+
+                <Tooltip
+                  id={'audio'}
+                  place="bottom"
+                  className="custom-tooltip"
+                />
+
+                <Tooltip
+                  id={'stop'}
+                  place="bottom"
+                  className="custom-tooltip"
+                />
+
+                <Tooltip
+                  id={'regenerate'}
+                  place="bottom"
+                  className="custom-tooltip"
+                />
+
+                <Tooltip
+                  id={'copy'}
+                  place="bottom"
+                  className="custom-tooltip"
+                />
               </div>
             </div>
           ) : (

@@ -61,7 +61,7 @@ export const Sidebar = ({
       ) : (
         <button
           onClick={() => setIsOpen(true)}
-          className="p-2 bg-transparent rounded-md hover:bg-gray-800 transition-colors"
+          className="cursor-pointer p-4 bg-transparent rounded-md hover:bg-primary-gray700 transition-colors"
         >
           <Image width={26} height={26} alt="Logo" src="/logo.svg" />
         </button>

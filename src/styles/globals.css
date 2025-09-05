@@ -16,7 +16,10 @@
   --color-primary-gray600: #303030;
   --color-primary-gray500: #44454a;
   --color-primary-gray400: #4A4A4A;
-  --color-primary-gray300: #bbbfc4;
+  --color-primary-gray300: #5C5C5C;
+  --color-primary-gray200: #747474;
+  --color-primary-gray100: #a5a5a5;
+--color-primary-gray50: #E8E8E8;
   --color-primary-blue600: #506fe0;
   --color-primary-blue500: #6185f6;
   --color-primary-blue400: #7a96f7;
@@ -79,4 +82,14 @@ select:-webkit-autofill {
     padding-left: env(safe-area-inset-left);
     padding-right: env(safe-area-inset-right);
   }
+}
+
+.custom-tooltip {
+  background-color: #303030 !important;
+  padding: 0.2rem 0.6rem !important;
+  font-size: 13px !important;
+  border-radius: 1rem !important;
+  font-weight: 500 !important;
+  color: white !important;
+  z-index: 9999 !important;
 }
