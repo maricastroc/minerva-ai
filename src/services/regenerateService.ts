@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma';
 import { RegenerateMessageRequest } from '@/types/regenerate-message-request';
 import { RegenerateMessageResponse } from '@/types/regenerate-message-response';
 import { PRIORITY_MODELS } from '@/utils/constants';
+import { handleApiError } from '@/utils/handleApiError';
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 
@@ -12,7 +13,7 @@ export class RegenerateService {
     request: RegenerateMessageRequest
   ): Promise<RegenerateMessageResponse> {
     const { userId, conversationId, messageId } = request;
-
+    console.log(userId, conversationId, messageId);
     const existingMessage = await prisma.message.findUnique({
       where: { id: messageId },
       select: { regenerated: true, content: true, role: true },
@@ -122,9 +123,7 @@ export class RegenerateService {
         text = text.replace(/^Assistant:?\s*/i, '').trim();
         return text;
       } catch (error: any) {
-        console.log(`Model ${modelName} failed:`, error.message);
-        if (error.status === 429) continue;
-        throw error;
+        handleApiError(error);
       }
     }
 

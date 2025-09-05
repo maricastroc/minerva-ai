@@ -62,13 +62,15 @@ export function useChat() {
 
     if (!input.trim() || isMessageLoading) return;
 
+    // 1. Cria a mensagem do usuário com ID temporário
     const userMessage: Message = {
-      id: Date.now().toString(),
+      id: Date.now().toString(), // ID temporário
       content: input,
       role: USER_ROLE,
       timestamp: new Date(),
     };
 
+    // 2. Adiciona a mensagem do usuário imediatamente
     handleMessages((prev) => [...prev, userMessage]);
     setInput('');
     handleIsMessageLoading(true);
@@ -83,14 +85,51 @@ export function useChat() {
         })),
       });
 
-      const assistantMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        content: data.reply,
-        role: ASSISTANT_ROLE,
-        timestamp: new Date(),
-      };
+      console.log('Response data:', data);
 
-      handleMessages((prev) => [...prev, assistantMessage]);
+      // 3. ATUALIZA as mensagens com os IDs reais do backend
+      handleMessages((prev) => {
+        // Encontra a mensagem do usuário (última mensagem)
+        const lastUserMessageIndex = prev.findIndex(
+          (msg) => msg.id === userMessage.id && msg.role === USER_ROLE
+        );
+
+        if (lastUserMessageIndex === -1) {
+          // Fallback: se não encontrar, adiciona ambas as mensagens
+          return [
+            ...prev,
+            {
+              id: data.messageIds.userMessageId,
+              content: userMessage.content,
+              role: USER_ROLE,
+              timestamp: new Date(),
+            },
+            {
+              id: data.messageIds.assistantMessageId,
+              content: data.reply,
+              role: ASSISTANT_ROLE,
+              timestamp: new Date(),
+            },
+          ];
+        }
+
+        // Substitui a mensagem do usuário temporária pela real
+        const updatedMessages = [...prev];
+        updatedMessages[lastUserMessageIndex] = {
+          ...updatedMessages[lastUserMessageIndex],
+          id: data.messageIds.userMessageId, // ID real do backend
+        };
+
+        // Adiciona a mensagem do assistant com ID real
+        updatedMessages.push({
+          id: data.messageIds.assistantMessageId,
+          content: data.reply,
+          role: ASSISTANT_ROLE,
+          timestamp: new Date(),
+        });
+
+        return updatedMessages;
+      });
 
       if (data.isNewConversation) {
         handleCurrentChatId(data.chatID);
@@ -99,21 +138,30 @@ export function useChat() {
           `/user/chats/${data.chatID}`
         );
 
+        console.log('Chat response:', chatResponse);
+
         handleCurrentChatTitle(chatResponse.data.title);
+        handleCurrentChatId(String(chatResponse?.data.id));
         mutate();
       }
     } catch (err) {
       console.error(err);
 
-      handleMessages((prev) => [
-        ...prev,
-        {
-          id: (Date.now() + 1).toString(),
-          content: 'Error connecting to the chatbot. Please try again.',
-          role: ASSISTANT_ROLE,
-          timestamp: new Date(),
-        },
-      ]);
+      // Em caso de erro, mantém a mensagem do usuário mas remove o ID temporário
+      handleMessages((prev) =>
+        prev
+          .map((msg) =>
+            msg.id === userMessage.id
+              ? { ...msg, id: 'temp-' + msg.id } // Marca como temporário
+              : msg
+          )
+          .concat({
+            id: Date.now().toString(),
+            content: 'Error connecting to the chatbot. Please try again.',
+            role: ASSISTANT_ROLE,
+            timestamp: new Date(),
+          })
+      );
     } finally {
       handleIsMessageLoading(false);
     }

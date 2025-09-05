@@ -17,7 +17,7 @@ export const MessageItem = ({ message }: { message: MessageProps }) => {
 
   const handleRegenerateClick = async () => {
     if (isMessageLoading || isRegenerating) return;
-
+    console.log(message);
     setIsRegenerating(true);
     try {
       await handleRegenerate(String(message.id));

@@ -60,22 +60,18 @@ export class ChatService {
         }),
     ]);
 
-    const [assistantMessageId] = await Promise.all([
-      prisma.message
-        .create({
-          data: {
-            content: reply,
-            role: 'ASSISTANT',
-            conversationId: conversationId,
-          },
-        })
-        .then((msg) => msg.id),
+    const assistantMessage = await prisma.message.create({
+      data: {
+        content: reply,
+        role: 'ASSISTANT',
+        conversationId: conversationId,
+      },
+    });
 
-      prisma.conversation.update({
-        where: { id: conversationId },
-        data: { updatedAt: new Date() },
-      }),
-    ]);
+    await prisma.conversation.update({
+      where: { id: conversationId },
+      data: { updatedAt: new Date() },
+    });
 
     return {
       reply,
@@ -83,7 +79,7 @@ export class ChatService {
       isNewConversation,
       messageIds: {
         userMessageId,
-        assistantMessageId,
+        assistantMessageId: assistantMessage.id,
       },
     };
   }
@@ -178,7 +174,7 @@ export class ChatService {
     const [conversationId, isNewConversation] =
       await this.getOrCreateConversation(userId, message, chatID);
 
-    const [userMessageId, assistantMessageId] = await Promise.all([
+    const [userMessageId, assistantMessage] = await Promise.all([
       prisma.message
         .create({
           data: {
@@ -189,15 +185,13 @@ export class ChatService {
         })
         .then((msg) => msg.id),
 
-      prisma.message
-        .create({
-          data: {
-            content: cachedResponse,
-            role: 'ASSISTANT',
-            conversationId: conversationId,
-          },
-        })
-        .then((msg) => msg.id),
+      prisma.message.create({
+        data: {
+          content: cachedResponse,
+          role: 'ASSISTANT',
+          conversationId: conversationId,
+        },
+      }),
 
       prisma.conversation.update({
         where: { id: conversationId },
@@ -211,7 +205,7 @@ export class ChatService {
       isNewConversation,
       messageIds: {
         userMessageId,
-        assistantMessageId,
+        assistantMessageId: assistantMessage.id, // ← RETORNE O ID CORRETO
       },
     };
   }

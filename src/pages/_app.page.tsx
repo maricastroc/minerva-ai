@@ -20,21 +20,20 @@ export default function App({
       <AppProvider>
         <main className={baiJamuree.variable}>
           <Toaster
-            position="top-right"
             toastOptions={{
               style: {
-                backgroundColor: '#343538',
+                backgroundColor: '#292a2d',
                 color: '#fff',
               },
               success: {
                 style: {
-                  backgroundColor: '#343538',
+                  backgroundColor: '#292a2d',
                   color: '#fff',
                 },
               },
               error: {
                 style: {
-                  backgroundColor: '#343538',
+                  backgroundColor: '#292a2d',
                   color: '#fff',
                 },
               },
