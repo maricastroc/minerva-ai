@@ -5,7 +5,9 @@ export function handleApiError(error: unknown) {
   if (axios.isAxiosError(error) && error.response) {
     let errorMessage = 'Ooops, something went wrong. Please try again later.';
 
-    if (typeof error.response.data.message === 'string') {
+    if (typeof error.response.data.error === 'string') {
+      errorMessage = error.response.data.error;
+    } else if (typeof error.response.data.message === 'string') {
       errorMessage = error.response.data.message;
     } else if (
       error.response.data.message &&

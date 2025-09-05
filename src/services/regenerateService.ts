@@ -24,7 +24,7 @@ export class RegenerateService {
       );
     }
 
-    if (existingMessage?.role !== 'ASSISTANT') {
+    if (existingMessage?.role?.toUpperCase() !== 'ASSISTANT') {
       throw new Error('Only assistant messages can be regenerated');
     }
 
@@ -64,29 +64,20 @@ export class RegenerateService {
         content: msg.content,
       }));
 
-    // Gera uma nova resposta melhorada
     const newResponse = await this.generateRegeneratedResponse(
       conversationHistory,
       userMessage.content,
       existingMessage.content
     );
 
-    // Cria uma nova mensagem (em vez de atualizar a existente)
-    const newMessage = await prisma.message.create({
+    const updatedMessage = await prisma.message.update({
+      where: { id: messageId },
       data: {
         content: newResponse,
-        role: 'ASSISTANT',
         model: 'regenerated',
         regenerated: true,
-        conversationId: conversationId,
         tokens: null,
-        originalMessageId: messageId, // Relaciona com a mensagem original
       },
-    });
-
-    await prisma.message.update({
-      where: { id: messageId },
-      data: { regenerated: true },
     });
 
     await prisma.conversation.update({
@@ -96,7 +87,7 @@ export class RegenerateService {
 
     return {
       regeneratedReply: newResponse,
-      newMessageId: newMessage.id,
+      newMessageId: updatedMessage.id,
       originalMessageId: messageId,
     };
   }

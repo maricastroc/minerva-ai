@@ -25,14 +25,13 @@ export default function Home() {
   const {
     input,
     setInput,
-    isLoading,
     chatHistory,
     handleSelectChat,
     handleNewChat,
     handleSubmit,
     mutate,
   } = useChat();
-  console.log(messages);
+
   const hasMessages = messages.length !== 0;
 
   const router = useRouter();
@@ -94,17 +93,12 @@ export default function Home() {
               )}
 
               {messages?.length > 0 && (
-                <MessageList
-                  messages={messages}
-                  isLoading={isLoading}
-                  isMobile={isMobile}
-                />
+                <MessageList messages={messages} isMobile={isMobile} />
               )}
 
               <ChatInput
                 input={input}
                 setInput={setInput}
-                isLoading={isLoading}
                 onSubmit={handleSubmit}
                 hasMessages={hasMessages}
                 isMobile={isMobile}

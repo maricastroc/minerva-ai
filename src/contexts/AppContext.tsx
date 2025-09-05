@@ -3,6 +3,8 @@ import { MessageProps } from '@/types/message';
 import React, { createContext, useContext, useState, useMemo } from 'react';
 
 interface AppContextType {
+  isMessageLoading: boolean;
+  handleIsMessageLoading: (value: boolean) => void;
   currentChatId: string | null;
   handleCurrentChatId: (value: string | null) => void;
   currentChatTitle: string | null;
@@ -20,6 +22,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [currentChatId, setCurrentChatId] = useState<string | null>(null);
+
+  const [isMessageLoading, setIsMessageLoading] = useState(false);
 
   const [messages, setMessages] = useState<MessageProps[]>([]);
 
@@ -62,6 +66,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  const handleIsMessageLoading = (value: boolean) => {
+    setIsMessageLoading(value);
+  };
+
   const contextValue = useMemo(
     () => ({
       currentChatId,
@@ -71,8 +79,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
       loadChatMessages,
       handleMessages,
       messages,
+      isMessageLoading,
+      handleIsMessageLoading,
     }),
-    [currentChatId, currentChatTitle, messages]
+    [currentChatId, currentChatTitle, messages, isMessageLoading]
   );
 
   return (

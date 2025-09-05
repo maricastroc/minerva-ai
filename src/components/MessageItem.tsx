@@ -6,13 +6,17 @@ import { faCopy } from '@fortawesome/free-regular-svg-icons';
 import { ArrowClockwiseIcon } from '@phosphor-icons/react';
 import { useChat } from '@/hooks/useChat';
 import { useState } from 'react';
+import { useAppContext } from '@/contexts/AppContext';
 
 export const MessageItem = ({ message }: { message: MessageProps }) => {
-  const { handleRegenerate, isLoading } = useChat();
+  const { handleRegenerate } = useChat();
+
+  const { isMessageLoading } = useAppContext();
+
   const [isRegenerating, setIsRegenerating] = useState(false);
 
   const handleRegenerateClick = async () => {
-    if (isLoading || isRegenerating) return;
+    if (isMessageLoading || isRegenerating) return;
 
     setIsRegenerating(true);
     try {
