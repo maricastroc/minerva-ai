@@ -85,7 +85,11 @@ export function buildNextAuthOptions(
       }),
     ],
     callbacks: {
-      async jwt({ token, user }) {
+      async jwt({ token, user, account }) {
+        if (account) {
+          token.provider = account.provider;
+        }
+
         if (user) {
           token.id = user.id;
           token.name = user.name;
@@ -94,6 +98,7 @@ export function buildNextAuthOptions(
         }
         return token;
       },
+
       async session({ session, token }) {
         if (token) {
           session.user = {
@@ -102,6 +107,7 @@ export function buildNextAuthOptions(
             email: token.email as string,
             avatarUrl: token.avatarUrl as string,
             role: token.role as 'ADMIN' | 'USER',
+            provider: token.provider as string,
           };
         }
         return session;

@@ -27,17 +27,17 @@ export const MobileHeader = ({
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
-    <div className="w-full sticky top-0 z-50 bg-primary-gray900 p-3">
+    <div className="w-full sticky top-0 z-50 bg-gray-900 p-3">
       <div className="p-2 w-full flex items-center justify-between">
         <button
           onClick={() => setIsSidebarOpen(true)}
-          className="cursor-pointer rounded-md hover:bg-primary-gray700 transition-colors"
+          className="cursor-pointer rounded-md hover:bg-gray-700 transition-colors"
         >
           <FontAwesomeIcon icon={faBars} size="lg" />
         </button>
 
         <div className="flex w-full">
-          <p className="w-full font-semibold text-base text-primary-gray25 text-center">
+          <p className="w-full font-semibold text-base text-gray-25 text-center">
             {currentChatTitle || 'New Chat'}
           </p>
         </div>

@@ -9,7 +9,7 @@ export const SidebarHeader = ({ onClose }: { onClose: () => void }) => (
       aria-label="Close menu"
       className="p-2 rounded-md hover:bg-gray-700 transition-colors"
     >
-      <SidebarSimpleIcon className="text-primary-gray100" size={22} />
+      <SidebarSimpleIcon className="text-gray-100" size={22} />
     </button>
   </div>
 );

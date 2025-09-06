@@ -3,6 +3,8 @@ import { MessageProps } from '@/types/message';
 import React, { createContext, useContext, useState, useMemo } from 'react';
 
 interface AppContextType {
+  isDarkTheme: boolean;
+  handleIsDarkTheme: (value: boolean) => void;
   isMessageLoading: boolean;
   handleIsMessageLoading: (value: boolean) => void;
   currentChatId: string | null;
@@ -21,6 +23,8 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
+
   const [currentChatId, setCurrentChatId] = useState<string | null>(null);
 
   const [isMessageLoading, setIsMessageLoading] = useState(false);
@@ -52,6 +56,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
     setCurrentChatId(value);
   };
 
+  const handleIsDarkTheme = (value: boolean) => {
+    setIsDarkTheme(value);
+  };
+
   const handleCurrentChatTitle = (value: string | null) => {
     setCurrentChatTitle(value);
   };
@@ -81,8 +89,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
       messages,
       isMessageLoading,
       handleIsMessageLoading,
+      isDarkTheme,
+      handleIsDarkTheme,
     }),
-    [currentChatId, currentChatTitle, messages, isMessageLoading]
+    [currentChatId, currentChatTitle, messages, isMessageLoading, isDarkTheme]
   );
 
   return (

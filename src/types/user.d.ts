@@ -8,6 +8,7 @@ export interface UserProps {
   createdAt?: string;
   password?: string | null;
   email?: string;
+  provider?: string;
 
   accounts?: AccountProps[] | null | undefined;
   sessions?: SessionProps[] | null | undefined;

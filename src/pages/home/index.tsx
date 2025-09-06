@@ -23,6 +23,10 @@ export default function Home() {
 
   const { currentChatTitle, messages } = useAppContext();
 
+  const session = useSession();
+
+  console.log(session);
+
   const {
     input,
     setInput,
@@ -62,7 +66,7 @@ export default function Home() {
         ]}
       />
       {isClient && (
-        <div className="flex h-[100dvh] bg-primary-gray900 text-primary-gray50 overflow-hidden safe-area">
+        <div className="flex h-[100dvh] bg-gray-900 text-gray-50 overflow-hidden safe-area">
           {!isMobile && (
             <Sidebar
               isOpen={isSidebarOpen}

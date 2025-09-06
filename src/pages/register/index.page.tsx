@@ -83,7 +83,7 @@ export default function Register() {
             Already registered?{' '}
             <a
               href="/login"
-              className="text-primary-blue500 hover:text-primary-blue300 font-semibold transition-colors"
+              className="text-blue-500 hover:text-blue-300 font-semibold transition-colors"
             >
               Sign in
             </a>

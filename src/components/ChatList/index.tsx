@@ -26,7 +26,7 @@ export const ChatList = ({
       {chatHistory && chatHistory?.length > 0 && (
         <>
           <p
-            className={`mt-2 font-medium text-primary-gray100 mb-2 ${isMobile ? 'text-base ml-3' : 'text-sm ml-3'}`}
+            className={`mt-2 font-medium text-gray-100 mb-2 ${isMobile ? 'text-base ml-3' : 'text-sm ml-3'}`}
           >
             Chats
           </p>

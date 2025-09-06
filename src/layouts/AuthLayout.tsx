@@ -38,7 +38,7 @@ function SocialLoginButtons({
       {socialProviders.map((provider) => (
         <button
           key={provider.name}
-          className="cursor-pointer border border-primary-gray400 rounded-lg py-[0.65rem] flex items-center justify-center gap-3 w-full hover:bg-primary-gray500 hover:border-primary-gray500 transition-colors"
+          className="cursor-pointer border border-gray-400 rounded-lg py-[0.65rem] flex items-center justify-center gap-3 w-full hover:bg-gray-500 hover:border-gray-500 transition-colors"
           onClick={() => handleSignIn(provider.provider)}
         >
           <Icon icon={provider.icon} fontSize={24} color={provider.color} />
@@ -70,12 +70,12 @@ export function AuthLayout({
   }
 
   return (
-    <div className="min-h-screen bg-primary-gray900 flex flex-col justify-center items-center sm:p-6 p-4 pt-8">
+    <div className="min-h-screen bg-gray-900 flex flex-col justify-center items-center sm:p-6 p-4 pt-8">
       <div className="mb-8">
         <Image width={180} height={180} alt="Logo" src="/logo-full.svg" />
       </div>
 
-      <div className="w-full border border-white/5 overflow-y-auto chat-scroll-container max-w-xl bg-primary-gray800 backdrop-blur-sm rounded-2xl p-6 sm:p-8">
+      <div className="w-full border border-white/5 overflow-y-auto chat-scroll-container max-w-xl bg-gray-800 backdrop-blur-sm rounded-2xl p-6 sm:p-8">
         <h1 className="text-2xl text-white/80 text-center mb-6">{title}</h1>
 
         {children}

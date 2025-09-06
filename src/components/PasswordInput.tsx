@@ -28,8 +28,8 @@ export const PasswordInput = ({
       <div className="relative">
         <input
           type={showPassword ? 'text' : 'password'}
-          className={`w-full px-4 py-3 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-primary-blue500 transition-colors pr-12 ${className} ${
-            error ? 'border-primary-error' : ''
+          className={`w-full px-4 py-3 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:rimary-blue-500 transition-colors pr-12 ${className} ${
+            error ? 'border-error' : ''
           }`}
           {...props}
         />
@@ -43,9 +43,7 @@ export const PasswordInput = ({
           </button>
         )}
       </div>
-      {error && (
-        <p className="text-primary-error text-xs mt-1">{error.message}</p>
-      )}
+      {error && <p className="text-error text-xs mt-1">{error.message}</p>}
     </div>
   );
 };

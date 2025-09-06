@@ -5,8 +5,9 @@ import { Toaster } from 'react-hot-toast';
 import { Bai_Jamjuree } from 'next/font/google';
 import { AppProvider } from '@/contexts/AppContext';
 import { AudioProvider } from '@/contexts/AudioContext';
+import { useEffect } from 'react';
 
-const baiJamuree = Bai_Jamjuree({
+const baiJamjuree = Bai_Jamjuree({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
   variable: '--font-sans',
@@ -16,27 +17,52 @@ export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }: AppProps) {
+  useEffect(() => {
+    const loadTheme = () => {
+      const savedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia(
+        '(prefers-color-scheme: dark)'
+      ).matches;
+
+      if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    };
+
+    loadTheme();
+  }, []);
+
   return (
     <SessionProvider session={session}>
       <AppProvider>
         <AudioProvider>
-          <main className={baiJamuree.variable}>
+          <main className={`${baiJamjuree.variable} font-sans`}>
             <Toaster
               toastOptions={{
                 style: {
-                  backgroundColor: '#292a2d',
-                  color: '#fff',
+                  backgroundColor: 'var(--color-gray-700)',
+                  color: 'var(--color-foreground)',
                 },
                 success: {
                   style: {
-                    backgroundColor: '#292a2d',
-                    color: '#fff',
+                    backgroundColor: 'var(--color-gray-700)',
+                    color: 'var(--color-foreground)',
+                  },
+                  iconTheme: {
+                    primary: 'var(--color-blue-500)',
+                    secondary: 'var(--color-foreground)',
                   },
                 },
                 error: {
                   style: {
-                    backgroundColor: '#292a2d',
-                    color: '#fff',
+                    backgroundColor: 'var(--color-gray-700)',
+                    color: 'var(--color-foreground)',
+                  },
+                  iconTheme: {
+                    primary: 'var(--color-red-500)',
+                    secondary: 'var(--color-foreground)',
                   },
                 },
               }}

@@ -16,7 +16,7 @@ export const Button = ({
     'cursor-pointer w-full py-3 px-4 rounded-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center';
 
   const variantClasses = {
-    primary: 'bg-primary-blue500 text-white hover:bg-primary-blue400',
+    primary: 'bg-blue-500 text-white hover:bg-blue-400',
     secondary: 'bg-white/10 text-white hover:bg-white/20',
   };
 

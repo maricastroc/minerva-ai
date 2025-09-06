@@ -17,12 +17,12 @@ const CodeBlock = ({ inline, className, children, ...props }: any) => {
   return !inline ? (
     <span className="relative my-2">
       <span className="flex justify-between items-center bg-gray-700 px-4 py-1 rounded-t-md">
-        <span className="text-xs text-primary-gray50">
+        <span className="text-xs text-gray-50">
           {match ? match[1] : 'code'}
         </span>
         <button
           onClick={copyToClipboard}
-          className="text-xs text-primary-gray50 hover:text-white transition-colors"
+          className="text-xs text-gray-50 hover:text-white transition-colors"
           title="Copy code"
         >
           {copied ? '✓ Copied' : '📋 Copy'}
@@ -92,7 +92,7 @@ export const MarkdownRenderer = ({ content }: { content: string }) => {
     li: ({ ...props }) => <CustomListItem {...props} />,
     blockquote: ({ ...props }) => (
       <blockquote
-        className="border-l-4 border-gray-400 pl-4 my-4 italic text-primary-gray50"
+        className="border-l-4 border-gray-400 pl-4 my-4 italic text-gray-50"
         {...props}
       />
     ),

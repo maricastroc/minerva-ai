@@ -10,8 +10,8 @@ export const NewChatButton = ({ handleNewChat, isMobile = false }: Props) => {
   return (
     <button
       onClick={handleNewChat}
-      className={`flex bg-primary-gray500 cursor-pointer justify-center
-        rounded-3xl m-2 text-primary-gray50 items-center gap-2 font-semibold hover:bg-primary-gray400
+      className={`flex bg-primary-button cursor-pointer justify-center
+        rounded-3xl m-2 text-gray-50 duration-100 transition-all shadow-md items-center gap-2 font-semibold hover:bg-primary-button-hover
         py-[0.7rem] ${isMobile ? 'text-base' : 'text-sm mx-3'}`}
     >
       <FontAwesomeIcon icon={faPenToSquare} />

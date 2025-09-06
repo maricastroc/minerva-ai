@@ -3,35 +3,120 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  
+  --color-chat-input: #f9fafb;
+  --color-sidebar: #f9fafb;
+  --color-primary-button: #ffffff;
+  --color-primary-button-hover: #ffffff;
+  --color-chat-card-hover: #f1f2f5;
+  --color-dropdown-button-hover: #e6e8ea;
+  --color-user-card-hover: #e6e8ea;
+  --color-user-message: #eef3fd;
+  --color-dropdown: #ffffff;
+  --color-selected-chat-card: #e5ecfb;
+  --color-chat-card-hover: #f1f3f4;
+
+  --color-gray-900: #fffffe;
+  --color-gray-800: #f9fafb;
+  --color-gray-700: #e5e5e5;
+  --color-gray-600: #f9fafb;
+  --color-gray-500: #ffffff;
+  --color-gray-400: #737373;
+  --color-gray-300: #525252;
+  --color-gray-200: #404040;
+  --color-gray-100: #262626;
+  --color-gray-50:  #1a1a1a;
+  --color-gray-25:  #0a0a0a;  
+  
+  --color-blue-600: #506fe0;
+  --color-blue-500: #6185f6;
+  --color-blue-400: #7a96f7;
+  --color-blue-300: #93a6f8;
+  --color-blue-200: #acb7f9;
+  --color-blue-100: #c5c8fa;
+  
+  --color-red-500: #dd5252;
+  --color-red-300: #ee6e6c;
+  --color-error: #F44336;
+}
+
+[data-theme="dark"] {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  
+  --color-chat-input: #2d2c2e;
+  --color-sidebar: #1b1b1b;
+  --color-primary-button: #44454a;
+  --color-primary-button-hover: #4A4A4A;
+  --color-chat-card-hover: #2d2c2e;
+  --color-dropdown-button-hover: #44454a;
+  --color-user-card-hover: #2d2c2e;
+  --color-user-message: #303030;
+  --color-dropdown: #2d2c2e;
+  --color-selected-chat-card: #353538;
+  --color-chat-card-hover: #2c2c2e;
+
+  --color-gray-900: #151417;
+  --color-gray-800: #1b1b1b;
+  --color-gray-700: #292a2d;
+  --color-gray-600: #2d2c2e;
+  --color-gray-500: #44454a;
+  --color-gray-400: #4A4A4A;
+  --color-gray-300: #5C5C5C;
+  --color-gray-200: #747474;
+  --color-gray-100: #a5a5a5;
+  --color-gray-50: #E8E8E8;
+  --color-gray-25: #f7f7f7;
 }
 
 @theme inline {
+  /* Cores base */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  
+  /* Fontes */
   --font-sans: "Bai Jamjuree", sans-serif;
-  --color-primary-gray900: #151417;
-  --color-primary-gray800: #1b1b1b;
-  --color-primary-gray700: #292a2d;
-  --color-primary-gray650: #242424;
-  --color-primary-gray600: #303030;
-  --color-primary-gray500: #44454a;
-  --color-primary-gray400: #4A4A4A;
-  --color-primary-gray300: #5C5C5C;
-  --color-primary-gray200: #747474;
-  --color-primary-gray100: #a5a5a5;
-  --color-primary-gray50: #E8E8E8;
-  --color-primary-gray25: #f7f7f7;
-  --color-primary-blue600: #506fe0;
-  --color-primary-blue500: #6185f6;
-  --color-primary-blue400: #7a96f7;
-  --color-primary-blue300: #93a6f8;
-  --color-primary-blue200: #acb7f9;
-  --color-primary-blue100: #c5c8fa;
-  --color-primary-red500: #dd5252;
-  --color-primary-red300: #ee6e6c;
-  --color-primary-error: #F44336;
+  
+  --color-chat-input: var(--color-chat-input);
+  --color-sidebar: var(--color-sidebar);
+  --color-primary-button: var(--color-primary-button);
+  --color-primary-button-hover: var(--color-primary-button-hover);
+  --color-chat-card-hover: var(--color-chat-card-hover);
+  --color-dropdown: var(--color-dropdown-button-hover);
+  --color-dropdown-button-hover: var(--color-dropdown-button-hover);
+  --color-user-card-hover: var(--color-user-card-hover);
+  --color-user-message: var(--color-user-message);
+  --color-dropdown: var(--color-dropdown);
+  --color-selected-chat-card: var(--color-selected-chat-card);
+  --color-chat-card-hover: var(--color-chat-card-hover);
+
+  --color-gray-25: var(--color-gray-25);
+  --color-gray-50: var(--color-gray-50);
+  --color-gray-100: var(--color-gray-100);
+  --color-gray-200: var(--color-gray-200);
+  --color-gray-300: var(--color-gray-300);
+  --color-gray-400: var(--color-gray-400);
+  --color-gray-500: var(--color-gray-500);
+  --color-gray-600: var(--color-gray-600);
+  --color-gray-700: var(--color-gray-700);
+  --color-gray-800: var(--color-gray-800);
+  --color-gray-900: var(--color-gray-900);
+  
+  /* Cores azuis */
+  --color-blue-100: var(--color-blue-100);
+  --color-blue-200: var(--color-blue-200);
+  --color-blue-300: var(--color-blue-300);
+  --color-blue-400: var(--color-blue-400);
+  --color-blue-500: var(--color-blue-500);
+  --color-blue-600: var(--color-blue-600);
+  
+  /* Cores vermelhas */
+  --color-red-300: var(--color-red-300);
+  --color-red-500: var(--color-red-500);
+  --color-error: var(--color-error);
 }
 
+/* Media query para dark mode automático */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
@@ -39,13 +124,19 @@
   }
 }
 
+/* Classe para forçar dark mode */
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: "Bai Jamjuree", sans-serif;
+  font-family: var(--font-sans);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Suas customizações de scrollbar permanecem iguais */
 .chat-scroll-container::-webkit-scrollbar {
   width: 2px;
 }
