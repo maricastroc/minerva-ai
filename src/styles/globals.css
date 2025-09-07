@@ -9,12 +9,22 @@
   --color-primary-button: #ffffff;
   --color-primary-button-hover: #ffffff;
   --color-chat-card-hover: #f1f2f5;
-  --color-dropdown-button-hover: #e6e8ea;
   --color-user-card-hover: #e6e8ea;
   --color-user-message: #eef3fd;
   --color-dropdown: #ffffff;
   --color-selected-chat-card: #e5ecfb;
-  --color-chat-card-hover: #f1f3f4;
+  --color-dropdown-hover: #e5e9eb;
+  --color-action-icon: #82858b;
+  --color-action-icon-hover: #f2f2f4;
+  --color-tooltip: #2c2c2e;
+  --color-tooltip-text: #ffffff;
+  --color-modal: #ffffff;
+  --color-modal-text: #0a0a0a;
+  --color-delete: #d93427;
+  --color-disabled: #737373;
+  --color-cancel: #d8d8d8;
+  --color-cancel-hover: #f3f3f4;
+  --color-primary-text: #0a0a0a;
 
   --color-gray-900: #fffffe;
   --color-gray-800: #f9fafb;
@@ -26,7 +36,7 @@
   --color-gray-200: #404040;
   --color-gray-100: #262626;
   --color-gray-50:  #1a1a1a;
-  --color-gray-25:  #0a0a0a;  
+  --color-gray-25:  #0a0a0a;
   
   --color-blue-600: #506fe0;
   --color-blue-500: #6185f6;
@@ -49,12 +59,22 @@
   --color-primary-button: #44454a;
   --color-primary-button-hover: #4A4A4A;
   --color-chat-card-hover: #2d2c2e;
-  --color-dropdown-button-hover: #44454a;
   --color-user-card-hover: #2d2c2e;
   --color-user-message: #303030;
   --color-dropdown: #2d2c2e;
+  --color-dropdown-hover: #44454a;
   --color-selected-chat-card: #353538;
-  --color-chat-card-hover: #2c2c2e;
+  --color-action-icon: #262626;
+  --color-action-icon-hover: #272729;
+  --color-tooltip: #43444a;
+  --color-tooltip-text: #ffffff;
+  --color-delete: #ee6e6c;
+  --color-modal: #2d2c2e;
+  --color-modal-text: #f7f7f7;
+  --color-disabled: #737373;
+  --color-cancel: #4A4A4A;
+  --color-cancel-hover: #3d3d3e;
+  --color-primary-text: #f7f7f7;
 
   --color-gray-900: #151417;
   --color-gray-800: #1b1b1b;
@@ -70,11 +90,9 @@
 }
 
 @theme inline {
-  /* Cores base */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   
-  /* Fontes */
   --font-sans: "Bai Jamjuree", sans-serif;
   
   --color-chat-input: var(--color-chat-input);
@@ -82,13 +100,22 @@
   --color-primary-button: var(--color-primary-button);
   --color-primary-button-hover: var(--color-primary-button-hover);
   --color-chat-card-hover: var(--color-chat-card-hover);
-  --color-dropdown: var(--color-dropdown-button-hover);
-  --color-dropdown-button-hover: var(--color-dropdown-button-hover);
   --color-user-card-hover: var(--color-user-card-hover);
   --color-user-message: var(--color-user-message);
   --color-dropdown: var(--color-dropdown);
+  --color-dropdown-hover: var(--color-dropdown-hover);
   --color-selected-chat-card: var(--color-selected-chat-card);
-  --color-chat-card-hover: var(--color-chat-card-hover);
+  --color-action-icon: var(--color-action-icon);
+  --color-action-icon-hover: var(--color-action-icon-hover);
+  --color-tooltip: var(--color-tooltip);
+  --color-tooltip-text: var(--color-tooltip-text);
+  --color-delete: var(--color-delete);
+  --color-modal: var(--color-modal);
+  --color-modal-text: var(--color-modal-text);
+  --color-disabled: var(--color-disabled);
+  --color-cancel: var(--color-cancel);
+  --color-cancel-hover: var(--color-cancel-hover);
+  --color-primary-text: var(--color-primary-text);
 
   --color-gray-25: var(--color-gray-25);
   --color-gray-50: var(--color-gray-50);
@@ -102,7 +129,6 @@
   --color-gray-800: var(--color-gray-800);
   --color-gray-900: var(--color-gray-900);
   
-  /* Cores azuis */
   --color-blue-100: var(--color-blue-100);
   --color-blue-200: var(--color-blue-200);
   --color-blue-300: var(--color-blue-300);
@@ -177,11 +203,11 @@ select:-webkit-autofill {
 }
 
 .custom-tooltip {
-  background-color: #303030 !important;
+  background-color: var(--color-tooltip) !important;
   padding: 0.2rem 0.6rem !important;
   font-size: 13px !important;
   border-radius: 1rem !important;
   font-weight: 500 !important;
-  color: white !important;
+  color: var(--color-tooltip-text) !important;
   z-index: 9999 !important;
 }

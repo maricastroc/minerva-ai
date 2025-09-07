@@ -118,6 +118,7 @@ export const ChatCard = ({
             isDropdownOpen={isDropdownOpen}
             setIsDropdownOpen={setIsDropdownOpen}
             isMobile={isMobile}
+            isSelected={isSelected}
           />
 
           {isDropdownOpen && (
