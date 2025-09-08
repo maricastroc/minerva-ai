@@ -58,7 +58,7 @@ export const UserSection = ({ isMobile = false }: Props) => {
   const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
 
   const textClass = clsx(
-    'truncate flex-1 text-gray-50 font-medium',
+    'truncate flex-1 text-gray-50',
     isMobile ? 'text-base' : 'text-sm'
   );
 
@@ -72,7 +72,7 @@ export const UserSection = ({ isMobile = false }: Props) => {
       <div
         role="button"
         aria-expanded={isDropdownOpen}
-        className="flex items-center space-x-3 cursor-pointer transition-all duration-100 p-2 rounded-2xl hover:bg-user-card-hover relative"
+        className={`flex items-center space-x-3 cursor-pointer transition-all duration-100 p-2 rounded-2xl relative ${!isDropdownOpen && 'hover:bg-user-card-hover'}`}
         onClick={toggleDropdown}
         ref={dropdownRef}
       >

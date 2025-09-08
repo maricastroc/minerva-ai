@@ -55,7 +55,7 @@
   --foreground: #ededed;
   
   --color-chat-input: #2d2c2e;
-  --color-sidebar: #1b1b1b;
+  --color-sidebar: #1b1b1c;
   --color-primary-button: #44454a;
   --color-primary-button-hover: #4A4A4A;
   --color-chat-card-hover: #2d2c2e;
@@ -64,12 +64,12 @@
   --color-dropdown: #2d2c2e;
   --color-dropdown-hover: #44454a;
   --color-selected-chat-card: #353538;
-  --color-action-icon: #262626;
+  --color-action-icon: #aeb2b7;
   --color-action-icon-hover: #272729;
   --color-tooltip: #43444a;
   --color-tooltip-text: #ffffff;
   --color-delete: #ee6e6c;
-  --color-modal: #2d2c2e;
+  --color-modal: #2c2c2e;
   --color-modal-text: #f7f7f7;
   --color-disabled: #737373;
   --color-cancel: #4A4A4A;

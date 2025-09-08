@@ -16,6 +16,8 @@ interface AppContextType {
     value: MessageProps[] | ((prev: MessageProps[]) => MessageProps[])
   ) => void;
   loadChatMessages: (chatId: string) => Promise<void>;
+  handleSetTheme: (value: 'light' | 'dark' | 'system') => void;
+  currentTheme: 'light' | 'dark' | 'system';
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -32,6 +34,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   const [messages, setMessages] = useState<MessageProps[]>([]);
 
   const [currentChatTitle, setCurrentChatTitle] = useState<string | null>(null);
+
+  const [currentTheme, setCurrentTheme] = useState<'light' | 'dark' | 'system'>(
+    'system'
+  );
 
   const loadChatMessages = async (chatId: string) => {
     const response = await api.get(`/user/chats/${chatId}/messages`);
@@ -64,6 +70,29 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
     setCurrentChatTitle(value);
   };
 
+  const handleSetTheme = (theme: 'light' | 'dark' | 'system') => {
+    setCurrentTheme(theme);
+
+    if (theme === 'system') {
+      const prefersDark = window.matchMedia(
+        '(prefers-color-scheme: dark)'
+      ).matches;
+
+      document.documentElement.setAttribute(
+        'data-theme',
+        prefersDark ? 'dark' : 'light'
+      );
+      handleIsDarkTheme(prefersDark);
+
+      localStorage.removeItem('theme');
+    } else {
+      document.documentElement.setAttribute('data-theme', theme);
+
+      localStorage.setItem('theme', theme);
+      handleIsDarkTheme(theme === 'dark');
+    }
+  };
+
   const handleMessages = (
     value: MessageProps[] | [] | ((prev: MessageProps[]) => MessageProps[])
   ) => {
@@ -91,8 +120,17 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
       handleIsMessageLoading,
       isDarkTheme,
       handleIsDarkTheme,
+      currentTheme,
+      handleSetTheme,
     }),
-    [currentChatId, currentChatTitle, messages, isMessageLoading, isDarkTheme]
+    [
+      currentChatId,
+      currentChatTitle,
+      messages,
+      isMessageLoading,
+      isDarkTheme,
+      currentTheme,
+    ]
   );
 
   return (
