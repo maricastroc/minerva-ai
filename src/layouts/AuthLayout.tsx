@@ -3,6 +3,7 @@ import React from 'react';
 import { Icon } from '@iconify/react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
+import { useAppContext } from '@/contexts/AppContext';
 
 interface AuthLayoutProps {
   title: string;
@@ -19,34 +20,41 @@ interface SocialProvider {
 }
 
 const socialProviders: SocialProvider[] = [
-  { name: 'Google', icon: 'flat-color-icons:google', provider: 'google' },
+  { name: "Google", icon: "flat-color-icons:google", provider: "google" },
   {
-    name: 'Github',
-    icon: 'ant-design:github-outlined',
-    color: 'white',
-    provider: 'github',
+    name: "Github",
+    icon: "ant-design:github-outlined",
+    provider: "github",
   },
-];
+]
 
 function SocialLoginButtons({
   handleSignIn,
 }: {
-  handleSignIn: (value: string) => void;
+  handleSignIn: (value: string) => void
 }) {
   return (
     <div className="flex gap-3 flex-col w-full">
       {socialProviders.map((provider) => (
         <button
           key={provider.name}
-          className="cursor-pointer border border-gray-400 rounded-lg py-[0.65rem] flex items-center justify-center gap-3 w-full hover:bg-gray-500 hover:border-gray-500 transition-colors"
+          className="cursor-pointer text-primary-text text-sm border border-input-border rounded-lg py-[0.65rem] flex items-center justify-center gap-3 w-full hover:bg-outline-button-hover hover:border-outline-button-hover transition-colors"
           onClick={() => handleSignIn(provider.provider)}
         >
-          <Icon icon={provider.icon} fontSize={24} color={provider.color} />
+          <Icon
+            icon={provider.icon}
+            fontSize={24}
+            color={
+              provider.provider === "github"
+                ? "text-black dark:text-white"
+                : ""
+            }
+          />
           <span>Login with {provider.name}</span>
         </button>
       ))}
     </div>
-  );
+  )
 }
 
 export function AuthLayout({
@@ -56,6 +64,8 @@ export function AuthLayout({
   setIsLoading,
 }: AuthLayoutProps) {
   const router = useRouter();
+
+  const { currentTheme } = useAppContext()
 
   async function handleSignIn(provider: string) {
     setIsLoading(true);
@@ -70,13 +80,13 @@ export function AuthLayout({
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 flex flex-col justify-center items-center sm:p-6 p-4 pt-8">
+    <div data-theme={currentTheme} className="min-h-screen bg-login-background flex flex-col justify-center items-center sm:p-6 p-4 pt-8">
       <div className="mb-8">
         <Image width={180} height={180} alt="Logo" src="/logo-full.svg" />
       </div>
 
-      <div className="w-full border border-white/5 overflow-y-auto chat-scroll-container max-w-xl bg-gray-800 backdrop-blur-sm rounded-2xl p-6 sm:p-8">
-        <h1 className="text-2xl text-white/80 text-center mb-6">{title}</h1>
+      <div className="w-full border border-white/5 overflow-y-auto chat-scroll-container max-w-xl bg-login-card backdrop-blur-sm rounded-2xl p-6 sm:p-8">
+        <h1 className="text-2xl text-primary-text text-center mb-6">{title}</h1>
 
         {children}
 
@@ -85,9 +95,9 @@ export function AuthLayout({
             <div className="mt-3 text-center">{footer}</div>
 
             <div className="relative flex items-center my-4">
-              <div className="flex-grow border-t border-white/20"></div>
-              <span className="flex-shrink mx-4 text-white/50 text-sm">or</span>
-              <div className="flex-grow border-t border-white/20"></div>
+              <div className="flex-grow border-t border-input-border"></div>
+              <span className="flex-shrink mx-4 text-primary-text text-sm">or</span>
+              <div className="flex-grow border-t border-input-border"></div>
             </div>
 
             <SocialLoginButtons handleSignIn={handleSignIn} />

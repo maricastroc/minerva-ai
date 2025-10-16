@@ -12,11 +12,10 @@ export const ThemeSettings = () => {
   console.log(currentTheme);
   return (
     <div>
-      <p className="font-medium mb-3 text-[15px]">Theme</p>
+      <p className="font-medium mb-3 text-[15px] text-primary-text">Theme</p>
 
       <div className="flex items-center w-full gap-3">
         {themes.map(({ label, icon: Icon, value }) => {
-          // botão ativo se currentTheme bate com o value
           const isActive = currentTheme === value;
 
           return (
@@ -25,10 +24,10 @@ export const ThemeSettings = () => {
               onClick={() => handleSetTheme(value)}
               className={`
         flex gap-1 duration-100 cursor-pointer transition-all
-        text-gray-50 items-center justify-center 
-        w-full flex-col border border-gray-400 
-        p-4 rounded-lg hover:bg-gray-500
-        ${isActive ? 'bg-gray-500' : ''}
+        text-primary-text items-center justify-center 
+        w-full flex-col border border-outline-button-border 
+        p-4 py-5 rounded-lg hover:bg-outline-button-hover
+        ${isActive ? 'bg-outline-button-hover' : ''}
       `}
             >
               <Icon size={20} />

@@ -79,7 +79,7 @@ export default function Register() {
         title="Create your account"
         setIsLoading={setIsLoading}
         footer={
-          <p className="text-white/80 text-sm">
+          <p className="text-primary-text text-sm">
             Already registered?{' '}
             <a
               href="/login"

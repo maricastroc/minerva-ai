@@ -1,56 +1,6 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  
-  --color-chat-input: #f9fafb;
-  --color-sidebar: #f9fafb;
-  --color-primary-button: #ffffff;
-  --color-primary-button-hover: #ffffff;
-  --color-chat-card-hover: #f1f2f5;
-  --color-user-card-hover: #e6e8ea;
-  --color-user-message: #eef3fd;
-  --color-dropdown: #ffffff;
-  --color-selected-chat-card: #e5ecfb;
-  --color-dropdown-hover: #e5e9eb;
-  --color-action-icon: #82858b;
-  --color-action-icon-hover: #f2f2f4;
-  --color-tooltip: #2c2c2e;
-  --color-tooltip-text: #ffffff;
-  --color-modal: #ffffff;
-  --color-modal-text: #0a0a0a;
-  --color-delete: #d93427;
-  --color-disabled: #737373;
-  --color-cancel: #d8d8d8;
-  --color-cancel-hover: #f3f3f4;
-  --color-primary-text: #0a0a0a;
-
-  --color-gray-900: #fffffe;
-  --color-gray-800: #f9fafb;
-  --color-gray-700: #e5e5e5;
-  --color-gray-600: #f9fafb;
-  --color-gray-500: #ffffff;
-  --color-gray-400: #737373;
-  --color-gray-300: #525252;
-  --color-gray-200: #404040;
-  --color-gray-100: #262626;
-  --color-gray-50:  #1a1a1a;
-  --color-gray-25:  #0a0a0a;
-  
-  --color-blue-600: #506fe0;
-  --color-blue-500: #6185f6;
-  --color-blue-400: #7a96f7;
-  --color-blue-300: #93a6f8;
-  --color-blue-200: #acb7f9;
-  --color-blue-100: #c5c8fa;
-  
-  --color-red-500: #dd5252;
-  --color-red-300: #ee6e6c;
-  --color-error: #F44336;
-}
-
-[data-theme="dark"] {
   --background: #0a0a0a;
   --foreground: #ededed;
   
@@ -75,6 +25,13 @@
   --color-cancel: #4A4A4A;
   --color-cancel-hover: #3d3d3e;
   --color-primary-text: #f7f7f7;
+  --color-outline-button-border: #4A4A4A;
+  --color-outline-button-hover: #44454a;
+  --color-divider-line: #38383a;
+  --color-login-background: #212326;
+  --color-login-card: #292a2d;
+  --color-secondary-text: #cfd0d3;
+  --color-input-border: #5c5e61;
 
   --color-gray-900: #151417;
   --color-gray-800: #1b1b1b;
@@ -87,6 +44,63 @@
   --color-gray-100: #a5a5a5;
   --color-gray-50: #E8E8E8;
   --color-gray-25: #f7f7f7;
+
+    --color-blue-600: #506fe0;
+  --color-blue-500: #6185f6;
+  --color-blue-400: #7a96f7;
+  --color-blue-300: #93a6f8;
+  --color-blue-200: #acb7f9;
+  --color-blue-100: #c5c8fa;
+  
+  --color-red-500: #dd5252;
+  --color-red-300: #ee6e6c;
+  --color-error: #F44336;
+}
+
+[data-theme="light"] {
+  --background: #ffffff;
+  --foreground: #171717;
+  
+  --color-chat-input: #f9fafb;
+  --color-sidebar: #f9fafb;
+  --color-primary-button: #ffffff;
+  --color-primary-button-hover: #ffffff;
+  --color-chat-card-hover: #f1f2f5;
+  --color-user-card-hover: #e6e8ea;
+  --color-user-message: #eef3fd;
+  --color-dropdown: #ffffff;
+  --color-selected-chat-card: #e5ecfb;
+  --color-dropdown-hover: #e5e9eb;
+  --color-action-icon: #82858b;
+  --color-action-icon-hover: #f2f2f4;
+  --color-tooltip: #2c2c2e;
+  --color-tooltip-text: #ffffff;
+  --color-modal: #ffffff;
+  --color-modal-text: #0a0a0a;
+  --color-delete: #d93427;
+  --color-disabled: #737373;
+  --color-cancel: #d8d8d8;
+  --color-cancel-hover: #f3f3f4;
+  --color-primary-text: #0a0a0a;
+  --color-outline-button-border: #d9d9db;
+  --color-outline-button-hover: #f3f3f4;
+  --color-divider-line: #d9d9db;
+  --color-login-background: #f7f7f7;
+  --color-login-card: #ffffff;
+  --color-secondary-text: #8e8e8e;
+  --color-input-border: #e5e5e5;
+
+  --color-gray-900: #fffffe;
+  --color-gray-800: #f9fafb;
+  --color-gray-700: #e5e5e5;
+  --color-gray-600: #f9fafb;
+  --color-gray-500: #ffffff;
+  --color-gray-400: #737373;
+  --color-gray-300: #525252;
+  --color-gray-200: #404040;
+  --color-gray-100: #262626;
+  --color-gray-50:  #1a1a1a;
+  --color-gray-25:  #0a0a0a;
 }
 
 @theme inline {
@@ -116,6 +130,13 @@
   --color-cancel: var(--color-cancel);
   --color-cancel-hover: var(--color-cancel-hover);
   --color-primary-text: var(--color-primary-text);
+  --color-secondary-text: var(--color-secondary-text);
+  --color-outline-button-border: var(--color-outline-button-border);
+  --color-outline-button-hover: var(--color-outline-button-hover);
+  --color-divider-line: var(--color-divider-line);
+  --color-login-background: var(--color-login-background);
+  --color-login-card: var(--color-login-card);
+  --color-input-border: var(--color-input-border);
 
   --color-gray-25: var(--color-gray-25);
   --color-gray-50: var(--color-gray-50);

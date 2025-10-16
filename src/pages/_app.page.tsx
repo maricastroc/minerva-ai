@@ -17,17 +17,21 @@ export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }: AppProps) {
+
   useEffect(() => {
     const loadTheme = () => {
       const savedTheme = localStorage.getItem('theme');
+
       const prefersDark = window.matchMedia(
         '(prefers-color-scheme: dark)'
       ).matches;
 
       if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-        document.documentElement.classList.add('dark');
+        console.log('dark')
+        document.documentElement.classList.remove('light');
       } else {
-        document.documentElement.classList.remove('dark');
+        console.log(document.documentElement.classList)
+        document.documentElement.classList.add('light');
       }
     };
 
