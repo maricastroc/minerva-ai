@@ -17,7 +17,6 @@ export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }: AppProps) {
-
   useEffect(() => {
     const loadTheme = () => {
       const savedTheme = localStorage.getItem('theme');
@@ -27,10 +26,10 @@ export default function App({
       ).matches;
 
       if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-        console.log('dark')
+        console.log('dark');
         document.documentElement.classList.remove('light');
       } else {
-        console.log(document.documentElement.classList)
+        console.log(document.documentElement.classList);
         document.documentElement.classList.add('light');
       }
     };

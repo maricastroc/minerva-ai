@@ -1,5 +1,10 @@
 import * as Dialog from '@radix-ui/react-dialog';
-import { IconDatabase, IconSettings, IconUser, IconX } from '@tabler/icons-react';
+import {
+  IconDatabase,
+  IconSettings,
+  IconUser,
+  IconX,
+} from '@tabler/icons-react';
 import { ThemeSettings } from './ThemeSettings';
 import { useState } from 'react';
 import { UserSettings } from './UserSettings';
@@ -40,7 +45,9 @@ function SidebarItem({
 }
 
 export function SettingsModal({ onClose, isOpen }: Props) {
-  const [activeSetting, setActiveSetting] = useState<'general' | 'profile' | 'data'>('general');
+  const [activeSetting, setActiveSetting] = useState<
+    'general' | 'profile' | 'data'
+  >('general');
 
   return (
     <Dialog.Root open={isOpen} onOpenChange={onClose}>
@@ -69,7 +76,9 @@ export function SettingsModal({ onClose, isOpen }: Props) {
                   icon={item.icon}
                   label={item.label}
                   isActive={activeSetting === item.value}
-                  onClick={() => setActiveSetting(item.value as typeof activeSetting)}
+                  onClick={() =>
+                    setActiveSetting(item.value as typeof activeSetting)
+                  }
                 />
               ))}
             </div>
@@ -77,10 +86,10 @@ export function SettingsModal({ onClose, isOpen }: Props) {
             {/* Content */}
             <div className="mr-8">
               {activeSetting === 'general' && <ThemeSettings />}
-              {activeSetting === 'profile' && (
-                <UserSettings />
+              {activeSetting === 'profile' && <UserSettings />}
+              {activeSetting === 'data' && (
+                <div className="text-modal-text">Data settings here</div>
               )}
-              {activeSetting === 'data' && <div className="text-modal-text">Data settings here</div>}
             </div>
           </div>
         </Dialog.Content>

@@ -1,6 +1,12 @@
 import { api } from '@/lib/axios';
 import { MessageProps } from '@/types/message';
-import React, { createContext, useContext, useState, useMemo, useEffect } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useMemo,
+  useEffect,
+} from 'react';
 
 interface AppContextType {
   isDarkTheme: boolean;
@@ -107,26 +113,26 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
     setIsMessageLoading(value);
   };
 
-    useEffect(() => {
-      const loadTheme = () => {
-        const savedTheme = localStorage.getItem('theme');
-  
-        const prefersDark = window.matchMedia(
-          '(prefers-color-scheme: dark)'
-        ).matches;
-  
-        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-          document.documentElement.classList.add('dark');
-          setCurrentTheme('dark')
-        } else {
-          document.documentElement.classList.remove('dark');
-          setCurrentTheme('light')
-        }
-      };
-  
-      loadTheme();
-    }, []);
-console.log(currentTheme)
+  useEffect(() => {
+    const loadTheme = () => {
+      const savedTheme = localStorage.getItem('theme');
+
+      const prefersDark = window.matchMedia(
+        '(prefers-color-scheme: dark)'
+      ).matches;
+
+      if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+        document.documentElement.classList.add('dark');
+        setCurrentTheme('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+        setCurrentTheme('light');
+      }
+    };
+
+    loadTheme();
+  }, []);
+  console.log(currentTheme);
   const contextValue = useMemo(
     () => ({
       currentChatId,

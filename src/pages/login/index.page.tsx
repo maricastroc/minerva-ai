@@ -84,7 +84,7 @@ export default function Login() {
           title="Login to your account"
           setIsLoading={setIsLoading}
           footer={
-            <p className="text-secondary-text text-sm">
+            <p className="text-primary-text text-sm">
               Don&apos;t have an account?{' '}
               <a
                 href="/register"

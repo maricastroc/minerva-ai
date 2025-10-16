@@ -20,18 +20,18 @@ interface SocialProvider {
 }
 
 const socialProviders: SocialProvider[] = [
-  { name: "Google", icon: "flat-color-icons:google", provider: "google" },
+  { name: 'Google', icon: 'flat-color-icons:google', provider: 'google' },
   {
-    name: "Github",
-    icon: "ant-design:github-outlined",
-    provider: "github",
+    name: 'Github',
+    icon: 'ant-design:github-outlined',
+    provider: 'github',
   },
-]
+];
 
 function SocialLoginButtons({
   handleSignIn,
 }: {
-  handleSignIn: (value: string) => void
+  handleSignIn: (value: string) => void;
 }) {
   return (
     <div className="flex gap-3 flex-col w-full">
@@ -45,16 +45,14 @@ function SocialLoginButtons({
             icon={provider.icon}
             fontSize={24}
             color={
-              provider.provider === "github"
-                ? "text-black dark:text-white"
-                : ""
+              provider.provider === 'github' ? 'text-black dark:text-white' : ''
             }
           />
           <span>Login with {provider.name}</span>
         </button>
       ))}
     </div>
-  )
+  );
 }
 
 export function AuthLayout({
@@ -65,7 +63,7 @@ export function AuthLayout({
 }: AuthLayoutProps) {
   const router = useRouter();
 
-  const { currentTheme } = useAppContext()
+  const { currentTheme } = useAppContext();
 
   async function handleSignIn(provider: string) {
     setIsLoading(true);
@@ -80,7 +78,10 @@ export function AuthLayout({
   }
 
   return (
-    <div data-theme={currentTheme} className="min-h-screen bg-login-background flex flex-col justify-center items-center sm:p-6 p-4 pt-8">
+    <div
+      data-theme={currentTheme}
+      className="min-h-screen bg-login-background flex flex-col justify-center items-center sm:p-6 p-4 pt-8"
+    >
       <div className="mb-8">
         <Image width={180} height={180} alt="Logo" src="/logo-full.svg" />
       </div>
@@ -96,7 +97,9 @@ export function AuthLayout({
 
             <div className="relative flex items-center my-4">
               <div className="flex-grow border-t border-input-border"></div>
-              <span className="flex-shrink mx-4 text-primary-text text-sm">or</span>
+              <span className="flex-shrink mx-4 text-primary-text text-sm">
+                or
+              </span>
               <div className="flex-grow border-t border-input-border"></div>
             </div>
 

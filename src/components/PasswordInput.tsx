@@ -28,7 +28,7 @@ export const PasswordInput = ({
       <div className="relative">
         <input
           type={showPassword ? 'text' : 'password'}
-          className={`w-full px-4 py-3 border border-input-border rounded-lg text-secondary-text placeholder-input-border focus:outline-none focus:primary-blue-500 transition-colors pr-12 ${className} ${
+          className={`w-full px-4 py-3 border border-input-border rounded-lg text-primary-text focus:outline-none focus:primary-blue-500 transition-colors pr-12 ${className} ${
             error ? 'border-error' : ''
           }`}
           {...props}
