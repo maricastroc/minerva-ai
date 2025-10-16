@@ -36,7 +36,6 @@ type RegisterFormData = yup.InferType<typeof registerSchema>;
 
 export default function Register() {
   const [isLoading, setIsLoading] = useState(false);
-
   const router = useRouter();
 
   const {
@@ -63,17 +62,34 @@ export default function Register() {
     }
   }
 
+  // ✅ MELHORIA: Submit via Enter key
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLFormElement>) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      handleSubmit(onSubmit)();
+    }
+  };
+
   return (
     <>
       <NextSeo
         title="Register | Minerva AI"
+        description="Create your Minerva AI account to start using our AI assistant"
         additionalMetaTags={[
           {
             name: 'viewport',
             content:
               'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no',
           },
+          {
+            name: 'theme-color',
+            content: '#6185f6',
+          },
         ]}
+        openGraph={{
+          title: 'Register | Minerva AI',
+          description: 'Create your Minerva AI account',
+        }}
       />
       <AuthLayout
         title="Create your account"
@@ -83,14 +99,21 @@ export default function Register() {
             Already registered?{' '}
             <a
               href="/login"
-              className="text-blue-500 hover:text-blue-300 font-semibold transition-colors"
+              className="text-blue-500 hover:text-blue-300 font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-sm px-1"
+              aria-label="Sign in to your existing account"
             >
               Sign in
             </a>
           </p>
         }
       >
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          onKeyDown={handleKeyDown}
+          className="space-y-4"
+          noValidate
+          aria-label="Registration form"
+        >
           <Input
             id="name"
             label="Full name"
@@ -98,6 +121,9 @@ export default function Register() {
             autoComplete="name"
             placeholder="Your full name"
             error={errors.name}
+            aria-required="true"
+            aria-invalid={errors.name ? 'true' : 'false'}
+            aria-describedby={errors.name ? 'name-error' : undefined}
             {...register('name')}
           />
 
@@ -108,6 +134,9 @@ export default function Register() {
             autoComplete="email"
             placeholder="your.email@exemplo.com"
             error={errors.email}
+            aria-required="true"
+            aria-invalid={errors.email ? 'true' : 'false'}
+            aria-describedby={errors.email ? 'email-error' : undefined}
             {...register('email')}
           />
 
@@ -117,6 +146,9 @@ export default function Register() {
             placeholder="Your password"
             autoComplete="new-password"
             error={errors.password}
+            aria-required="true"
+            aria-invalid={errors.password ? 'true' : 'false'}
+            aria-describedby={errors.password ? 'password-error' : undefined}
             {...register('password')}
           />
 
@@ -126,11 +158,24 @@ export default function Register() {
             placeholder="Confirm your password"
             autoComplete="new-password"
             error={errors.confirmPassword}
+            aria-required="true"
+            aria-invalid={errors.confirmPassword ? 'true' : 'false'}
+            aria-describedby={
+              errors.confirmPassword ? 'confirm-password-error' : undefined
+            }
             {...register('confirmPassword')}
           />
 
-          <Button type="submit" isLoading={isLoading} className="mt-6">
-            Create account
+          <Button
+            type="submit"
+            isLoading={isLoading}
+            className="mt-6 w-full"
+            aria-disabled={isLoading}
+            aria-label={
+              isLoading ? 'Creating account...' : 'Create new account'
+            }
+          >
+            {isLoading ? 'Creating account...' : 'Create account'}
           </Button>
         </form>
       </AuthLayout>

@@ -21,11 +21,8 @@ type LoginFormData = yup.InferType<typeof loginSchema>;
 
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
-
   const [isClient, setIsClient] = useState(false);
-
   const router = useRouter();
-
   const { status } = useSession();
 
   const {
@@ -44,6 +41,7 @@ export default function Login() {
         password: data.password,
         redirect: false,
       });
+
       if (result?.error) {
         toast.error(result.error);
       } else {
@@ -56,6 +54,13 @@ export default function Login() {
       setIsLoading(false);
     }
   }
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLFormElement>) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      handleSubmit(onSubmit)();
+    }
+  };
 
   useEffect(() => {
     if (status === 'authenticated') {
@@ -71,13 +76,22 @@ export default function Login() {
     <>
       <NextSeo
         title="Login | Minerva AI"
+        description="Login to your Minerva AI account to access your personalized AI assistant"
         additionalMetaTags={[
           {
             name: 'viewport',
             content:
               'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no',
           },
+          {
+            name: 'theme-color',
+            content: '#6185f6',
+          },
         ]}
+        openGraph={{
+          title: 'Login | Minerva AI',
+          description: 'Login to your Minerva AI account',
+        }}
       />
       {isClient && (
         <AuthLayout
@@ -88,14 +102,21 @@ export default function Login() {
               Don&apos;t have an account?{' '}
               <a
                 href="/register"
-                className="text-blue-500 hover:text-blue-300 font-semibold transition-colors"
+                className="text-blue-500 hover:text-blue-300 font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-sm px-1"
+                aria-label="Sign up for a new account"
               >
                 Sign up
               </a>
             </p>
           }
         >
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            onKeyDown={handleKeyDown}
+            className="space-y-4"
+            noValidate
+            aria-label="Login form"
+          >
             <Input
               id="email"
               label="Email"
@@ -103,18 +124,34 @@ export default function Login() {
               autoComplete="email"
               placeholder="your.email@exemplo.com"
               error={errors.email}
+              aria-required="true"
+              aria-invalid={errors.email ? 'true' : 'false'}
+              aria-describedby={errors.email ? 'email-error' : undefined}
               {...register('email')}
             />
+
             <PasswordInput
               id="password"
               label="Password"
               placeholder="Your password"
-              autoComplete="new-password"
+              autoComplete="current-password"
               error={errors.password}
+              aria-required="true"
+              aria-invalid={errors.password ? 'true' : 'false'}
+              aria-describedby={errors.password ? 'password-error' : undefined}
               {...register('password')}
             />
-            <Button type="submit" isLoading={isLoading} className="mt-6">
-              Login
+
+            <Button
+              type="submit"
+              isLoading={isLoading}
+              className="mt-6 w-full"
+              aria-disabled={isLoading}
+              aria-label={
+                isLoading ? 'Signing in...' : 'Sign in to your account'
+              }
+            >
+              {isLoading ? 'Signing in...' : 'Login'}
             </Button>
           </form>
         </AuthLayout>
