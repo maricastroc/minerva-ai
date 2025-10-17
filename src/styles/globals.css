@@ -192,6 +192,12 @@ select:focus-visible,
   border-radius: 2px;
 }
 
+.chat-input-container input:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+  border-radius: 1.5rem !important;
+}
+
 .primary-button:focus-visible,
 .secondary-button:focus-visible {
   outline: 2px solid var(--color-blue-500);
@@ -332,5 +338,4 @@ input:disabled,
 textarea:disabled {
   opacity: 0.6;
   cursor: not-allowed;
-  background-color: var(--color-disabled);
 }
