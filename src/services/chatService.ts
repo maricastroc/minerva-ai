@@ -56,7 +56,7 @@ export class ChatService {
         })
         .catch((error) => {
           console.error('AI response error:', error);
-          return this.getFallbackResponse(message);
+          return 'An unexpected error ocurred.';
         }),
     ]);
 
@@ -109,7 +109,7 @@ export class ChatService {
 
   private static async generateTitleQuick(message: string): Promise<string> {
     const model = genAI.getGenerativeModel({
-      model: 'models/gemini-1.5-flash-8b',
+      model: 'models/gemini-2.5-flash',
       generationConfig: {
         temperature: 0.7,
         maxOutputTokens: 25,
@@ -117,6 +117,8 @@ export class ChatService {
     });
 
     const prompt = `Generate a short title for this message: "${message}"`;
+
+    
     const result = await model.generateContent(prompt);
     const response = await result.response;
 
@@ -136,6 +138,8 @@ export class ChatService {
     message: string
   ): Promise<string> {
     const prompt = this.buildPrompt(conversationHistory, message);
+
+    
 
     for (const modelName of PRIORITY_MODELS) {
       try {
@@ -222,13 +226,19 @@ export class ChatService {
     conversationHistory: any[],
     message: string
   ): string {
-    const SYSTEM_PROMPT = `
-      You are an AI assistant that communicates in a natural, balanced, and human-like way. 
-      Keep your answers clear and informative, but also conversational and approachable. 
-      You can show light empathy or friendliness when it feels natural, but avoid sounding overly enthusiastic, exaggerated, or fake. 
-      Think of the tone as helpful, thoughtful, and respectful — like a friendly expert who wants to make the conversation easy and pleasant. 
-      Keep responses concise but not too dry.
-    `;
+const SYSTEM_PROMPT = `
+  You are a helpful assistant who responds in a natural and direct way. 
+  When the user asks for book suggestions, offer specific recommendations 
+  or ask for more details about their preferences.
+  
+  IMPORTANT: Do not be overly generic. Respond directly to what was asked.
+  If the user requests book suggestions, provide real examples or ask about preferred genres.
+  
+  Rules:
+  - Do not reply with “I'd be happy to assist” without adding useful content
+  - Provide real value in every response
+  - Be specific whenever possible
+`;
 
     let prompt = SYSTEM_PROMPT;
 
@@ -242,31 +252,6 @@ export class ChatService {
 
     prompt += `\n\nUser: ${message}\nAssistant:`;
     return prompt;
-  }
-
-  private static getFallbackResponse(userMessage: string): string {
-    const lowerMessage = userMessage.toLowerCase();
-
-    if (lowerMessage.includes('hello') || lowerMessage.includes('hi')) {
-      return 'Hello! How can I help you today?';
-    }
-    if (lowerMessage.includes('thank')) {
-      return "You're welcome! Is there anything else I can help with?";
-    }
-    if (lowerMessage.includes('how are you')) {
-      return "I'm doing well, thank you! How can I assist you?";
-    }
-    if (lowerMessage.includes('bye') || lowerMessage.includes('goodbye')) {
-      return 'Goodbye! Feel free to return if you have more questions.';
-    }
-
-    const fallbacks = [
-      'I understand. Could you tell me more about that?',
-      "That's interesting! How can I help with this?",
-      "I'd be happy to assist. What specifically do you need?",
-    ];
-
-    return fallbacks[Math.floor(Math.random() * fallbacks.length)];
   }
 }
 setInterval(() => {

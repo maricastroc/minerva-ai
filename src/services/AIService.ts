@@ -4,52 +4,47 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 export class AIService {
   private genAI: GoogleGenerativeAI;
   private readonly PRIORITY_MODELS = [
-    'models/gemini-1.5-flash-002',
-    'models/gemini-1.5-flash',
-    'models/gemini-1.5-flash-8b',
-    'models/gemini-1.5-pro-002',
-    'models/gemini-1.5-pro',
+'models/gemini-2.5-flash'
   ];
 
   constructor() {
     this.genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
   }
 
-  async generateResponse(prompt: string): Promise<string> {
-    const errors: any[] = [];
+ async generateResponse(prompt: string): Promise<string> {
+  const errors: any[] = [];
 
-    for (const modelName of this.PRIORITY_MODELS) {
-      try {
-        const model = this.genAI.getGenerativeModel({
-          model: modelName,
-          generationConfig: {
-            temperature: 0.7,
-            topP: 0.95,
-            topK: 40,
-            maxOutputTokens: 1024,
-          },
-        });
+  for (const modelName of this.PRIORITY_MODELS) {
+    try {
+      const model = this.genAI.getGenerativeModel({
+        model: modelName,
+        generationConfig: {
+          temperature: 0.7,
+          topP: 0.95,
+          topK: 40,
+          maxOutputTokens: 1024,
+        },
+      });
 
-        const result = await model.generateContent(prompt);
-        const response = await result.response;
-        let text = response.text().trim();
+      const result = await model.generateContent(prompt);
+      const response = await result.response;
+      let text = response.text().trim();
 
-        text = text.replace(/^Assistant:?\s*/i, '').trim();
-        return text;
-      } catch (error: any) {
-        errors.push({ model: modelName, error: error.message });
-        continue;
-      }
+      text = text.replace(/^Assistant:?\s*/i, '').trim();
+      return text;
+    } catch (error: any) {
+      errors.push({ model: modelName, error: error.message });
+      continue;
     }
-
-    throw new Error(`All models failed: ${JSON.stringify(errors)}`);
   }
+
+  throw new Error(`All models failed: ${JSON.stringify(errors)}`);
+}
+
 
   async generateTitle(message: string): Promise<string> {
     const titleModels = [
-      'models/gemini-1.5-flash-002',
-      'models/gemini-1.5-flash',
-      'models/gemini-1.5-flash-8b',
+'models/gemini-2.5-flash'
     ];
 
     for (const modelName of titleModels) {
