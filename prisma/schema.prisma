@@ -18,6 +18,7 @@ model User {
   name          String
   avatarUrl     String?
   createdAt     DateTime        @default(now())
+  provider      String?   @default("credentials")
   email         String?         @unique
   emailVerified DateTime?
   password      String?

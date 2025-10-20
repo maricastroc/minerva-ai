@@ -57,6 +57,11 @@ export const UserSection = ({ isMobile = false }: Props) => {
 
   const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
 
+  const openSettingsModal = () => {
+    setIsDropdownOpen(false);
+    setIsSettingsModalOpen(true);
+  };
+
   const textClass = clsx(
     'truncate flex-1 text-gray-50',
     isMobile ? 'text-base' : 'text-sm'
@@ -90,7 +95,7 @@ export const UserSection = ({ isMobile = false }: Props) => {
             role="menu"
           >
             <button
-              onClick={() => setIsSettingsModalOpen(true)}
+              onClick={openSettingsModal}
               className={clsx(
                 buttonClass,
                 'text-gray-25 hover:bg-dropdown-hover'
@@ -114,7 +119,10 @@ export const UserSection = ({ isMobile = false }: Props) => {
 
         <SettingsModal
           isOpen={isSettingsModalOpen}
-          onClose={() => setIsSettingsModalOpen(false)}
+          onClose={() => {
+            setIsSettingsModalOpen(false);
+            setIsDropdownOpen(false);
+          }}
         />
       </div>
     </div>

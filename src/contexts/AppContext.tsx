@@ -32,15 +32,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
-
   const [currentChatId, setCurrentChatId] = useState<string | null>(null);
-
   const [isMessageLoading, setIsMessageLoading] = useState(false);
-
   const [messages, setMessages] = useState<MessageProps[]>([]);
-
   const [currentChatTitle, setCurrentChatTitle] = useState<string | null>(null);
-
   const [currentTheme, setCurrentTheme] = useState<'light' | 'dark' | 'system'>(
     'system'
   );
@@ -58,9 +53,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
     );
 
     setMessages(msgs);
-
     setCurrentChatTitle(response.data.data.title);
-
     handleCurrentChatId(chatId);
   };
 
@@ -89,13 +82,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
         prefersDark ? 'dark' : 'light'
       );
       handleIsDarkTheme(prefersDark);
-
       localStorage.removeItem('theme');
     } else {
       document.documentElement.setAttribute('data-theme', theme);
-
-      localStorage.setItem('theme', theme);
       handleIsDarkTheme(theme === 'dark');
+      localStorage.setItem('theme', theme);
     }
   };
 
@@ -115,24 +106,31 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
 
   useEffect(() => {
     const loadTheme = () => {
-      const savedTheme = localStorage.getItem('theme');
-
+      const savedTheme = localStorage.getItem('theme') as
+        | 'light'
+        | 'dark'
+        | null;
       const prefersDark = window.matchMedia(
         '(prefers-color-scheme: dark)'
       ).matches;
 
-      if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-        document.documentElement.classList.add('dark');
-        setCurrentTheme('dark');
+      // Determine o tema inicial
+      let initialTheme: 'light' | 'dark';
+
+      if (savedTheme) {
+        initialTheme = savedTheme;
       } else {
-        document.documentElement.classList.remove('dark');
-        setCurrentTheme('light');
+        initialTheme = prefersDark ? 'dark' : 'light';
       }
+
+      document.documentElement.setAttribute('data-theme', initialTheme);
+      setCurrentTheme(savedTheme || 'system');
+      handleIsDarkTheme(initialTheme === 'dark');
     };
 
     loadTheme();
   }, []);
-  console.log(currentTheme);
+
   const contextValue = useMemo(
     () => ({
       currentChatId,
@@ -166,10 +164,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
 
 export const useAppContext = (): AppContextType => {
   const context = useContext(AppContext);
-
   if (context === undefined) {
     throw new Error('useAppContext must be used within an AppProvider');
   }
-
   return context;
 };

@@ -118,7 +118,6 @@ export class ChatService {
 
     const prompt = `Generate a short title for this message: "${message}"`;
 
-    
     const result = await model.generateContent(prompt);
     const response = await result.response;
 
@@ -138,8 +137,6 @@ export class ChatService {
     message: string
   ): Promise<string> {
     const prompt = this.buildPrompt(conversationHistory, message);
-
-    
 
     for (const modelName of PRIORITY_MODELS) {
       try {
@@ -226,7 +223,7 @@ export class ChatService {
     conversationHistory: any[],
     message: string
   ): string {
-const SYSTEM_PROMPT = `
+    const SYSTEM_PROMPT = `
   You are a helpful assistant who responds in a natural and direct way. 
   When the user asks for book suggestions, offer specific recommendations 
   or ask for more details about their preferences.

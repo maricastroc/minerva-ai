@@ -20,17 +20,14 @@ export default function App({
   useEffect(() => {
     const loadTheme = () => {
       const savedTheme = localStorage.getItem('theme');
-
       const prefersDark = window.matchMedia(
         '(prefers-color-scheme: dark)'
       ).matches;
 
       if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-        console.log('dark');
-        document.documentElement.classList.remove('light');
+        document.documentElement.setAttribute('data-theme', 'dark');
       } else {
-        console.log(document.documentElement.classList);
-        document.documentElement.classList.add('light');
+        document.documentElement.setAttribute('data-theme', 'light');
       }
     };
 
@@ -46,12 +43,12 @@ export default function App({
               toastOptions={{
                 style: {
                   backgroundColor: 'var(--color-gray-700)',
-                  color: 'var(--color-foreground)',
+                  color: 'var(--color-gray-100)',
                 },
                 success: {
                   style: {
                     backgroundColor: 'var(--color-gray-700)',
-                    color: 'var(--color-foreground)',
+                    color: 'var(--color-gray-100)',
                   },
                   iconTheme: {
                     primary: 'var(--color-blue-500)',
@@ -61,7 +58,7 @@ export default function App({
                 error: {
                   style: {
                     backgroundColor: 'var(--color-gray-700)',
-                    color: 'var(--color-foreground)',
+                    color: 'var(--color-gray-100)',
                   },
                   iconTheme: {
                     primary: 'var(--color-red-500)',

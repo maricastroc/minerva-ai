@@ -68,7 +68,6 @@ export function SettingsModal({ onClose, isOpen }: Props) {
           </div>
 
           <div className="grid grid-cols-[1fr_3.5fr] gap-4 mt-6">
-            {/* Sidebar */}
             <div className="ml-[-0.5rem] flex flex-col gap-2 w-[8rem]">
               {sidebarItems.map((item) => (
                 <SidebarItem
@@ -83,7 +82,6 @@ export function SettingsModal({ onClose, isOpen }: Props) {
               ))}
             </div>
 
-            {/* Content */}
             <div className="mr-8">
               {activeSetting === 'general' && <ThemeSettings />}
               {activeSetting === 'profile' && <UserSettings />}

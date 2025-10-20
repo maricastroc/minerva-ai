@@ -30,7 +30,7 @@ export const Sidebar = ({
   const [editingChatId, setEditingChatId] = useState<string | null>(null);
 
   const { isDarkTheme } = useAppContext();
-  console.log(isDarkTheme);
+
   return (
     <div
       className={`
@@ -64,6 +64,7 @@ export const Sidebar = ({
             setEditingChatId={setEditingChatId}
             mutate={mutate}
           />
+
           <UserSection />
         </>
       ) : (

@@ -9,7 +9,7 @@ const themes = [
 
 export const ThemeSettings = () => {
   const { currentTheme, handleSetTheme } = useAppContext();
-  console.log(currentTheme);
+
   return (
     <div>
       <p className="font-medium mb-3 text-[15px] text-primary-text">Theme</p>
@@ -23,12 +23,12 @@ export const ThemeSettings = () => {
               key={label}
               onClick={() => handleSetTheme(value)}
               className={`
-        flex gap-1 duration-100 cursor-pointer transition-all
-        text-primary-text items-center justify-center 
-        w-full flex-col border border-outline-button-border 
-        p-4 py-5 rounded-lg hover:bg-outline-button-hover
-        ${isActive ? 'bg-outline-button-hover' : ''}
-      `}
+                flex gap-1 duration-100 cursor-pointer transition-all
+                text-primary-text items-center justify-center 
+                w-full flex-col border border-outline-button-border 
+                p-4 py-5 rounded-lg hover:bg-outline-button-hover
+                ${isActive ? 'bg-outline-button-hover' : ''}
+              `}
             >
               <Icon size={20} />
               <p className="text-sm font-medium">{label}</p>

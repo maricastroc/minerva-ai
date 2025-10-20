@@ -33,22 +33,20 @@ export const ChatInput = ({
       }}
     >
       <form onSubmit={onSubmit} className="w-full px-4 pointer-events-auto">
-        {/* REMOVA has-[:focus]:ring-2 daqui */}
         <div className="chat-input-container has-[:focus]:ring-2 has-[:focus]:ring-blue-500 flex items-center bg-chat-input rounded-[1.5rem] sm:rounded-[3rem] p-1 sm:p-3 shadow-lg">
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Ask minerva.ai anything"
-            // ADICIONE focus:outline-none para garantir que não tenha outline duplo
-            className="flex-1 px-4 py-2 focus:outline-none bg-transparent text-white placeholder-gray-100 text-base sm:text-lg"
+            className="flex-1 px-4 py-2 focus:outline-none bg-transparent placeholder-gray-100 text-base sm:text-lg"
             disabled={isMessageLoading}
             style={{ fontSize: '16px' }}
           />
           <button
             type="submit"
             disabled={isMessageLoading || !input.trim()}
-            className={`focus:outline-none text-white rounded-full mr-1 sm:mr-0 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/40 transition-colors min-w-[2rem] ${
+            className={`focus:outline-none rounded-full mr-1 sm:mr-0 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/40 transition-colors min-w-[2rem] ${
               input.trim() ? 'bg-blue-500' : 'bg-white/30'
             }`}
           >

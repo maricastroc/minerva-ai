@@ -23,10 +23,6 @@ export default function Home() {
 
   const { currentChatTitle, messages } = useAppContext();
 
-  const session = useSession();
-
-  console.log(session);
-
   const {
     input,
     setInput,
