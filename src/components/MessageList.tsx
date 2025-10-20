@@ -17,7 +17,7 @@ export const MessageList = ({ messages, isMobile }: MessageListProps) => {
     >
       {!isMobile && currentChatTitle && (
         <div className="sticky top-0 z-10 bg-gray-900 w-full p-3 py-2">
-          <h1 className="text-base font-medium text-center text-white break-words line-clamp-2">
+          <h1 className="text-base font-medium text-center text-secondary-text break-words line-clamp-2">
             {currentChatTitle}
           </h1>
         </div>

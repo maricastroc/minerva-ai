@@ -22,6 +22,7 @@
   --color-modal: #2c2c2e;
   --color-modal-text: #f7f7f7;
   --color-disabled: #737373;
+  --color-text-disabled: #f7f7f7;
   --color-cancel: #4A4A4A;
   --color-cancel-hover: #3d3d3e;
   --color-primary-text: #f7f7f7;
@@ -79,6 +80,7 @@
   --color-modal-text: #0a0a0a;
   --color-delete: #d93427;
   --color-disabled: #737373;
+  --color-text-disabled: #f7f7f7;
   --color-cancel: #d8d8d8;
   --color-cancel-hover: #e0e0e0;
   --color-primary-text: #0a0a0a;
@@ -127,6 +129,7 @@
   --color-modal: var(--color-modal);
   --color-modal-text: var(--color-modal-text);
   --color-disabled: var(--color-disabled);
+  --color-text-disabled: var(--color-text-disabled);
   --color-cancel: var(--color-cancel);
   --color-cancel-hover: var(--color-cancel-hover);
   --color-primary-text: var(--color-primary-text);

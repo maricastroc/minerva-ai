@@ -1,4 +1,4 @@
-import { RefObject, useEffect } from 'react';
+import { RefObject, useEffect, forwardRef } from 'react';
 
 interface ChatTitleInputProps {
   value: string;
@@ -6,21 +6,20 @@ interface ChatTitleInputProps {
   onSave: () => void;
   onCancel: () => void;
   isMobile?: boolean;
-  ref: RefObject<HTMLInputElement | null>;
 }
 
-export const ChatTitleInput = ({
+export const ChatTitleInput = forwardRef<HTMLInputElement, ChatTitleInputProps>(({
   value,
   setValue,
   onSave,
   onCancel,
   isMobile,
-  ref,
-}: ChatTitleInputProps) => {
+}, ref) => {
   useEffect(() => {
-    ref.current?.focus();
-    ref.current?.select();
-  }, []);
+    const inputRef = ref as RefObject<HTMLInputElement>;
+    inputRef.current?.focus();
+    inputRef.current?.select();
+  }, [ref]);
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') onSave();
@@ -35,7 +34,9 @@ export const ChatTitleInput = ({
       spellCheck={false}
       onChange={(e) => setValue(e.target.value)}
       onKeyDown={handleKeyPress}
-      className={`flex-1 bg-transparent text-white focus:outline-none ${isMobile ? 'text-base' : 'text-sm'}`}
+      className={`flex-1 bg-transparent text-secondary-text focus:outline-none ${isMobile ? 'text-base' : 'text-sm'}`}
     />
   );
-};
+});
+
+ChatTitleInput.displayName = 'ChatTitleInput';

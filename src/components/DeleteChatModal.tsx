@@ -39,7 +39,7 @@ export function DeleteChatModal({
               <button
                 disabled={isLoading}
                 onClick={onClose}
-                className="cursor-pointer font-semibold rounded-3xl p-2 px-4 flex items-center gap-2 transition-all duration-300 max-h-[60px] text-sm bg-transparent border border-cancel text-primary-text hover:bg-cancel-hover capitalize justify-center disabled:bg-disabled disabled:text-disabled disabled:cursor-not-allowed"
+                className="cursor-pointer font-semibold rounded-3xl p-2 px-4 flex items-center gap-2 transition-all duration-300 max-h-[60px] text-sm bg-transparent border border-cancel text-primary-text hover:bg-cancel-hover capitalize justify-center disabled:bg-disabled disabled:text-text-disabled disabled:cursor-not-allowed"
               >
                 Cancel
               </button>
