@@ -54,8 +54,7 @@ export class ChatService {
           });
           return response;
         })
-        .catch((error) => {
-          console.error('AI response error:', error);
+        .catch(() => {
           return 'An unexpected error ocurred.';
         }),
     ]);
@@ -157,7 +156,6 @@ export class ChatService {
         text = text.replace(/^Assistant:?\s*/i, '').trim();
         return text;
       } catch (error: any) {
-        console.log(`Model ${modelName} failed:`, error.message);
         if (error.status === 429) continue;
         throw error;
       }

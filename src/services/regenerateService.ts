@@ -3,8 +3,6 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import { prisma } from '@/lib/prisma';
 import { RegenerateMessageRequest } from '@/types/regenerate-message-request';
 import { RegenerateMessageResponse } from '@/types/regenerate-message-response';
-import { PRIORITY_MODELS } from '@/utils/constants';
-import { handleApiError } from '@/utils/handleApiError';
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 
@@ -13,20 +11,32 @@ export class RegenerateService {
     request: RegenerateMessageRequest
   ): Promise<RegenerateMessageResponse> {
     const { userId, conversationId, messageId } = request;
-    console.log(userId, conversationId, messageId);
+
     const existingMessage = await prisma.message.findUnique({
       where: { id: messageId },
-      select: { regenerated: true, content: true, role: true },
+      include: {
+        conversation: {
+          select: { userId: true }
+        }
+      }
     });
 
-    if (existingMessage?.regenerated) {
+    if (!existingMessage) {
+      throw new Error('Message not found');
+    }
+
+    if (existingMessage.regenerated) {
       throw new Error(
         'This message has already been regenerated once. Cannot regenerate again.'
       );
     }
 
-    if (existingMessage?.role?.toUpperCase() !== 'ASSISTANT') {
+    if (existingMessage.role?.toUpperCase() !== 'ASSISTANT') {
       throw new Error('Only assistant messages can be regenerated');
+    }
+
+    if (existingMessage.conversation.userId !== userId) {
+      throw new Error('Access denied');
     }
 
     const conversation = await prisma.conversation.findFirst({
@@ -42,9 +52,10 @@ export class RegenerateService {
     });
 
     if (!conversation) {
-      throw new Error('Conversation not found or access denied');
+      throw new Error('Conversation not found');
     }
 
+    // Encontrar a mensagem do usuário que gerou esta resposta
     const targetMessageIndex = conversation.messages.findIndex(
       (msg) => msg.id === messageId
     );
@@ -71,13 +82,15 @@ export class RegenerateService {
       existingMessage.content
     );
 
+    if (!newResponse || newResponse.trim() === '') {
+      throw new Error('Failed to generate regenerated response');
+    }
+
     const updatedMessage = await prisma.message.update({
       where: { id: messageId },
       data: {
         content: newResponse,
-        model: 'regenerated',
         regenerated: true,
-        tokens: null,
       },
     });
 
@@ -104,30 +117,31 @@ export class RegenerateService {
       originalResponse
     );
 
-    for (const modelName of PRIORITY_MODELS) {
-      try {
-        const model = genAI.getGenerativeModel({
-          model: modelName,
-          generationConfig: {
-            temperature: 1.0,
-            topP: 0.95,
-            topK: 40,
-            maxOutputTokens: 1024,
-          },
-        });
+    try {
+      const model = genAI.getGenerativeModel({
+        model: 'models/gemini-2.5-flash',
+        generationConfig: {
+          temperature: 0.8,
+          topP: 0.9,
+          topK: 40,
+          maxOutputTokens: 1024,
+        },
+      });
 
-        const result = await model.generateContent(prompt);
-        const response = await result.response;
-        let text = response.text().trim();
+      const result = await model.generateContent(prompt);
+      const response = await result.response;
+      let text = response.text().trim();
 
-        text = text.replace(/^Assistant:?\s*/i, '').trim();
+      text = text.replace(/^Assistant:?\s*/i, '').trim();
+
+      if (text && text !== originalResponse) {
         return text;
-      } catch (error: any) {
-        handleApiError(error);
+      } else {
+        throw new Error('Empty or unchanged response');
       }
+    } catch (error: any) {
+      throw new Error(`Failed to generate response: ${error.message}`);
     }
-
-    throw new Error('All models failed');
   }
 
   private static buildRegenerationPrompt(
@@ -135,35 +149,41 @@ export class RegenerateService {
     userMessage: string,
     originalResponse: string
   ): string {
-    const SYSTEM_PROMPT = `
-You are a helpful AI assistant. The user wants you to regenerate your previous response to make it better.
+    let prompt = `You are a helpful AI assistant. The user asked you to regenerate your previous response to make it better, more helpful, or more detailed.
 
-YOUR TASK:
-1. Analyze the user's original message and your previous response
-2. Create a NEW improved version that is:
-  - More helpful and detailed
-  - Better suited to the user's needs
-  - Maintains a conversational tone
-  - Addresses any shortcomings of the previous response
+CONTEXT:
+User's original question: "${userMessage}"
+Your previous response: "${originalResponse}"
 
-USER'S ORIGINAL MESSAGE: "${userMessage}"
-
-YOUR PREVIOUS RESPONSE: "${originalResponse}"
-
-IMPORTANT: Do not just rephrase. Provide genuinely better content.
+CONVERSATION HISTORY (for context):
 `;
 
-    let prompt = SYSTEM_PROMPT;
-
     if (conversationHistory.length > 0) {
-      prompt += '\n\nCONVERSATION CONTEXT:\n';
-      const limitedHistory = conversationHistory.slice(-6);
+      const limitedHistory = conversationHistory.slice(-4);
       prompt += limitedHistory
         .map((msg: any) => `${msg.role}: ${msg.content}`)
         .join('\n');
+    } else {
+      prompt += 'No previous conversation history.';
     }
 
-    prompt += '\n\nYOUR IMPROVED RESPONSE:\nAssistant:';
+    prompt += `
+
+YOUR TASK:
+Generate a NEW improved version of your response. Make it:
+- More helpful and detailed than the original
+- Better address the user's question or needs
+- Maintain a natural, conversational tone
+- If the original was too brief, provide more information
+- If the original missed the point, correct it
+- Do NOT simply rephrase the original response
+- Do NOT start with "Sure!" or similar phrases
+- Do NOT reference that this is a regeneration
+
+IMPORTANT: Provide a completely new response that improves upon the original.
+
+Your new improved response: `;
+
     return prompt;
   }
 
@@ -171,20 +191,25 @@ IMPORTANT: Do not just rephrase. Provide genuinely better content.
     messageId: string,
     userId: string
   ): Promise<boolean> {
-    const message = await prisma.message.findUnique({
-      where: { id: messageId },
-      include: {
-        conversation: {
-          select: { userId: true },
+    try {
+      const message = await prisma.message.findUnique({
+        where: { id: messageId },
+        include: {
+          conversation: {
+            select: { userId: true },
+          },
         },
-      },
-    });
+      });
 
-    return (
-      !!message &&
-      message.role === 'ASSISTANT' &&
-      !message.regenerated &&
-      message.conversation.userId === userId
-    );
+      return (
+        !!message &&
+        message.role === 'ASSISTANT' &&
+        !message.regenerated &&
+        message.conversation.userId === userId
+      );
+    } catch (error) {
+      console.error('Error checking regeneration permission:', error);
+      return false;
+    }
   }
 }

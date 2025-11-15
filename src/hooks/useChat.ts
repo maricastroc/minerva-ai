@@ -82,9 +82,7 @@ export function useChat() {
           content: msg.content,
         })),
       });
-
-      console.log('Response data:', data);
-
+      
       handleMessages((prev) => {
         const lastUserMessageIndex = prev.findIndex(
           (msg) => msg.id === userMessage.id && msg.role === USER_ROLE
@@ -130,8 +128,6 @@ export function useChat() {
         const chatResponse = await api.get<ChatProps>(
           `/user/chats/${data.chatID}`
         );
-
-        console.log('Chat response:', chatResponse);
 
         handleCurrentChatTitle(chatResponse.data.title);
         handleCurrentChatId(String(chatResponse?.data.id));

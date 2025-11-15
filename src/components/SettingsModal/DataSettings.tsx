@@ -4,6 +4,7 @@ import { IconTrash, IconAlertTriangle } from '@tabler/icons-react';
 import { AxiosResponse } from 'axios';
 import { useState } from 'react';
 import { KeyedMutator } from 'swr';
+import { DeleteButton } from '../DeleteButton';
 
 interface DataSettingProps {
   mutateChats: KeyedMutator<AxiosResponse<ChatProps[]>>;
@@ -32,15 +33,14 @@ export const DataSettings = ({ mutateChats, onClose }: DataSettingProps) => {
                   Permanently remove all your conversations
                 </p>
               </div>
-              <button
+              <DeleteButton
                 type='button'
                 disabled={isLoading}
                 onClick={() => setIsConfirming(true)}
-                className="cursor-pointer font-semibold rounded-3xl p-2 px-4 flex items-center gap-2 transition-all duration-300 max-h-[60px] text-sm bg-transparent border border-delete hover:bg-delete/10 text-delete capitalize justify-center disabled:bg-disabled disabled:border-disabled disabled:text-modal-text disabled:cursor-not-allowed"
               >
                 <IconTrash size={18} />
                 Delete All
-              </button>
+              </DeleteButton>
             </div>
           ) : (
             <div className="space-y-3">
@@ -52,13 +52,12 @@ export const DataSettings = ({ mutateChats, onClose }: DataSettingProps) => {
                 This action cannot be undone. All your chat history will be permanently deleted.
               </p>
               <div className="flex flex-col sm:flex-row gap-2">
-                <button
+                <DeleteButton
                   onClick={() => deleteAllChats()}
                   disabled={isLoading}
-                  className="cursor-pointer font-semibold rounded-3xl p-2 px-4 flex items-center gap-2 transition-all duration-300 max-h-[60px] text-sm bg-transparent border border-delete hover:bg-delete/10 text-delete capitalize justify-center disabled:bg-disabled disabled:border-disabled disabled:text-modal-text disabled:cursor-not-allowed"
                 >
                   Yes, Delete Everything
-                </button>
+                </DeleteButton>
                 <button
                   type='button'
                   onClick={() => setIsConfirming(false)}

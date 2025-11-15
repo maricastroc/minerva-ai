@@ -19,7 +19,6 @@ export default async function handler(res: any) {
 
     if (!response.ok) {
       const errorData = await response.json();
-      console.error('Error listing models:', errorData);
       return res.status(response.status).json({ error: errorData });
     }
 

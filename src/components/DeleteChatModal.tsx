@@ -3,6 +3,7 @@ import { ChatProps } from '@/types/chat';
 import * as Dialog from '@radix-ui/react-dialog';
 import { AxiosResponse } from 'axios';
 import { KeyedMutator } from 'swr';
+import { DeleteButton } from './DeleteButton';
 
 interface Props {
   chatId: string;
@@ -43,16 +44,15 @@ export function DeleteChatModal({
               >
                 Cancel
               </button>
-              <button
+              <DeleteButton
                 disabled={isLoading}
                 onClick={async () => {
                   await deleteChat();
                   onClose();
                 }}
-                className="cursor-pointer font-semibold rounded-3xl p-2 px-4 flex items-center gap-2 transition-all duration-300 max-h-[60px] text-sm bg-transparent border border-delete hover:bg-delete/10 text-delete capitalize justify-center disabled:bg-disabled disabled:border-disabled disabled:text-modal-text disabled:cursor-not-allowed"
               >
                 Delete
-              </button>
+              </DeleteButton>
             </div>
           </Dialog.Description>
         </Dialog.Content>

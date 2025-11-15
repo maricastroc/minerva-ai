@@ -87,7 +87,6 @@ export default async function handler(
       return res.status(400).json({ message: error.errors[0] });
     }
 
-    console.error('Error updating password:', error);
     return res.status(500).json({ message: 'Internal server error' });
   }
 }

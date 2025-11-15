@@ -58,8 +58,6 @@ export default async function handler(
       message: 'Chat deleted successfully!',
     });
   } catch (error) {
-    console.error('Error deleting chat:', error);
-
     if (error instanceof Error) {
       if (error.message.includes('Record to delete does not exist')) {
         return res.status(404).json({ error: 'Chat not found' });

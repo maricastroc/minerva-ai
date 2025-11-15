@@ -25,7 +25,6 @@ export default async function handler(
 
     const userId = String(session.user.id);
 
-    // Verificar se o usuário tem conversas
     const userConversations = await prisma.conversation.findMany({
       where: {
         userId: userId,
@@ -36,12 +35,10 @@ export default async function handler(
     });
 
     if (userConversations.length === 0) {
-      return res.status(404).json({ error: 'No chats found to delete' });
+      return res.status(200).json({ message: 'No chats found to delete!' });
     }
 
-    // Deletar todas as mensagens e conversas em uma transação
     await prisma.$transaction(async (tx) => {
-      // Primeiro deleta todas as mensagens do usuário
       await tx.message.deleteMany({
         where: {
           conversation: {
@@ -50,7 +47,6 @@ export default async function handler(
         },
       });
 
-      // Depois deleta todas as conversas do usuário
       await tx.conversation.deleteMany({
         where: {
           userId: userId,
@@ -64,8 +60,6 @@ export default async function handler(
       deletedCount: userConversations.length,
     });
   } catch (error) {
-    console.error('Error deleting all chats:', error);
-
     if (error instanceof Error) {
       if (error.message.includes('Record to delete does not exist')) {
         return res.status(404).json({ error: 'No chats found to delete' });

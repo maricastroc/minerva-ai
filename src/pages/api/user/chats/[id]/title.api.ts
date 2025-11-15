@@ -80,8 +80,6 @@ export default async function handler(
       },
     });
   } catch (error) {
-    console.error('Error updating conversation title:', error);
-
     if (error instanceof Error) {
       if (error.message.includes('Record to update not found')) {
         return res.status(404).json({ error: 'Conversation not found' });

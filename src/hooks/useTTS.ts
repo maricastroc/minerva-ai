@@ -68,7 +68,6 @@ export function useTTS({ onStart, onEnd, onError }: useTTSProps = {}) {
       utterance.onerror = () => {
         setIsSpeaking(false);
         onError?.();
-        console.error('Speech synthesis error');
       };
 
       window.speechSynthesis.speak(utterance);

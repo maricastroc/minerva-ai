@@ -49,8 +49,6 @@ export default async function handler(
 
     return res.status(200).json(result);
   } catch (error: any) {
-    console.error('Regenerate error:', error);
-
     if (error.message?.includes('already been regenerated')) {
       return res.status(400).json({
         error: error.message || 'This message has already been regenerated',
