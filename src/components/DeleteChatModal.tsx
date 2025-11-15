@@ -22,7 +22,7 @@ export function DeleteChatModal({
   return (
     <Dialog.Root open={isOpen}>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 z-[990] bg-black/70 backdrop-blur-xs" />
+        <Dialog.Overlay className="fixed inset-0 z-[990] bg-black/10 backdrop-blur-xs" />
 
         <Dialog.Content className="fixed z-[999] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] bg-modal rounded-3xl shadow-lg p-6 md:w-[370px]">
           <Dialog.Title className="text-lg font-semibold text-modal-text mb-4">
@@ -31,8 +31,8 @@ export function DeleteChatModal({
 
           <Dialog.Description className="flex flex-col w-full">
             <p className="text-sm font-medium text-modal-text">
-              Are you sure you want to delete this chat? This action cannot be
-              reversed!
+              {isLoading ? 'Deleting chat...' : `Are you sure you want to delete this chat? This action cannot be
+              reversed!`}
             </p>
 
             <div className="mt-6 flex items-end justify-end w-full gap-2">

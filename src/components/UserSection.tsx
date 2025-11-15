@@ -8,9 +8,13 @@ import { signOut, useSession } from 'next-auth/react';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import { SettingsModal } from './SettingsModal';
 import { useDropdownManager } from '@/contexts/DropdownContext';
+import { ChatProps } from '@/types/chat';
+import { AxiosResponse } from 'axios';
+import { KeyedMutator } from 'swr';
 
 interface Props {
   isMobile?: boolean;
+  mutateChats: KeyedMutator<AxiosResponse<ChatProps[]>>;
 }
 
 const Avatar = ({
@@ -36,7 +40,7 @@ const Avatar = ({
     </div>
   );
 
-export const UserSection = ({ isMobile = false }: Props) => {
+export const UserSection = ({ isMobile = false, mutateChats }: Props) => {
   const { data: session } = useSession();
 
   const { 
@@ -109,7 +113,7 @@ export const UserSection = ({ isMobile = false }: Props) => {
               onClick={openSettingsModal}
               className={clsx(
                 buttonClass,
-                'text-gray-25 hover:bg-dropdown-hover'
+                'text-gray-25 hover:bg-dropdown-hover font-medium'
               )}
               role="menuitem"
             >
@@ -119,7 +123,7 @@ export const UserSection = ({ isMobile = false }: Props) => {
             <div className="my-1" />
             <button
               onClick={handleLogout}
-              className={clsx(buttonClass, 'text-delete hover:bg-delete/10')}
+              className={clsx(buttonClass, 'text-delete font-medium hover:bg-delete/10')}
               role="menuitem"
             >
               <FontAwesomeIcon icon={faSignOutAlt} className="w-4 h-4 mr-3" />
@@ -132,8 +136,9 @@ export const UserSection = ({ isMobile = false }: Props) => {
           isOpen={isSettingsModalOpen}
           onClose={() => {
             setIsSettingsModalOpen(false);
-            closeAllDropdowns(); // Correção: usar closeAllDropdowns
+            closeAllDropdowns();
           }}
+          mutateChats={mutateChats}
         />
       </div>
     </div>

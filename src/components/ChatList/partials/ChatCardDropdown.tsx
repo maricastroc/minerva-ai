@@ -1,7 +1,6 @@
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { DeleteChatModal } from '@/components/DeleteChatModal';
-import { useState } from 'react';
+
 import { AxiosResponse } from 'axios';
 import { ChatProps } from '@/types/chat';
 import { KeyedMutator } from 'swr';
@@ -13,21 +12,18 @@ interface DropdownProps {
   chatId: string;
   isMobile?: boolean;
   position: 'top' | 'bottom';
+  onOpenDeleteModal: () => void;
 }
 
 export const ChatCardDropdown = ({
   onEdit,
-  onDelete,
-  mutate,
-  chatId,
   isMobile,
-  position = 'bottom'
+  position = 'bottom',
+  onOpenDeleteModal
 }: DropdownProps) => {
-  const [isDeleteChatModalOpen, setIsDeleteChatModalOpen] = useState(false);
-
   const positionClasses = position === 'top' 
     ? 'bottom-full mb-2' 
-    : 'top-full mt-2';
+    : 'top-full mt-[0.5rem]';
 
   return (
     <div className={`absolute ${positionClasses} p-2 w-full flex items-start right-0 bg-dropdown rounded-lg shadow-lg z-50 min-w-[120px]`}>
@@ -42,20 +38,11 @@ export const ChatCardDropdown = ({
 
         <button
           className={`cursor-pointer rounded-md w-full text-left p-2 font-medium text-delete hover:bg-delete/10 flex items-center gap-2 ${isMobile ? 'text-base' : 'text-sm'}`}
-          onClick={() => setIsDeleteChatModalOpen(true)}
+          onClick={onOpenDeleteModal}
         >
           <FontAwesomeIcon icon={faTrash} className="w-3 h-3" />
           Delete
         </button>
-        <DeleteChatModal
-          mutate={mutate}
-          chatId={chatId}
-          isOpen={isDeleteChatModalOpen}
-          onClose={() => {
-            setIsDeleteChatModalOpen(false);
-            onDelete();
-          }}
-        />
       </div>
     </div>
   );

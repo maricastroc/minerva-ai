@@ -8,12 +8,12 @@
   --color-sidebar: #1b1b1c;
   --color-primary-button: #44454a;
   --color-primary-button-hover: #56565a;
-  --color-chat-card-hover: #2d2c2e;
+  --color-chat-card-hover: #2c2c2e;
   --color-user-card-hover: #2d2c2e;
   --color-user-message: #303030;
-  --color-dropdown: #2d2c2e;
-  --color-dropdown-hover: #44454a;
-  --color-selected-chat-card: #353538;
+  --color-dropdown: #353638;
+  --color-dropdown-hover: #454648;
+  --color-selected-chat-card: #2c2c2e;
   --color-action-icon: #d0d4d9;
   --color-action-icon-hover: #272729;
   --color-tooltip: #43444a;
@@ -53,6 +53,7 @@
   --color-blue-200: #acb7f9;
   --color-blue-100: #c5c8fa;
   
+  --color-red-700: #b53535;
   --color-red-500: #dd5252;
   --color-red-300: #ee6e6c;
   --color-error: #F44336;
@@ -103,6 +104,13 @@
   --color-gray-100: #262626;
   --color-gray-50: #1a1a1a;
   --color-gray-25: #0a0a0a;
+
+  --color-blue-100: #506fe0;
+  --color-blue-200: #6185f6;
+  --color-blue-300: #7a96f7;
+  --color-blue-400: #93a6f8;
+  --color-blue-500: #acb7f9;
+  --color-blue-600: #c5c8fa;
 }
 
 @theme inline {
@@ -160,9 +168,9 @@
   --color-blue-500: var(--color-blue-500);
   --color-blue-600: var(--color-blue-600);
   
-  /* Cores vermelhas */
   --color-red-300: var(--color-red-300);
   --color-red-500: var(--color-red-500);
+  --color-red-700: var(--color-red-700);
   --color-error: var(--color-error);
 }
 

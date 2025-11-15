@@ -65,7 +65,8 @@ export default function Home() {
       />
       {isClient && (
         <div className="flex h-[100dvh] bg-gray-900 text-gray-50 overflow-hidden safe-area">
-          {isValidating && <LoadingComponent />}
+          {isValidating && !chatHistory && <LoadingComponent />}
+          
           {!isMobile && (
             <Sidebar
               isOpen={isSidebarOpen}

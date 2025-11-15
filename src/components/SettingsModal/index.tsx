@@ -8,10 +8,15 @@ import {
 import { ThemeSettings } from './ThemeSettings';
 import { useState } from 'react';
 import { UserSettings } from './UserSettings';
+import { DataSettings } from './DataSettings';
+import { KeyedMutator } from 'swr';
+import { AxiosResponse } from 'axios';
+import { ChatProps } from '@/types/chat';
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
+  mutateChats: KeyedMutator<AxiosResponse<ChatProps[]>>;
 }
 
 const sidebarItems = [
@@ -44,7 +49,7 @@ function SidebarItem({
   );
 }
 
-export function SettingsModal({ onClose, isOpen }: Props) {
+export function SettingsModal({ onClose, isOpen, mutateChats }: Props) {
   const [activeSetting, setActiveSetting] = useState<
     'general' | 'profile' | 'data'
   >('general');
@@ -56,7 +61,7 @@ export function SettingsModal({ onClose, isOpen }: Props) {
 
         <Dialog.Content
           className="fixed z-[999] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
-          w-[90vw] min-h-[70vh] bg-modal rounded-3xl shadow-lg p-6 md:w-[750px]"
+          w-[90vw] md:min-h-[70vh] bg-modal rounded-3xl shadow-lg p-6 md:w-[750px]"
         >
           <div className="flex items-center justify-between w-full">
             <Dialog.Title className="text-lg font-semibold text-modal-text">
@@ -67,8 +72,8 @@ export function SettingsModal({ onClose, isOpen }: Props) {
             </Dialog.Close>
           </div>
 
-          <div className="grid grid-cols-[1fr_3.5fr] gap-4 mt-6">
-            <div className="ml-[-0.5rem] flex flex-col gap-2 w-[8rem]">
+          <div className="flex flex-col md:grid md:grid-cols-[1fr_3.5fr] gap-4 mt-6">
+            <div className="ml-[-0.5rem] w-full flex overflow-scroll md:overflow-hidden md:flex-col gap-2 md:w-[8rem]">
               {sidebarItems.map((item) => (
                 <SidebarItem
                   key={item.value}
@@ -82,12 +87,10 @@ export function SettingsModal({ onClose, isOpen }: Props) {
               ))}
             </div>
 
-            <div className="mr-8">
+            <div className="md:mr-8">
               {activeSetting === 'general' && <ThemeSettings />}
               {activeSetting === 'profile' && <UserSettings />}
-              {activeSetting === 'data' && (
-                <div className="text-modal-text">Data settings here</div>
-              )}
+              {activeSetting === 'data' && <DataSettings onClose={onClose} mutateChats={mutateChats} />}
             </div>
           </div>
         </Dialog.Content>

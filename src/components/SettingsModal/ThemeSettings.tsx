@@ -12,22 +12,25 @@ export const ThemeSettings = () => {
 
   return (
     <div>
-      <p className="font-medium mb-3 text-[15px] text-primary-text">Theme</p>
+      <p className="font-medium mb-4 text-[15px] text-primary-text">Theme</p>
 
-      <div className="flex items-center w-full gap-3">
+      <div className="grid grid-cols-2 gap-3 md:flex md:flex-row md:items-center w-full">
         {themes.map(({ label, icon: Icon, value }) => {
           const isActive = currentTheme === value;
+          // System ocupa 2 colunas em mobile (linha inteira)
+          const isSystem = value === 'system';
 
           return (
             <button
               key={label}
               onClick={() => handleSetTheme(value)}
               className={`
-                flex gap-1 duration-100 cursor-pointer transition-all
+                w-full md:flex-grow flex gap-2 duration-100 cursor-pointer transition-all
                 text-primary-text items-center justify-center 
-                w-full flex-col border border-outline-button-border 
+                flex-col border border-outline-button-border 
                 p-4 py-5 rounded-lg hover:bg-outline-button-hover
                 ${isActive ? 'bg-outline-button-hover' : ''}
+                ${isSystem ? 'col-span-2 md:col-span-1' : ''}
               `}
             >
               <Icon size={20} />

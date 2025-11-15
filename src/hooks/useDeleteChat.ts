@@ -5,6 +5,7 @@ import { ChatProps } from '@/types/chat';
 import { api } from '@/lib/axios';
 import { handleApiError } from '@/utils/handleApiError';
 import { useAppContext } from '@/contexts/AppContext';
+import toast from 'react-hot-toast';
 
 export const useDeleteChat = (
   chatId: string,
@@ -26,6 +27,8 @@ export const useDeleteChat = (
       await api.delete(`/user/chats/${chatId}/delete`);
 
       await mutate();
+
+      toast.success('Chat successfully deleted!')
 
       if (currentChatId === chatId) {
         handleCurrentChatId(null);

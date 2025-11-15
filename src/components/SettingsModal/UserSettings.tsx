@@ -25,8 +25,6 @@ export const UserSettings = () => {
 
   const session = useSession();
 
-  console.log(session);
-
   const [isLoading, setIsLoading] = useState(false);
 
   const [emailData, setEmailData] = useState({
@@ -40,7 +38,7 @@ export const UserSettings = () => {
     confirmPassword: '',
   });
 
-  const { data: user, mutate } = useRequest<UserData>({
+  const { data: user, mutate: mutateUser } = useRequest<UserData>({
     url: '/user',
     method: 'GET',
   });
@@ -70,7 +68,7 @@ export const UserSettings = () => {
       });
 
       toast.success(response.data.message);
-      await mutate();
+      await mutateUser();
       setActiveForm(null);
       setEmailData({ newEmail: '', password: '' });
     } catch (error) {
@@ -111,7 +109,7 @@ export const UserSettings = () => {
       });
 
       toast.success(response.data.message);
-      await mutate();
+      await mutateUser();
       setActiveForm(null);
       setPasswordData({
         currentPassword: '',
