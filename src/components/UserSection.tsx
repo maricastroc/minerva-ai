@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { signOut, useSession } from 'next-auth/react';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import { SettingsModal } from './SettingsModal';
+import { useDropdownManager } from '@/contexts/DropdownContext';
 
 interface Props {
   isMobile?: boolean;
@@ -37,28 +38,31 @@ const Avatar = ({
 
 export const UserSection = ({ isMobile = false }: Props) => {
   const { data: session } = useSession();
-
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { 
+    toggleUserDropdown, 
+    closeAllDropdowns,
+    isUserDropdownOpen 
+  } = useDropdownManager();
 
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
-
   const dropdownRef = useRef<HTMLDivElement>(null);
-
   const firstLetter = session?.user?.name?.[0] ?? '';
 
-  useClickOutside([dropdownRef], () => setIsDropdownOpen(false));
+  useClickOutside([dropdownRef], () => {
+    if (isUserDropdownOpen) {
+      closeAllDropdowns();
+    }
+  });
 
   const handleLogout = useCallback(() => {
     setIsSettingsModalOpen(false);
-    setIsDropdownOpen(false);
+    closeAllDropdowns(); // Correção: usar closeAllDropdowns
     signOut({ callbackUrl: '/login' });
     toast.success('See you soon!');
-  }, []);
-
-  const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
+  }, [closeAllDropdowns]); // Adicionei a dependência
 
   const openSettingsModal = () => {
-    setIsDropdownOpen(false);
+    closeAllDropdowns(); // Correção: usar closeAllDropdowns
     setIsSettingsModalOpen(true);
   };
 
@@ -76,9 +80,9 @@ export const UserSection = ({ isMobile = false }: Props) => {
     <div className={clsx(isMobile ? 'p-4 pb-2' : 'p-4', 'w-full')}>
       <div
         role="button"
-        aria-expanded={isDropdownOpen}
-        className={`flex items-center space-x-3 cursor-pointer transition-all duration-100 p-2 rounded-2xl relative ${!isDropdownOpen && 'hover:bg-user-card-hover'}`}
-        onClick={toggleDropdown}
+        aria-expanded={isUserDropdownOpen}
+        className={`flex items-center space-x-3 cursor-pointer transition-all duration-100 p-2 rounded-2xl relative ${!isUserDropdownOpen && 'hover:bg-user-card-hover'}`}
+        onClick={toggleUserDropdown}
         ref={dropdownRef}
       >
         <Avatar
@@ -89,7 +93,7 @@ export const UserSection = ({ isMobile = false }: Props) => {
 
         <div className={textClass}>{session?.user?.name}</div>
 
-        {isDropdownOpen && (
+        {isUserDropdownOpen && (
           <div
             className="absolute bottom-full left-0 mb-2 p-2 w-48 bg-dropdown rounded-lg shadow-lg z-50"
             role="menu"
@@ -121,7 +125,7 @@ export const UserSection = ({ isMobile = false }: Props) => {
           isOpen={isSettingsModalOpen}
           onClose={() => {
             setIsSettingsModalOpen(false);
-            setIsDropdownOpen(false);
+            closeAllDropdowns(); // Correção: usar closeAllDropdowns
           }}
         />
       </div>

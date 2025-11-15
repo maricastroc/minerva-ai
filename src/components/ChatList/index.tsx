@@ -30,17 +30,19 @@ export const ChatList = ({
           >
             Chats
           </p>
-          {chatHistory?.map((chat) => (
-            <ChatCard
-              isMobile={isMobile}
-              key={chat.id}
-              chat={chat}
-              handleSelectChat={handleSelectChat}
-              editingChatId={editingChatId}
-              setEditingChatId={setEditingChatId}
-              mutate={mutate}
-            />
-          ))}
+          {chatHistory
+            ?.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+            .map((chat) => (
+              <ChatCard
+                isMobile={isMobile}
+                key={chat.id}
+                chat={chat}
+                handleSelectChat={handleSelectChat}
+                editingChatId={editingChatId}
+                setEditingChatId={setEditingChatId}
+                mutate={mutate}
+              />
+            ))}
         </>
       )}
     </div>

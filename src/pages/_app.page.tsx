@@ -6,6 +6,7 @@ import { Bai_Jamjuree } from 'next/font/google';
 import { AppProvider } from '@/contexts/AppContext';
 import { AudioProvider } from '@/contexts/AudioContext';
 import { useEffect } from 'react';
+import { DropdownProvider } from '@/contexts/DropdownContext';
 
 const baiJamjuree = Bai_Jamjuree({
   subsets: ['latin'],
@@ -38,37 +39,39 @@ export default function App({
     <SessionProvider session={session}>
       <AppProvider>
         <AudioProvider>
-          <main className={`${baiJamjuree.variable} font-sans`}>
-            <Toaster
-              toastOptions={{
-                style: {
-                  backgroundColor: 'var(--color-gray-700)',
-                  color: 'var(--color-gray-100)',
-                },
-                success: {
-                  style: {
-                    backgroundColor: 'var(--color-gray-700)',
-                    color: 'var(--color-gray-100)',
-                  },
-                  iconTheme: {
-                    primary: 'var(--color-blue-500)',
-                    secondary: 'var(--color-foreground)',
-                  },
-                },
-                error: {
-                  style: {
-                    backgroundColor: 'var(--color-gray-700)',
-                    color: 'var(--color-gray-100)',
-                  },
-                  iconTheme: {
-                    primary: 'var(--color-red-500)',
-                    secondary: 'var(--color-foreground)',
-                  },
-                },
-              }}
-            />
-            <Component {...pageProps} />
-          </main>
+          <DropdownProvider>
+              <main className={`${baiJamjuree.variable} font-sans`}>
+                <Toaster
+                  toastOptions={{
+                    style: {
+                      backgroundColor: 'var(--color-gray-700)',
+                      color: 'var(--color-gray-100)',
+                    },
+                    success: {
+                      style: {
+                        backgroundColor: 'var(--color-gray-700)',
+                        color: 'var(--color-gray-100)',
+                      },
+                      iconTheme: {
+                        primary: 'var(--color-blue-500)',
+                        secondary: 'var(--color-foreground)',
+                      },
+                    },
+                    error: {
+                      style: {
+                        backgroundColor: 'var(--color-gray-700)',
+                        color: 'var(--color-gray-100)',
+                      },
+                      iconTheme: {
+                        primary: 'var(--color-red-500)',
+                        secondary: 'var(--color-foreground)',
+                      },
+                    },
+                  }}
+                />
+                <Component {...pageProps} />
+            </main>
+          </DropdownProvider>
         </AudioProvider>
       </AppProvider>
     </SessionProvider>

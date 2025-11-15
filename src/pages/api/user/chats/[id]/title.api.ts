@@ -65,6 +65,7 @@ export default async function handler(
       select: {
         id: true,
         title: true,
+        createdAt: true,
         updatedAt: true,
       },
     });
@@ -74,6 +75,7 @@ export default async function handler(
       data: {
         id: updatedConversation.id,
         title: updatedConversation.title,
+        createdAt: updatedConversation.createdAt,
         updatedAt: updatedConversation.updatedAt,
       },
     });

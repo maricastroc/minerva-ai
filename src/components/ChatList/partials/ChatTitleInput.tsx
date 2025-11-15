@@ -29,7 +29,7 @@ export const ChatTitleInput = forwardRef<HTMLInputElement, ChatTitleInputProps>(
         spellCheck={false}
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={handleKeyPress}
-        className={`flex-1 bg-transparent text-secondary-text focus:outline-none ${isMobile ? 'text-base' : 'text-sm'}`}
+        className={`w-[95%] bg-transparent text-secondary-text focus:outline-none ${isMobile ? 'text-base' : 'text-sm'}`}
       />
     );
   }

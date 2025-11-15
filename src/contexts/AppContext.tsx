@@ -32,10 +32,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
+
   const [currentChatId, setCurrentChatId] = useState<string | null>(null);
+
   const [isMessageLoading, setIsMessageLoading] = useState(false);
+
   const [messages, setMessages] = useState<MessageProps[]>([]);
+
   const [currentChatTitle, setCurrentChatTitle] = useState<string | null>(null);
+  
   const [currentTheme, setCurrentTheme] = useState<'light' | 'dark' | 'system'>(
     'system'
   );
@@ -114,7 +119,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
         '(prefers-color-scheme: dark)'
       ).matches;
 
-      // Determine o tema inicial
       let initialTheme: 'light' | 'dark';
 
       if (savedTheme) {

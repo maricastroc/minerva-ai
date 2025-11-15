@@ -11,6 +11,7 @@ import { DropdownButton } from './DropdownButton';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import clsx from 'clsx';
 import { useAppContext } from '@/contexts/AppContext';
+import { useDropdownManager } from '@/contexts/DropdownContext';
 
 interface Props {
   chat: ChatProps;
@@ -30,16 +31,24 @@ export const ChatCard = ({
   isMobile = false,
 }: Props) => {
   const { currentChatId } = useAppContext();
-
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { 
+    toggleChatDropdown, 
+    closeAllDropdowns,
+    isChatDropdownOpen 
+  } = useDropdownManager();
 
   const [localTitle, setLocalTitle] = useState(chat.title);
 
   const chatId = String(chat.id);
+
   const isEditing = editingChatId === chatId;
+
   const isSelected = currentChatId === chatId;
 
+  const isThisChatDropdownOpen = isChatDropdownOpen(chatId);
+
   const dropdownRef = useRef<HTMLDivElement>(null);
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   const debouncedTitle = useDebounce(localTitle, 500);
@@ -52,17 +61,27 @@ export const ChatCard = ({
     }
   }, [debouncedTitle, isEditing]);
 
-  useClickOutside([inputRef], () => {
+  useClickOutside([inputRef, dropdownRef], () => {
     if (isEditing) {
       if (localTitle.trim() && localTitle !== chat.title) {
         updateChatTitle(chatId, localTitle.trim());
       }
       setEditingChatId(null);
     }
+    if (isThisChatDropdownOpen) {
+      closeAllDropdowns();
+    }
   });
 
   const handleCardClick = () => {
-    if (!isEditing) handleSelectChat(chatId);
+    if (!isEditing) {
+      handleSelectChat(chatId);
+      closeAllDropdowns();
+    }
+  };
+
+  const handleToggleChatDropdown = () => {
+    toggleChatDropdown(chatId);
   };
 
   return (
@@ -71,7 +90,7 @@ export const ChatCard = ({
         'mt-1 pl-[0.8rem] flex items-center justify-between cursor-pointer py-2 rounded-[1.25rem] transition-colors group',
         {
           'hover:bg-chat-card-hover': !isSelected,
-          'bg-selected-chat-card': isSelected || isDropdownOpen,
+          'bg-selected-chat-card': isSelected || isThisChatDropdownOpen,
           'bg-gray-700': isEditing,
         }
       )}
@@ -115,20 +134,20 @@ export const ChatCard = ({
       {!isEditing && (
         <div className="relative" ref={dropdownRef}>
           <DropdownButton
-            isDropdownOpen={isDropdownOpen}
-            setIsDropdownOpen={setIsDropdownOpen}
+            isDropdownOpen={isThisChatDropdownOpen}
+            setIsDropdownOpen={handleToggleChatDropdown}
             isMobile={isMobile}
             isSelected={isSelected}
           />
 
-          {isDropdownOpen && (
+          {isThisChatDropdownOpen && (
             <ChatCardDropdown
               onEdit={() => {
                 setEditingChatId(chatId);
                 setLocalTitle(chat.title);
-                setIsDropdownOpen(false);
+                closeAllDropdowns();
               }}
-              onDelete={() => setIsDropdownOpen(false)}
+              onDelete={() => closeAllDropdowns()}
               chatId={chatId}
               mutate={mutate}
               isMobile={isMobile}
