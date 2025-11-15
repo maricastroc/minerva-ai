@@ -2,6 +2,7 @@ import { MessageProps } from '@/types/message';
 import { MessageItem } from './MessageItem';
 import { LoadingDots } from './LoadingDots';
 import { useAppContext } from '@/contexts/AppContext';
+import { useEffect, useRef, useState } from 'react';
 
 interface MessageListProps {
   messages: MessageProps[];
@@ -10,6 +11,32 @@ interface MessageListProps {
 
 export const MessageList = ({ messages, isMobile }: MessageListProps) => {
   const { currentChatTitle, isMessageLoading } = useAppContext();
+
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const [prevMessagesLength, setPrevMessagesLength] = useState(0);
+
+  useEffect(() => {
+    const scrollContainer = scrollContainerRef.current;
+    if (scrollContainer) {
+      const isNewMessage = messages.length > prevMessagesLength;
+
+      const isAtBottom = 
+
+        scrollContainer.scrollHeight - scrollContainer.scrollTop - scrollContainer.clientHeight < 100;
+
+      if (isNewMessage || isAtBottom) {
+        
+        const behavior = isMessageLoading ? 'auto' : 'smooth';
+        scrollContainer.scrollTo({
+          top: scrollContainer.scrollHeight,
+          behavior: behavior
+        });
+      }
+      
+      setPrevMessagesLength(messages.length);
+    }
+  }, [messages, isMessageLoading, prevMessagesLength]);
 
   return (
     <div
@@ -23,7 +50,10 @@ export const MessageList = ({ messages, isMobile }: MessageListProps) => {
         </div>
       )}
 
-      <div className="relative mt-4 pb-4 flex flex-col items-center w-full justify-start mb-36 chat-scroll-container overflow-y-auto">
+      <div 
+        ref={scrollContainerRef}
+        className="relative mt-4 pb-4 flex flex-col items-center w-full justify-start mb-36 chat-scroll-container overflow-y-auto"
+      >
         <div className="min-w-full xl:min-w-4xl xl:max-w-4xl">
           {messages.map((message) => (
             <MessageItem key={message.id} message={message} />
