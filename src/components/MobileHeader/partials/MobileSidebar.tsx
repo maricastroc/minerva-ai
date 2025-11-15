@@ -55,7 +55,7 @@ export const MobileSidebar = ({
           mutate={mutate}
         />
 
-        <UserSection isMobile />
+        <UserSection isMobile mutateChats={mutate} />
       </motion.aside>
     </>
   );
