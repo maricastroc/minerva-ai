@@ -1,4 +1,3 @@
-// pages/api/chats/simple.ts
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth/next';
 

@@ -62,7 +62,6 @@ export default function Register() {
     }
   }
 
-  // ✅ MELHORIA: Submit via Enter key
   const handleKeyDown = (event: React.KeyboardEvent<HTMLFormElement>) => {
     if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault();

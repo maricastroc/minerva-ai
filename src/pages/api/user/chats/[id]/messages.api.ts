@@ -1,4 +1,3 @@
-// pages/api/user/chats/[id]/messages.ts
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth/next';
 import { buildNextAuthOptions } from '../../../auth/[...nextauth].api';
@@ -48,11 +47,9 @@ export default async function handler(
         content: true,
         role: true,
         timestamp: true,
-        // Incluir outros campos se necessário
       },
     });
 
-    // Formatar as mensagens para o frontend
     const formattedMessages = messages.map((message) => ({
       id: message.id,
       content: message.content,

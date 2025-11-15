@@ -11,9 +11,6 @@ const changeEmailSchema = yup.object().shape({
   password: yup.string().required('Current password is required'),
 });
 
-// /pages/api/user/email.ts
-// ... código anterior mantido ...
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse

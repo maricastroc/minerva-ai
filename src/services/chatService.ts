@@ -204,7 +204,7 @@ export class ChatService {
       isNewConversation,
       messageIds: {
         userMessageId,
-        assistantMessageId: assistantMessage.id, // ← RETORNE O ID CORRETO
+        assistantMessageId: assistantMessage.id,
       },
     };
   }

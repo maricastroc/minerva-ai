@@ -1,4 +1,3 @@
-// contexts/DropdownContext.tsx
 import { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 
 type DropdownType = 'user' | 'chat' | null;

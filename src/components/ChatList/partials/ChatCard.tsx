@@ -13,7 +13,7 @@ import clsx from 'clsx';
 import { useAppContext } from '@/contexts/AppContext';
 import { useDropdownManager } from '@/contexts/DropdownContext';
 import { useDropdownPosition } from '@/hooks/useDropdownPosition';
-import { DeleteChatModal } from '@/components/DeleteChatModal'; // Importe o modal aqui
+import { DeleteChatModal } from '@/components/DeleteChatModal';
 import { ChatCardDropdown } from './ChatCardDropdown';
 
 interface Props {
@@ -41,15 +41,21 @@ export const ChatCard = ({
   } = useDropdownManager();
 
   const [localTitle, setLocalTitle] = useState(chat.title);
-  const [isDeleteChatModalOpen, setIsDeleteChatModalOpen] = useState(false); // Estado movido para cá
+
+  const [isDeleteChatModalOpen, setIsDeleteChatModalOpen] = useState(false);
   
   const chatId = String(chat.id);
+
   const isEditing = editingChatId === chatId;
+
   const isSelected = currentChatId === chatId;
+
   const isThisChatDropdownOpen = isChatDropdownOpen(chatId);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
+
   const inputRef = useRef<HTMLInputElement>(null);
+
   const cardRef = useRef<HTMLDivElement>(null);
 
   const { dropdownPosition } = useDropdownPosition({
@@ -91,7 +97,7 @@ export const ChatCard = ({
 
   const handleOpenDeleteModal = () => {
     setIsDeleteChatModalOpen(true);
-    closeAllDropdowns(); // Fecha o dropdown mas mantém o modal aberto
+    closeAllDropdowns();
   };
 
   const handleCloseDeleteModal = () => {
@@ -175,7 +181,6 @@ export const ChatCard = ({
         )}
       </div>
 
-      {/* Modal renderizado fora do dropdown */}
       <DeleteChatModal
         mutate={mutate}
         chatId={chatId}

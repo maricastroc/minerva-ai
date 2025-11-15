@@ -29,7 +29,7 @@ export default async function handler(
         name: true,
         email: true,
         avatarUrl: true,
-        provider: true, // ← ADICIONE ESTA LINHA
+        provider: true,
       },
     });
 

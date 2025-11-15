@@ -51,7 +51,6 @@ export default async function handler(
       const password = getSingleString(fields.password);
       const avatarFile = files.avatarUrl?.[0];
 
-      // ===== Yup Schema =====
       const createUserSchema = yup.object({
         name: yup.string().required('Name is required'),
         email: yup

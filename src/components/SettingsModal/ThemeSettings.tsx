@@ -17,7 +17,7 @@ export const ThemeSettings = () => {
       <div className="grid grid-cols-2 gap-3 md:flex md:flex-row md:items-center w-full">
         {themes.map(({ label, icon: Icon, value }) => {
           const isActive = currentTheme === value;
-          // System ocupa 2 colunas em mobile (linha inteira)
+
           const isSystem = value === 'system';
 
           return (

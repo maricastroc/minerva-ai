@@ -57,7 +57,7 @@ export function useTTS({ onStart, onEnd, onError }: useTTSProps = {}) {
 
       utterance.onstart = () => {
         setIsSpeaking(true);
-        onStart?.(); // Chama o callback de início
+        onStart?.();
       };
 
       utterance.onend = () => {

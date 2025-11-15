@@ -55,7 +55,6 @@ export class RegenerateService {
       throw new Error('Conversation not found');
     }
 
-    // Encontrar a mensagem do usuário que gerou esta resposta
     const targetMessageIndex = conversation.messages.findIndex(
       (msg) => msg.id === messageId
     );
