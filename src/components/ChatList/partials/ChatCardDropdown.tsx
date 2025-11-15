@@ -12,6 +12,7 @@ interface DropdownProps {
   mutate: KeyedMutator<AxiosResponse<ChatProps[]>>;
   chatId: string;
   isMobile?: boolean;
+  position: 'top' | 'bottom';
 }
 
 export const ChatCardDropdown = ({
@@ -20,11 +21,16 @@ export const ChatCardDropdown = ({
   mutate,
   chatId,
   isMobile,
+  position = 'bottom'
 }: DropdownProps) => {
   const [isDeleteChatModalOpen, setIsDeleteChatModalOpen] = useState(false);
 
+  const positionClasses = position === 'top' 
+    ? 'bottom-full mb-2' 
+    : 'top-full mt-2';
+
   return (
-    <div className="absolute top-12 p-2 w-full flex items-start right-0 bg-dropdown rounded-lg shadow-lg z-40 min-w-[120px]">
+    <div className={`absolute ${positionClasses} p-2 w-full flex items-start right-0 bg-dropdown rounded-lg shadow-lg z-50 min-w-[120px]`}>
       <div className="py-1 w-full">
         <button
           className={`cursor-pointer w-full rounded-md text-left p-2 font-medium text-gray-50 hover:bg-dropdown-hover flex items-center gap-2 ${isMobile ? 'text-base' : 'text-sm'}`}

@@ -13,6 +13,7 @@ import { useRouter } from 'next/router';
 import { MobileHeader } from '@/components/MobileHeader';
 import { useAppContext } from '@/contexts/AppContext';
 import Image from 'next/image';
+import { LoadingComponent } from '@/components/LoadingComponent';
 
 export default function Home() {
   const isMobile = useScreenSize(768);
@@ -31,6 +32,7 @@ export default function Home() {
     handleNewChat,
     handleSubmit,
     mutate,
+    isValidating,
   } = useChat();
 
   const hasMessages = messages.length !== 0;
@@ -63,6 +65,7 @@ export default function Home() {
       />
       {isClient && (
         <div className="flex h-[100dvh] bg-gray-900 text-gray-50 overflow-hidden safe-area">
+          {isValidating && <LoadingComponent />}
           {!isMobile && (
             <Sidebar
               isOpen={isSidebarOpen}

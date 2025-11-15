@@ -38,6 +38,7 @@ const Avatar = ({
 
 export const UserSection = ({ isMobile = false }: Props) => {
   const { data: session } = useSession();
+
   const { 
     toggleUserDropdown, 
     closeAllDropdowns,
@@ -45,7 +46,9 @@ export const UserSection = ({ isMobile = false }: Props) => {
   } = useDropdownManager();
 
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
+
   const dropdownRef = useRef<HTMLDivElement>(null);
+
   const firstLetter = session?.user?.name?.[0] ?? '';
 
   useClickOutside([dropdownRef], () => {
@@ -56,13 +59,17 @@ export const UserSection = ({ isMobile = false }: Props) => {
 
   const handleLogout = useCallback(() => {
     setIsSettingsModalOpen(false);
-    closeAllDropdowns(); // Correção: usar closeAllDropdowns
+
+    closeAllDropdowns();
+
     signOut({ callbackUrl: '/login' });
+
     toast.success('See you soon!');
-  }, [closeAllDropdowns]); // Adicionei a dependência
+  }, [closeAllDropdowns]);
 
   const openSettingsModal = () => {
-    closeAllDropdowns(); // Correção: usar closeAllDropdowns
+    closeAllDropdowns();
+    
     setIsSettingsModalOpen(true);
   };
 

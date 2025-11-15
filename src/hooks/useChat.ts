@@ -32,7 +32,7 @@ export function useChat() {
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const { data: chatHistory, mutate } = useRequest<ChatProps[]>({
+  const { data: chatHistory, isValidating,  mutate } = useRequest<ChatProps[]>({
     url: '/user/chats',
     method: 'GET',
   });
@@ -62,15 +62,13 @@ export function useChat() {
 
     if (!input.trim() || isMessageLoading) return;
 
-    // 1. Cria a mensagem do usuário com ID temporário
     const userMessage: Message = {
-      id: Date.now().toString(), // ID temporário
+      id: Date.now().toString(),
       content: input,
       role: USER_ROLE,
       timestamp: new Date(),
     };
 
-    // 2. Adiciona a mensagem do usuário imediatamente
     handleMessages((prev) => [...prev, userMessage]);
     setInput('');
     handleIsMessageLoading(true);
@@ -87,15 +85,12 @@ export function useChat() {
 
       console.log('Response data:', data);
 
-      // 3. ATUALIZA as mensagens com os IDs reais do backend
       handleMessages((prev) => {
-        // Encontra a mensagem do usuário (última mensagem)
         const lastUserMessageIndex = prev.findIndex(
           (msg) => msg.id === userMessage.id && msg.role === USER_ROLE
         );
 
         if (lastUserMessageIndex === -1) {
-          // Fallback: se não encontrar, adiciona ambas as mensagens
           return [
             ...prev,
             {
@@ -113,14 +108,12 @@ export function useChat() {
           ];
         }
 
-        // Substitui a mensagem do usuário temporária pela real
         const updatedMessages = [...prev];
         updatedMessages[lastUserMessageIndex] = {
           ...updatedMessages[lastUserMessageIndex],
-          id: data.messageIds.userMessageId, // ID real do backend
+          id: data.messageIds.userMessageId,
         };
 
-        // Adiciona a mensagem do assistant com ID real
         updatedMessages.push({
           id: data.messageIds.assistantMessageId,
           content: data.reply,
@@ -147,12 +140,11 @@ export function useChat() {
     } catch (err) {
       console.error(err);
 
-      // Em caso de erro, mantém a mensagem do usuário mas remove o ID temporário
       handleMessages((prev) =>
         prev
           .map((msg) =>
             msg.id === userMessage.id
-              ? { ...msg, id: 'temp-' + msg.id } // Marca como temporário
+              ? { ...msg, id: 'temp-' + msg.id }
               : msg
           )
           .concat({
@@ -210,5 +202,6 @@ export function useChat() {
     handleRegenerate,
     messagesEndRef,
     mutate,
+    isValidating,
   };
 }

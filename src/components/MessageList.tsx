@@ -1,6 +1,6 @@
 import { MessageProps } from '@/types/message';
 import { MessageItem } from './MessageItem';
-import { LoadingComponent } from './LoadingComponent';
+import { LoadingDots } from './LoadingDots';
 import { useAppContext } from '@/contexts/AppContext';
 
 interface MessageListProps {
@@ -31,7 +31,7 @@ export const MessageList = ({ messages, isMobile }: MessageListProps) => {
 
           {isMessageLoading && (
             <div className="pl-4 mt-[-1.5rem] pb-[1.5rem] w-full flex justify-start">
-              <LoadingComponent />
+              <LoadingDots />
             </div>
           )}
         </div>

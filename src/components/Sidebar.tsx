@@ -35,7 +35,7 @@ export const Sidebar = ({
     <div
       className={`
         ${isOpen ? 'w-64' : 'w-16 items-center'} 
-        bg-sidebar transition-all duration-300 overflow-hidden flex flex-col relative
+        bg-sidebar transition-all duration-300 flex flex-col relative
       `}
     >
       {isOpen ? (

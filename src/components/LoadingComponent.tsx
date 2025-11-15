@@ -1,13 +1,20 @@
-export const LoadingComponent = () => {
+import { ThreeDots } from 'react-loading-icons'
+
+interface Props {
+  hasOverlay?: boolean
+}
+
+export const LoadingComponent = ({
+  hasOverlay = true,
+}: Props) => {
   return (
-    <div className="flex justify-start mt-4">
-      <div className="bg-transparent rounded-lg rounded-bl-none max-w-xs md:max-w-md">
-        <div className="flex space-x-1">
-          <div className="w-[0.35rem] h-[0.35rem] bg-gray-100 rounded-full animate-bounce"></div>
-          <div className="w-[0.35rem] h-[0.35rem] bg-gray-100 rounded-full animate-bounce delay-150"></div>
-          <div className="w-[0.35rem] h-[0.35rem] bg-gray-100 rounded-full animate-bounce delay-300"></div>
-        </div>
-      </div>
+    <div className="fixed inset-0 z-[998] flex items-center justify-center w-full h-screen overflow-hidden">
+      {hasOverlay && (
+        <div 
+          className={'fixed inset-0 w-screen h-full bg-black/60'} 
+        />
+      )}
+      <ThreeDots height={'12px'} className="animate-spin" />
     </div>
-  );
-};
+  )
+}

@@ -12,6 +12,7 @@ import { useClickOutside } from '@/hooks/useClickOutside';
 import clsx from 'clsx';
 import { useAppContext } from '@/contexts/AppContext';
 import { useDropdownManager } from '@/contexts/DropdownContext';
+import { useDropdownPosition } from '@/hooks/useDropdownPosition';
 
 interface Props {
   chat: ChatProps;
@@ -38,7 +39,7 @@ export const ChatCard = ({
   } = useDropdownManager();
 
   const [localTitle, setLocalTitle] = useState(chat.title);
-
+  
   const chatId = String(chat.id);
 
   const isEditing = editingChatId === chatId;
@@ -51,8 +52,14 @@ export const ChatCard = ({
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const debouncedTitle = useDebounce(localTitle, 500);
+  const cardRef = useRef<HTMLDivElement>(null);
 
+  const { dropdownPosition } = useDropdownPosition({
+    dropdownRef: cardRef,
+    isOpen: isThisChatDropdownOpen
+  });
+
+  const debouncedTitle = useDebounce(localTitle, 500);
   const { updateChatTitle } = useUpdateChatTitle(mutate, currentChatId);
 
   useEffect(() => {
@@ -86,6 +93,7 @@ export const ChatCard = ({
 
   return (
     <div
+      ref={cardRef}
       className={clsx(
         'mt-1 pl-[0.8rem] flex items-center justify-between cursor-pointer py-2 rounded-[1.25rem] transition-colors group',
         {
@@ -142,6 +150,7 @@ export const ChatCard = ({
 
           {isThisChatDropdownOpen && (
             <ChatCardDropdown
+              position={dropdownPosition}
               onEdit={() => {
                 setEditingChatId(chatId);
                 setLocalTitle(chat.title);
